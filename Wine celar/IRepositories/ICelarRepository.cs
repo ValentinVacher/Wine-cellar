@@ -1,4 +1,4 @@
-﻿using Wine_celar.Entities;
+﻿using Wine_cellar.Entities;
 
 namespace Wine_celar.IRepositories
 {
