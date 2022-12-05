@@ -21,7 +21,7 @@ namespace Wine_cellar.Controllers
         {
             return Ok(await drawerRepository.GetAllWithWineAsync());
         }
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<Drawer>> GetDrawer(string cellarName,int index)
         {
             return Ok(drawerRepository.GetDrawerwithWineAsync(cellarName,index));
@@ -40,7 +40,7 @@ namespace Wine_cellar.Controllers
                 return Problem("tiroir non créer");
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(Drawer drawer)
         {
             return Ok(await drawerRepository.UpdateDrawerAsync(drawer));
