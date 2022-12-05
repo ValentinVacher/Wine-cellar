@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Wine_cellar.IRepositories;
 
-namespace Wine_celar.Controllers
+namespace Wine_cellar.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
