@@ -15,7 +15,7 @@
 
         public bool IsApogee()
         {
-            if (Today.Year > KeepMin && Today.Year < KeepMax)
+            if (Today.Year >= KeepMin && Today.Year <= KeepMax)
             {
                 return true;
             }
