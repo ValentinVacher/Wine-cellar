@@ -5,11 +5,11 @@ using Wine_cellar.IRepositories;
 
 namespace Wine_cellar.Repositories
 {
-    public class DrawerRepositories : IDrawerRepository
+    public class DrawerRepository : IDrawerRepository
     {
         WineContext winecontext;
-        ILogger<DrawerRepositories> logger;
-        public DrawerRepositories(WineContext winecontext, ILogger<DrawerRepositories> logger)
+        ILogger<DrawerRepository> logger;
+        public DrawerRepository(WineContext winecontext, ILogger<DrawerRepository> logger)
         {
             this.winecontext = winecontext;
             this.logger = logger;
