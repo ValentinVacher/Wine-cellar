@@ -46,7 +46,7 @@ namespace Wine_cellar.Repositories
             return wine;
         }
 
-        public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine)
+        public async Task<Wine> UpdateWineAsync(Wine wine)
         {
             var WineUpdate = await GetWineByIdAsync(wine.WineId);
             if (WineUpdate == null) return null;
