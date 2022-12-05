@@ -73,8 +73,16 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWineAsync(Wine wine)
+        public async Task<IActionResult> UpdateWineAsync(UpdateWineViewModel wineView)
         {
+            Wine wine = new()
+            {
+                WineId = wineView.WineId,
+                Color = wineView.Color,
+                Appelation = wineView.Appelation,
+                Name = wineView.Name
+            };
+
             var wineUpdate = await wineRepository.CreateWineAsync(wine);
 
             if(wineUpdate == null)
