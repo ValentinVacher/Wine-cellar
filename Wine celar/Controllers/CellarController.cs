@@ -12,7 +12,7 @@ namespace Wine_cellar.Controllers
     {
         readonly ICellarRepository cellarRepository;
         readonly IWebHostEnvironment environment;
-        public CellarController(IWineRepository Repository, IWebHostEnvironment environment)
+        public CellarController(ICellarRepository Repository, IWebHostEnvironment environment)
         {
             this.cellarRepository = cellarRepository;
             this.environment = environment;
