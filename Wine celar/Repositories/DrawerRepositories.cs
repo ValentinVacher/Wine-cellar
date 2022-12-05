@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Wine_celar.Contexts;
-using Wine_celar.Entities;
-using Wine_celar.IRepositories;
+using Wine_cellar.Contexts;
+using Wine_cellar.Entities;
+using Wine_cellar.IRepositories;
 
-namespace Wine_celar.Repositories
+namespace Wine_cellar.Repositories
 {
     public class DrawerRepositories : IDrawerRepository
     {
