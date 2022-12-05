@@ -9,10 +9,12 @@ namespace Wine_celar.Repositories
     public class UserRepository : IUserRepository
     {
         readonly WineContext wineContext;
+        ILogger<UserRepository> logger;
 
-        public UserRepository(WineContext wineContext)
+        public UserRepository(WineContext wineContext, ILogger<UserRepository> logger)
         {
             this.wineContext = wineContext;
+            this.logger = logger;
         }
 
         public async Task<User> CreateUserAsync(User user)
@@ -22,9 +24,18 @@ namespace Wine_celar.Repositories
             return user;
         }
 
-        public Task<User> DeleteUserAsync(int Userid)
+        public async Task<User> DeleteUserAsync(int Userid)
         {
-            throw new NotImplementedException();
+            var UserDelete = await wineContext.Users.FindAsync(Userid);
+            if (UserDelete != null)
+                return null;
+            foreach (var Cellar in UserDelete.Cellars)
+            {
+                wineContext.Cellars.Remove(Cellar);
+            }
+            wineContext.Users.Remove(UserDelete);
+            await wineContext.SaveChangesAsync();
+            return UserDelete;
         }
 
         public async Task<User> LoginUser(string login, string pwd)
@@ -40,13 +51,19 @@ namespace Wine_celar.Repositories
                 await wineContext.SaveChangesAsync();
                 return userConnected;
             }
-            
-
+            return userConnected;
         }
-
-        public Task<User> UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            var UserUpdate = await wineContext.Users.FindAsync(user.UserId);
+            if (UserUpdate == null)
+                return null;
+            UserUpdate.Email = user.Email;
+            UserUpdate.FirstName = user.FirstName; 
+            UserUpdate.LastName = user.LastName;
+
+            await wineContext.SaveChangesAsync();
+            return UserUpdate;
         }
     }
 }
