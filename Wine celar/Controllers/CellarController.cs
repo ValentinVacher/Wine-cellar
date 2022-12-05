@@ -31,7 +31,10 @@ namespace Wine_cellar.Controllers
             return Ok(cellar);       
         }
         [HttpPost]
-        public async Task<IActionResult> AddCellar
+        public async Task<IActionResult> AddCellar()
+        {
+            var cellar
+        }
 
     }
 }
