@@ -4,9 +4,9 @@ namespace Wine_celar.IRepositories
 {
     public interface ICelarRepository
     {
-        Task<List<Celar>> GetAlls();
-        Task<Celar> GetCelarWithAll(int id);
-        Task<Celar> DeleteCelar(int id);
-        Task <Celar> UpdateCelar(Celar celar);
+        Task<List<Celar>> GetAllsAsync();
+        Task<Celar> GetCelarWithAllAsync(int id);
+        Task<Celar> DeleteCelarAsync(int id);
+        Task <Celar> UpdateCelarAsync(Celar celar);
     }
 }

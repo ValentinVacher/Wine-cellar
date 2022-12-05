@@ -4,10 +4,10 @@ namespace Wine_celar.IRepositories
 {
     public interface IDrawerRepository
     {
-        Task<List<Drawer>> GetAllWithWine();
-        Task<Drawer> GetDrawerwithWine(int id);
-        Task<Drawer> AddDrawer(Drawer drawer);
-        Task<Drawer> UpdateDrawer(Drawer drawer);
-        Task<Drawer> DeleteDrawer(int id);
+        Task<List<Drawer>> GetAllWithWineAsync();
+        Task<Drawer> GetDrawerwithWineAsync(int id);
+        Task<Drawer> AddDrawerAsync(Drawer drawer);
+        Task<Drawer> UpdateDrawerAsync(Drawer drawer);
+        Task<Drawer> DeleteDrawerAsync(int id);
     }
 }
