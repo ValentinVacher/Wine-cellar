@@ -22,9 +22,9 @@ namespace Wine_cellar.Controllers
             return Ok(await drawerRepository.GetAllWithWineAsync());
         }
         [HttpGet]
-        public async Task<ActionResult<Drawer>> GetDrawer(string cellarName,int index)
+        public async Task<ActionResult<Drawer>> GetDrawer(string cellarName, int index)
         {
-            return Ok(drawerRepository.GetDrawerwithWineAsync(cellarName,index));
+            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index));
         }
 
         [HttpPost]
@@ -45,10 +45,10 @@ namespace Wine_cellar.Controllers
         {
             return Ok(await drawerRepository.UpdateDrawerAsync(drawer));
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName,int index)
+        [HttpDelete]
+        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName, int index)
         {
-            return Ok(await drawerRepository.DeleteDrawerAsync(cellarName,index));
+            return Ok(await drawerRepository.DeleteDrawerAsync(cellarName, index));
         }
 
     }

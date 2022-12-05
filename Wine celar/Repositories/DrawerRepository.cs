@@ -20,7 +20,7 @@ namespace Wine_cellar.Repositories
         }
         public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index)
         {
-            return await winecontext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName);
+            return await winecontext.Drawers.Include(d => d.Wines).Include(d=>d.Cellar).FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName);
         }
 
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
