@@ -5,7 +5,7 @@ namespace Wine_cellar.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class WineController : ControllerBase
     {
     }
 }
