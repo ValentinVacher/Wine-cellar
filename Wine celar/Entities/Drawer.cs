@@ -11,7 +11,7 @@
 
         public bool IsFull()
         {
-            if (Wines.Count==NbBottleMax)
+            if (Wines.Count == NbBottleMax)
             {
                 return true;
             }
