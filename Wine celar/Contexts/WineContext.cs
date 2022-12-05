@@ -53,12 +53,12 @@ namespace Wine_celar.Contexts
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
             var u3 = new User { UserId = 2, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
 
-            c1.DrawerList.Add(d1);
-            c1.DrawerList.Add(d2);
-            c1.DrawerList.Add(d3);
-            c2.DrawerList.Add(d4);
-            c2.DrawerList.Add(d5);
-            c2.DrawerList.Add(d6);
+            c1.Drawers.Add(d1);
+            c1.Drawers.Add(d2);
+            c1.Drawers.Add(d3);
+            c2.Drawers.Add(d4);
+            c2.Drawers.Add(d5);
+            c2.Drawers.Add(d6);
 
             d1.Wines.Add(v1);
             d1.Wines.Add(v2);
