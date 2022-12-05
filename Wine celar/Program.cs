@@ -20,7 +20,6 @@ builder.Services.AddDbContext<WineContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("WineCellarDbCS"));
 });
 builder.Services.AddScoped<IWineRepository, WineRepository>();
-
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 
