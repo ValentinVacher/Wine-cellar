@@ -6,7 +6,7 @@ namespace Wine_celar.Entities
     {
         public int CelarId {get;set;}
         public string Name { get;set;}
-        public int NbDrawer { get;set;}
+        public int NbDrawerMax { get;set;}
         public int UserId { get;set;}
         public User User { get;set;}
         public List<Drawer> DrawerList { get;set;}
