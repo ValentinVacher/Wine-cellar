@@ -44,8 +44,8 @@ namespace Wine_cellar.Repositories
             var WineUpdate = await GetWineByIdAsync(wine.WineId);
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
-            WineUpdate.Color = wine.Color; 
-            WineUpdate.Appelation= wine.Appelation;
+            WineUpdate.Color = wine.Color;
+            WineUpdate.Appelation = wine.Appelation;
             await wineContext.SaveChangesAsync();
             return WineUpdate;
         }
@@ -58,7 +58,7 @@ namespace Wine_cellar.Repositories
             wineContext.Wines.Remove(WineDelete);
             await wineContext.SaveChangesAsync();
             return WineDelete;
-            
+
         }
 
     }

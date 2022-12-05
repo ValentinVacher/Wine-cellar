@@ -50,9 +50,14 @@ namespace Wine_cellar.Repositories
 
 
 
-        public Task<Drawer> UpdateDrawerAsync(Drawer drawer)
+        public async Task<Drawer> UpdateDrawerAsync(Drawer drawer)
         {
-            throw new NotImplementedException();
+            var DrawerUpdate = await winecontext.Drawers.FindAsync(drawer.DrawerId);
+            if (DrawerUpdate != null) return null;
+            DrawerUpdate.NbBottleMax=drawer.NbBottleMax;
+            DrawerUpdate.Index=drawer.Index;
+            await winecontext.SaveChangesAsync();
+            return DrawerUpdate;
         }
     }
 }
