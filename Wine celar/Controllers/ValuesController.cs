@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Wine_celar.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
