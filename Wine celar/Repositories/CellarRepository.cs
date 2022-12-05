@@ -5,7 +5,7 @@ namespace Wine_celar.Repositories
 {
     public class CellarRepository : ICellarRepository
     {
-        public Task<Celar> DeleteCellarAsync(int id)
+        public Task<Cellar> DeleteCellarAsync(int id)
         {
             throw new NotImplementedException();
         }
