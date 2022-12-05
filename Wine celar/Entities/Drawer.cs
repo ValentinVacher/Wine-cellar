@@ -8,5 +8,8 @@
         public Celar Celar { get; set; }
         public int CelarId { get; set; }
         public List<Wine> Wines { get; set; }
+
+
+       
     }
 }
