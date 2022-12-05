@@ -1,4 +1,8 @@
-﻿namespace Wine_cellar.Entities
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Wine_cellar.Entities
 {
     public class Wine
     {

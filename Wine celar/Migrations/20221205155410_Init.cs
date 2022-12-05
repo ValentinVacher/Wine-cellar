@@ -136,16 +136,16 @@ namespace Winecelar.Migrations
                 columns: new[] { "WineId", "Appelation", "Color", "DrawerId", "KeepMax", "KeepMin", "Name", "Today", "Year" },
                 values: new object[,]
                 {
-                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5509), 1960 },
-                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5551), 1970 },
-                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5554), 1980 },
-                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5556), 1960 },
-                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5559), 1960 },
-                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5561), 1960 },
-                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5563), 1960 },
-                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5566), 1960 },
-                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5568), 1960 },
-                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", new DateTime(2022, 12, 5, 13, 24, 4, 16, DateTimeKind.Local).AddTicks(5570), 1960 }
+                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7151), 1960 },
+                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7192), 1970 },
+                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7195), 1980 },
+                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7197), 1960 },
+                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7199), 1960 },
+                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7202), 1960 },
+                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7257), 1960 },
+                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7260), 1960 },
+                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7263), 1960 },
+                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", new DateTime(2022, 12, 5, 16, 54, 9, 984, DateTimeKind.Local).AddTicks(7265), 1960 }
                 });
 
             migrationBuilder.CreateIndex(
