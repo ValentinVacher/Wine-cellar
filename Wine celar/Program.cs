@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Wine_cellar.Contexts;
+using Wine_cellar.IRepositories;
+using Wine_cellar.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ builder.Services.AddDbContext<WineContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("WineCellarDbCS"));
 });
+
+builder.Services.AddScoped<ICellarRepository, CellarRepository>();
+builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 
 var app = builder.Build();
 
