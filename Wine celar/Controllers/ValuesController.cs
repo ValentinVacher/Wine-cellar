@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Wine_celar.Controllers
+namespace Wine_cellar.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]

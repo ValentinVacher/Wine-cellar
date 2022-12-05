@@ -1,13 +1,13 @@
-﻿using Wine_celar.Entities;
+﻿using Wine_cellar.Entities;
 
-namespace Wine_celar.IRepositories
+namespace Wine_cellar.IRepositories
 {
     public interface IWineRepository
     {
         Task<List<Wine>> GetAllWinesAsync();
         Task<Wine> GetWineByIdAsync(int Wineid);
         Task<List<Wine>> GetWineByNameAsync(string name);
-        Task<List<Wine>> GetWineByColor(string color);
+        Task<List<Wine>> GetWineByColorAsync(string color);
         Task<Wine> CreateWineAsync(Wine wine);
         Task<Wine> UpdateWineAsync(Wine wine);
         Task<Wine> DeleteWineAsync(int WineId);

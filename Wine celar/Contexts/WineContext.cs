@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Wine_celar.Entities;
+using Wine_cellar.Entities;
 
-namespace Wine_celar.Contexts
+namespace Wine_cellar.Contexts
 {
     public class WineContext : DbContext
     {

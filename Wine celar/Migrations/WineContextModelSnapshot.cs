@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Wine_celar.Contexts;
+using Wine_cellar.Contexts;
 
 #nullable disable
 
@@ -22,7 +22,7 @@ namespace Winecelar.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Wine_celar.Entities.Celar", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Celar", b =>
                 {
                     b.Property<int>("CelarId")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace Winecelar.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Drawer", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Drawer", b =>
                 {
                     b.Property<int>("DrawerId")
                         .ValueGeneratedOnAdd()
@@ -99,46 +99,46 @@ namespace Winecelar.Migrations
                             DrawerId = 1,
                             CelarId = 1,
                             Index = 1,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         },
                         new
                         {
                             DrawerId = 2,
                             CelarId = 1,
                             Index = 2,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         },
                         new
                         {
                             DrawerId = 3,
                             CelarId = 1,
                             Index = 3,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         },
                         new
                         {
                             DrawerId = 4,
                             CelarId = 2,
                             Index = 1,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         },
                         new
                         {
                             DrawerId = 5,
                             CelarId = 2,
                             Index = 2,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         },
                         new
                         {
                             DrawerId = 6,
                             CelarId = 2,
                             Index = 3,
-                            NbBottleMax = 0
+                            NbBottleMax = 5
                         });
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.User", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -199,7 +199,7 @@ namespace Winecelar.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Wine", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Wine", b =>
                 {
                     b.Property<int>("WineId")
                         .ValueGeneratedOnAdd()
@@ -250,7 +250,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-1",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7003),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(966),
                             Year = 1960
                         },
                         new
@@ -262,7 +262,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2001,
                             Name = "20-2",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7035),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1004),
                             Year = 1970
                         },
                         new
@@ -274,7 +274,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2001,
                             Name = "20-3",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7038),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1008),
                             Year = 1980
                         },
                         new
@@ -286,7 +286,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-4",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7040),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1011),
                             Year = 1960
                         },
                         new
@@ -298,7 +298,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-5",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7043),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1014),
                             Year = 1960
                         },
                         new
@@ -310,7 +310,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-6",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7045),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1017),
                             Year = 1960
                         },
                         new
@@ -322,7 +322,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-7",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7047),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1020),
                             Year = 1960
                         },
                         new
@@ -334,7 +334,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-8",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7049),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1022),
                             Year = 1960
                         },
                         new
@@ -346,7 +346,7 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-9",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7052),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1025),
                             Year = 1960
                         },
                         new
@@ -358,14 +358,14 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-10",
-                            Today = new DateTime(2022, 12, 5, 11, 48, 49, 595, DateTimeKind.Local).AddTicks(7054),
+                            Today = new DateTime(2022, 12, 5, 12, 3, 0, 104, DateTimeKind.Local).AddTicks(1027),
                             Year = 1960
                         });
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Celar", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Celar", b =>
                 {
-                    b.HasOne("Wine_celar.Entities.User", "User")
+                    b.HasOne("Wine_cellar.Entities.User", "User")
                         .WithMany("Cellars")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -374,9 +374,9 @@ namespace Winecelar.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Drawer", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Drawer", b =>
                 {
-                    b.HasOne("Wine_celar.Entities.Celar", "Celar")
+                    b.HasOne("Wine_cellar.Entities.Celar", "Celar")
                         .WithMany("Drawers")
                         .HasForeignKey("CelarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -385,9 +385,9 @@ namespace Winecelar.Migrations
                     b.Navigation("Celar");
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Wine", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Wine", b =>
                 {
-                    b.HasOne("Wine_celar.Entities.Drawer", "Drawer")
+                    b.HasOne("Wine_cellar.Entities.Drawer", "Drawer")
                         .WithMany("Wines")
                         .HasForeignKey("DrawerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -396,17 +396,17 @@ namespace Winecelar.Migrations
                     b.Navigation("Drawer");
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Celar", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Celar", b =>
                 {
                     b.Navigation("Drawers");
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.Drawer", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.Drawer", b =>
                 {
                     b.Navigation("Wines");
                 });
 
-            modelBuilder.Entity("Wine_celar.Entities.User", b =>
+            modelBuilder.Entity("Wine_cellar.Entities.User", b =>
                 {
                     b.Navigation("Cellars");
                 });

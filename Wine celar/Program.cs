@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Wine_celar.Contexts;
+using Wine_cellar.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 

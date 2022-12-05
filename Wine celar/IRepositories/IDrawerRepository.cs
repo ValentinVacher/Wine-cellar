@@ -1,6 +1,6 @@
-﻿using Wine_celar.Entities;
+﻿using Wine_cellar.Entities;
 
-namespace Wine_celar.IRepositories
+namespace Wine_cellar.IRepositories
 {
     public interface IDrawerRepository
     {
