@@ -1,4 +1,4 @@
-﻿namespace Wine_celar.Repositories.Contracts
+﻿namespace Wine_celar.IRepositories
 {
     public interface IUserRepository
     {
