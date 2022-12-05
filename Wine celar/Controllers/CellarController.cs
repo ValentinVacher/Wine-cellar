@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
@@ -32,10 +33,15 @@ namespace Wine_cellar.Controllers
             return Ok(cellar);       
         }
         [HttpPost]
-        public async Task<IActionResult> AddCellar(Cellar cellar, int NbrButtleDrawer)
+        public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int NbrButtleDrawer)
         {
-            var cellarCreated = await cellarRepository.AddCellarAsync(cellar,NbrButtleDrawer);
-            if (cellar != null)
+            Cellar cellar = new Cellar()
+            {
+                Name = cellarViewModel.Name,
+                NbDrawerMax = cellarViewModel.NbDrawerMax
+            };
+            var cellarCreated = await cellarRepository.AddCellarAsync(cellarViewModel,NbrButtleDrawer);
+            if (cellarViewModel != null)
                 return Ok(cellarCreated);
             else
                 return Problem("Cave non créer");

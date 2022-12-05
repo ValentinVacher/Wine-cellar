@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Wine_celar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Repositories
 {
@@ -23,7 +25,7 @@ namespace Wine_cellar.Repositories
         {
             return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(c => c.CellarId == id);
         }
-        public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
+        public async Task<Cellar> AddCellarAsync(CreateCellarViewModel cellarViewModel, int NbrButtleDrawer)
         {
             winecontext.Cellars.Add(cellar);
             for (int i = 1; i <= cellar.NbDrawerMax; i++)

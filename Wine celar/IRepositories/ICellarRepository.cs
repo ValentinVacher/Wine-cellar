@@ -1,4 +1,5 @@
 ﻿using Wine_cellar.Entities;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.IRepositories
 {
@@ -8,6 +9,6 @@ namespace Wine_cellar.IRepositories
         Task<Cellar> GetCellarWithAllAsync(int id);
         Task<Cellar> DeleteCellarAsync(int id);
         Task<Cellar> UpdateCellarAsync(Cellar cellar);
-        Task<Cellar> AddCellarAsync(Cellar cellar,int NbrButtleDrawer);
+        Task<Cellar> AddCellarAsync(CreateCellarViewModel cellarViewModel,int NbrButtleDrawer);
     }
 }
