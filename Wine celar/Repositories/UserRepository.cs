@@ -52,13 +52,18 @@ namespace Wine_celar.Repositories
                 return userConnected;
             }
             return userConnected;
-
-
         }
-
-        public Task<User> UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            var UserUpdate = await wineContext.Users.FindAsync(user.UserId);
+            if (UserUpdate == null)
+                return null;
+            UserUpdate.Email = user.Email;
+            UserUpdate.FirstName = user.FirstName; 
+            UserUpdate.LastName = user.LastName;
+
+            await wineContext.SaveChangesAsync();
+            return UserUpdate;
         }
     }
 }
