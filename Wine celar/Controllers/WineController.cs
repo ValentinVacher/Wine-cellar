@@ -8,11 +8,11 @@ namespace Wine_cellar.Controllers
     [ApiController]
     public class WineController : ControllerBase
     {
-        readonly IWineRepository postRepository;
+        readonly IWineRepository wineRepository;
         readonly IWebHostEnvironment environment;
         public WineController(IWineRepository Repository, IWebHostEnvironment environment)
         {
-            this.postRepository = postRepository;
+            this.wineRepository = wineRepository;
             this.environment = environment;
         }
     }
