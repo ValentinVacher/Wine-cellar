@@ -2,9 +2,9 @@
 
 namespace Wine_cellar.Entities
 {
-    public class Celar
+    public class Cellar
     {
-        public int CelarId { get; set; }
+        public int CellarId { get; set; }
         public string Name { get; set; }
         public int NbDrawerMax { get; set; }
         public int UserId { get; set; }

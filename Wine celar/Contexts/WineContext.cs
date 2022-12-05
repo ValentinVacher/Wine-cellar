@@ -11,7 +11,7 @@ namespace Wine_cellar.Contexts
             // Force pending migrations
             //Database.Migrate();
         }
-        public DbSet<Celar> Celars { get; set; }
+        public DbSet<Cellar> Cellars { get; set; }
         public DbSet<Drawer> Drawers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Wine> Wines { get; set; }
@@ -22,9 +22,9 @@ namespace Wine_cellar.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var c1 = new Celar { CelarId = 1, Name = "Celar 1", NbDrawerMax = 5, UserId = 1 };
-            var c2 = new Celar { CelarId = 2, Name = "Celar 2", NbDrawerMax = 10, UserId = 2 };
-            var c3 = new Celar { CelarId = 3, Name = "Celar 3", NbDrawerMax = 20, UserId = 3 };
+            var c1 = new Cellar { CelarId = 1, Name = "Celar 1", NbDrawerMax = 5, UserId = 1 };
+            var c2 = new Cellar { CelarId = 2, Name = "Celar 2", NbDrawerMax = 10, UserId = 2 };
+            var c3 = new Cellar { CelarId = 3, Name = "Celar 3", NbDrawerMax = 20, UserId = 3 };
 
             var d1 = new Drawer { DrawerId = 1, Index = 1, CelarId = 1, NbBottleMax = 5 };
             var d2 = new Drawer { DrawerId = 2, Index = 2, CelarId = 1, NbBottleMax = 5 };
@@ -48,7 +48,7 @@ namespace Wine_cellar.Contexts
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
             var u3 = new User { UserId = 3, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
 
-            modelBuilder.Entity<Celar>().HasData(new List<Celar> { c1, c2, c3 });
+            modelBuilder.Entity<Cellar>().HasData(new List<Cellar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 });
             modelBuilder.Entity<User>().HasData(new List<User> { u1, u2, u3 });
