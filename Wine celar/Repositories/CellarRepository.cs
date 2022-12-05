@@ -23,7 +23,7 @@ namespace Wine_cellar.Repositories
         {
             return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(c => c.CellarId == id);
         }
-        public async Task<Cellar> AddCellar(Cellar cellar, int NbrButtleDrawer)
+        public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
         {
             winecontext.Cellars.Add(cellar);
             for (int i = 1; i <= cellar.NbDrawerMax; i++)
