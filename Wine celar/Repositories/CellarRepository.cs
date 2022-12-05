@@ -1,28 +1,58 @@
-﻿using Wine_cellar.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Wine_cellar.Contexts;
+using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 
-namespace Wine_celar.Repositories
+namespace Wine_cellar.Repositories
 {
+
     public class CellarRepository : ICellarRepository
     {
-        public Task<Cellar> DeleteCellarAsync(int id)
+        WineContext winecontext;
+        ILogger<CellarRepository> Logger;
+        public CellarRepository(WineContext winecontext, ILogger<CellarRepository> Logger)
         {
-            throw new NotImplementedException();
+            this.winecontext = winecontext;
+            this.Logger = Logger;
+        }
+        public async Task<List<Cellar>> GetAllsAsync()
+        {
+            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).ToListAsync();
+        }
+        public async Task<Cellar> GetCellarWithAllAsync(int id)
+        {
+            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(c => c.CellarId == id);
+        }
+        public async Task<Cellar> AddCellar(Cellar cellar, int NbrButtleDrawer)
+        {
+            winecontext.Cellars.Add(cellar);
+            for (int i = 1; i <= cellar.NbDrawerMax; i++)
+            {
+                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
+            }
+            await winecontext.SaveChangesAsync();
+            return cellar;
+
         }
 
-        public Task<List<Cellar>> GetAllsAsync()
+        public async Task<Cellar> DeleteCellarAsync(int id)
         {
-            throw new NotImplementedException();
+            var DelCellar = await winecontext.Cellars.FindAsync(id);
+            winecontext.Cellars.Remove(DelCellar);
+            await winecontext.SaveChangesAsync();
+            return DelCellar;
         }
 
-        public Task<Cellar> GetCellarWithAllAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Cellar> UpdateCellarAsync(Cellar cellar)
+
+        public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
         {
-            throw new NotImplementedException();
+            var CellarUpdate = await winecontext.Cellars.FindAsync(cellar.CellarId);
+            if (CellarUpdate != null) return null;
+            CellarUpdate.Name = cellar.Name;
+            await winecontext.SaveChangesAsync();
+            return CellarUpdate;
         }
     }
 }
+
