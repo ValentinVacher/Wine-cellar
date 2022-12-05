@@ -2,11 +2,11 @@
 
 namespace Wine_cellar.IRepositories
 {
-    public interface ICelarRepository
+    public interface ICellarRepository
     {
-        Task<List<Celar>> GetAllsAsync();
-        Task<Celar> GetCelarWithAllAsync(int id);
-        Task<Celar> DeleteCelarAsync(int id);
-        Task <Celar> UpdateCelarAsync(Celar celar);
+        Task<List<Cellar>> GetAllsAsync();
+        Task<Cellar> GetCellarWithAllAsync(int id);
+        Task<Cellar> DeleteCellarAsync(int id);
+        Task <Cellar> UpdateCellarAsync(Cellar cellar);
     }
 }
