@@ -9,5 +9,17 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public List<Cellar> Cellars { get; set; }
+
+
+        public bool IsOlder()
+        {
+            int Age = DateTime.Now.Year - DateOfBirth.Year;
+            if (Age >= 18)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
     }
 }
