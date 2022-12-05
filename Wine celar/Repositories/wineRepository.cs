@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Wine_celar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
@@ -45,7 +46,7 @@ namespace Wine_cellar.Repositories
             return wine;
         }
 
-        public async Task<Wine> UpdateWineAsync(Wine wine)
+        public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine)
         {
             var WineUpdate = await GetWineByIdAsync(wine.WineId);
             if (WineUpdate == null) return null;
