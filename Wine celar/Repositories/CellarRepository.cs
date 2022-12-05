@@ -28,9 +28,10 @@ namespace Wine_cellar.Repositories
         public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
         {
             winecontext.Cellars.Add(cellar);
+            await winecontext.SaveChangesAsync();
             for (int i = 1; i <= cellar.NbDrawerMax; i++)
             {
-                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
+                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, NbBottleMax = NbrButtleDrawer });
             }
             await winecontext.SaveChangesAsync();
             return cellar;

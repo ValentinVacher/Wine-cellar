@@ -33,14 +33,15 @@ namespace Wine_cellar.Controllers
             return Ok(cellar);       
         }
         [HttpPost]
-        public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int NbrButtleDrawer)
+        public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int Nbr)
         {
             Cellar cellar = new Cellar()
             {
                 Name = cellarViewModel.Name,
-                NbDrawerMax = cellarViewModel.NbDrawerMax
+                NbDrawerMax = cellarViewModel.NbDrawerMax,
+                UserId = cellarViewModel.UserId
             };
-            var cellarCreated = await cellarRepository.AddCellarAsync(cellarViewModel,NbrButtleDrawer);
+            var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
             if (cellarViewModel != null)
                 return Ok(cellarCreated);
             else
