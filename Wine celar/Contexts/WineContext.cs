@@ -9,7 +9,7 @@ namespace Wine_celar.Contexts
         public WineContext(DbContextOptions<WineContext> dbContextOptions) : base(dbContextOptions)
         {
             // Force pending migrations
-            Database.Migrate();
+            //Database.Migrate();
         }
         public DbSet<Celar> Celars { get; set; }
         public DbSet<Drawer> Drawers { get; set; }
@@ -17,19 +17,14 @@ namespace Wine_celar.Contexts
         public DbSet<Wine> Wines { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // Config set in Program.cs
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Projet_API_Wiky;Trusted_Connection=True;");
-            }
             base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var c1 = new Celar { CelarId = 1, Name = "Clelars 1", NbDrawerMax = 5, UserId = 1 };
-            var c2 = new Celar { CelarId = 2, Name = "Clelars 2", NbDrawerMax = 10, UserId = 2 };
-            var c3 = new Celar { CelarId = 3, Name = "Clelars 3", NbDrawerMax = 20, UserId = 3 };
+            var c1 = new Celar { CelarId = 1, Name = "Celar 1", NbDrawerMax = 5, UserId = 1 };
+            var c2 = new Celar { CelarId = 2, Name = "Celar 2", NbDrawerMax = 10, UserId = 2 };
+            var c3 = new Celar { CelarId = 3, Name = "Celar 3", NbDrawerMax = 20, UserId = 3 };
 
             var d1 = new Drawer { DrawerId = 1, Index = 1, CelarId = 1 };
             var d2 = new Drawer { DrawerId = 2, Index = 2, CelarId = 1 };
@@ -51,25 +46,7 @@ namespace Wine_celar.Contexts
 
             var u1 = new User { UserId = 1, FirstName = "G", LastName = "G", Email = "test@test.com", Password = "test" };
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
-            var u3 = new User { UserId = 2, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
-
-            c1.Drawers.Add(d1);
-            c1.Drawers.Add(d2);
-            c1.Drawers.Add(d3);
-            c2.Drawers.Add(d4);
-            c2.Drawers.Add(d5);
-            c2.Drawers.Add(d6);
-
-            d1.Wines.Add(v1);
-            d1.Wines.Add(v2);
-            d2.Wines.Add(v3);
-            d2.Wines.Add(v4);
-            d3.Wines.Add(v5);
-            d3.Wines.Add(v6);
-            d4.Wines.Add(v7);
-            d4.Wines.Add(v8);
-            d5.Wines.Add(v9);
-            d5.Wines.Add(v10);
+            var u3 = new User { UserId = 3, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
 
             modelBuilder.Entity<Celar>().HasData(new List<Celar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });

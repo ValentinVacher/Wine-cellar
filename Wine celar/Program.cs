@@ -16,6 +16,17 @@ builder.Services.AddDbContext<WineContext>(o =>
 
 var app = builder.Build();
 
+//Forcer les migrations en attentes (évite de faire le update-database)
+//using (var serviceScope = app.Services.CreateScope())
+//{
+//    var services = serviceScope.ServiceProvider;
+//    var wikyContext = services.GetRequiredService<WineContext>();
+//    //wikyContext.Database.Migrate();
+
+//    wikyContext.Database.EnsureDeleted();
+//    wikyContext.Database.EnsureCreated();
+//}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
