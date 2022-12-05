@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Wine_celar.Entities
+namespace Wine_cellar.Entities
 {
     public class Celar
     {
