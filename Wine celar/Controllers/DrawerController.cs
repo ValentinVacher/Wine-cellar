@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Wine_cellar.IRepositories;
 
-namespace Wine_cellar.Controllers
+namespace Wine_celar.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class WineController : ControllerBase
+    public class DrawerController : ControllerBase
     {
-        readonly IWineRepository wineRepository;
+        readonly IWineRepository drawerRepository;
         readonly IWebHostEnvironment environment;
-        public WineController(IWineRepository Repository, IWebHostEnvironment environment)
+        public DrawerController(IWineRepository Repository, IWebHostEnvironment environment)
         {
-            this.wineRepository = wineRepository;
+            this.drawerRepository = drawerRepository;
             this.environment = environment;
         }
     }
