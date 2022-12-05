@@ -9,10 +9,12 @@ namespace Wine_celar.Repositories
     public class UserRepository : IUserRepository
     {
         readonly WineContext wineContext;
+        ILogger<UserRepository> logger;
 
-        public UserRepository(WineContext wineContext)
+        public UserRepository(WineContext wineContext, ILogger<UserRepository> logger)
         {
             this.wineContext = wineContext;
+            this.logger = logger;
         }
 
         public async Task<User> CreateUserAsync(User user)
