@@ -73,13 +73,13 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWineAsync(UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWineAsync(Wine wine)
         {
-            var wineUpdate = await wineRepository.CreateWineAsync(wineView);
+            var wineUpdate = await wineRepository.CreateWineAsync(wine);
 
             if(wineUpdate == null)
             {
-                return Problem("Erreur lors de la mise a jour de la bouteille")
+                return Problem("Erreur lors de la mise a jour de la bouteille");
             }
 
             return Ok(wineUpdate);
