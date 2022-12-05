@@ -64,12 +64,25 @@ namespace Wine_cellar.Controllers
 
             var wineCreated = await wineRepository.CreateWineAsync(wine);
 
-            if (wineRepository.CreateWineAsync(wineCreated) ==  null)
+            if (wineCreated ==  null)
             {
                 return Problem("Erreur lors de la création de la bouteille");
             }
 
             return Ok(wineCreated);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateWineAsync(UpdateWineViewModel wineView)
+        {
+            var wineUpdate = await wineRepository.CreateWineAsync(wineView);
+
+            if(wineUpdate == null)
+            {
+                return Problem("Erreur lors de la mise a jour de la bouteille")
+            }
+
+            return Ok(wineUpdate);
         }
     }
 }

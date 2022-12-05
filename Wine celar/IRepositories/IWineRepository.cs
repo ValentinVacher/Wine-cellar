@@ -1,4 +1,5 @@
-﻿using Wine_cellar.Entities;
+﻿using Wine_celar.ViewModel;
+using Wine_cellar.Entities;
 
 namespace Wine_cellar.IRepositories
 {
@@ -10,7 +11,7 @@ namespace Wine_cellar.IRepositories
         //Task<List<Wine>> GetWineByColorAsync(string color);
         Task<List<Wine>> GetWineByWordAsync(string word);
         Task<Wine> CreateWineAsync(Wine wine);
-        Task<Wine> UpdateWineAsync(Wine wine);
+        Task<Wine> UpdateWineAsync(UpdateWineViewModel wine);
         Task<Wine> DeleteWineAsync(int WineId);
     }
 }
