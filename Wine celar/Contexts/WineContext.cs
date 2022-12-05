@@ -22,16 +22,16 @@ namespace Wine_cellar.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var c1 = new Cellar { CelarId = 1, Name = "Celar 1", NbDrawerMax = 5, UserId = 1 };
-            var c2 = new Cellar { CelarId = 2, Name = "Celar 2", NbDrawerMax = 10, UserId = 2 };
-            var c3 = new Cellar { CelarId = 3, Name = "Celar 3", NbDrawerMax = 20, UserId = 3 };
+            var c1 = new Cellar { CellarId = 1, Name = "Celar 1", NbDrawerMax = 5, UserId = 1 };
+            var c2 = new Cellar { CellarId = 2, Name = "Celar 2", NbDrawerMax = 10, UserId = 2 };
+            var c3 = new Cellar { CellarId = 3, Name = "Celar 3", NbDrawerMax = 20, UserId = 3 };
 
-            var d1 = new Drawer { DrawerId = 1, Index = 1, CelarId = 1, NbBottleMax = 5 };
-            var d2 = new Drawer { DrawerId = 2, Index = 2, CelarId = 1, NbBottleMax = 5 };
-            var d3 = new Drawer { DrawerId = 3, Index = 3, CelarId = 1, NbBottleMax = 5 };
-            var d4 = new Drawer { DrawerId = 4, Index = 1, CelarId = 2, NbBottleMax = 5 };
-            var d5 = new Drawer { DrawerId = 5, Index = 2, CelarId = 2, NbBottleMax = 5 };
-            var d6 = new Drawer { DrawerId = 6, Index = 3, CelarId = 2, NbBottleMax = 5 };
+            var d1 = new Drawer { DrawerId = 1, Index = 1, CellarId = 1, NbBottleMax = 5 };
+            var d2 = new Drawer { DrawerId = 2, Index = 2, CellarId = 1, NbBottleMax = 5 };
+            var d3 = new Drawer { DrawerId = 3, Index = 3, CellarId = 1, NbBottleMax = 5 };
+            var d4 = new Drawer { DrawerId = 4, Index = 1, CellarId = 2, NbBottleMax = 5 };
+            var d5 = new Drawer { DrawerId = 5, Index = 2, CellarId = 2, NbBottleMax = 5 };
+            var d6 = new Drawer { DrawerId = 6, Index = 3, CellarId = 2, NbBottleMax = 5 };
 
             var v1 = new Wine { WineId = 1, Color = "Rosé", Appelation = "Appelation1", Name = "20-1", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 1};
             var v2 = new Wine { WineId = 2, Color = "Bleu", Appelation = "Appelation2", Name = "20-2", Year = 1970, Today = DateTime.Now, KeepMin = 2001, KeepMax = 2002, DrawerId = 1 };

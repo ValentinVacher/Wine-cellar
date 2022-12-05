@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wine_cellar.IRepositories;
 
 namespace Wine_cellar.Controllers
 {
@@ -9,7 +10,7 @@ namespace Wine_cellar.Controllers
     {
         readonly IWineRepository postRepository;
         readonly IWebHostEnvironment environment;
-        public PostController(IPostRepository postRepository, IWebHostEnvironment environment)
+        public WineController(IWineRepository Repository, IWebHostEnvironment environment)
         {
             this.postRepository = postRepository;
             this.environment = environment;
