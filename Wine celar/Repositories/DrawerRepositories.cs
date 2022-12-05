@@ -16,11 +16,11 @@ namespace Wine_celar.Repositories
         }
         public async Task<List<Drawer>> GetAllWithWineAsync()
         {
-            return await winecontext.Drawers.Include(d=>d.Wines).ToListAsync();
+            return await winecontext.Drawers.Include(d => d.Wines).ToListAsync();
         }
         public async Task<Drawer> GetDrawerwithWineAsync(int id)
         {
-            return await winecontext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d=>d.DrawerId==id);
+            return await winecontext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == id);
         }
 
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
@@ -40,11 +40,11 @@ namespace Wine_celar.Repositories
             return drawer;
         }
 
-        public Task<Drawer> DeleteDrawerAsync(int id)
+        public async Task<Drawer> DeleteDrawerAsync(int id)
         {
-           var DelDrawer= winecontext.Drawers.FindAsync(id);
+            var DelDrawer = await winecontext.Drawers.FindAsync(id);
             winecontext.Drawers.Remove(DelDrawer);
-            winecontext.SaveChanges();
+            await winecontext.SaveChangesAsync();
             return DelDrawer;
         }
 
