@@ -42,7 +42,7 @@ namespace Wine_celar.Contexts
             var v2 = new Wine { WineId = 2, Color = "Bleu", Appelation = "Appelation2", Name = "20-2", Year = 1970, Today = DateTime.Now, KeepMin = 2001, KeepMax = 2002, DrawerId = 1 };
             var v3 = new Wine { WineId = 3, Color = "Verre", Appelation = "Appelation3", Name = "20-3", Year = 1980, Today = DateTime.Now, KeepMin = 2001, KeepMax = 2002, DrawerId = 2 };
             var v4 = new Wine { WineId = 4, Color = "Rouge", Appelation = "Appelation4", Name = "20-4", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 2 };
-            var v5 = new Wine { WineId = 5, Color = "Joune", Appelation = "Appelation5", Name = "20-5", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 3 };
+            var v5 = new Wine { WineId = 5, Color = "Jaune", Appelation = "Appelation5", Name = "20-5", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 3 };
             var v6 = new Wine { WineId = 6, Color = "Blanc", Appelation = "Appelation6", Name = "20-6", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 3 };
             var v7 = new Wine { WineId = 7, Color = "Rouge", Appelation = "Appelation7", Name = "20-7", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 4 };
             var v8 = new Wine { WineId = 8, Color = "Violet", Appelation = "Appelation8", Name = "20-8", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 4 };
