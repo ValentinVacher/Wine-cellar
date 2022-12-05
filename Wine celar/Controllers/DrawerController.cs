@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wine_celar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 
@@ -28,8 +29,15 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Drawer>> PostDrawer(Drawer drawer)
+        public async Task<ActionResult<Drawer>> PostDrawer(CreateDrawerViewModel createDrawer)
         {
+            Drawer drawer = new()
+            {
+                Index = createDrawer.index,
+                NbBottleMax=createDrawer.NbBottleMax,
+                CellarId=createDrawer.CellarId
+
+            };
             var DrawerCreated = await drawerRepository.AddDrawerAsync(drawer);
             if (DrawerCreated != null)
             {
