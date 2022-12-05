@@ -15,5 +15,9 @@ namespace Wine_cellar.Controllers
             this.cellarRepository = cellarRepository;
             this.environment = environment;
         }
+
+        [HttpGet]
+
+
     }
 }
