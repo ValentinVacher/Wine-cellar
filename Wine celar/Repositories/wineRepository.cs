@@ -26,16 +26,16 @@ namespace Wine_cellar.Repositories
             var winess = new List<Wine>();
             foreach (var wine in wines)
             {
-                if (wine.IsApogee()==true)
+                if (wine.IsApogee() == true)
                 {
-                    winess.Add(wine); 
-                    
+                    winess.Add(wine);
+
                 }
                 //else
                 //yield return null;
             }
-                return winess;
-                 
+            return winess;
+
         }
         public async Task<Wine> GetWineByIdAsync(int wineId)
         {
@@ -57,7 +57,7 @@ namespace Wine_cellar.Repositories
         }
         public async Task<Wine> CreateWineAsync(Wine wine)
         {
-            var Drawer = await wineContext.Drawers.FindAsync(wine.DrawerId);
+            var Drawer = await wineContext.Drawers.Include(d=>d.Wines).FirstOrDefaultAsync(d=>d.DrawerId==wine.DrawerId);
             if (Drawer.IsFull() == true) return null;
             wineContext.Wines.Add(wine);
             await wineContext.SaveChangesAsync();
@@ -108,13 +108,16 @@ namespace Wine_cellar.Repositories
                 KeepMin = WineDuplicate.KeepMin,
                 DrawerId = WineDuplicate.DrawerId
             };
-            
+
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
             for (int i = 1; i <= NbrDuplicate; i++)
             {
-                var Drawer = await wineContext.Drawers.FindAsync(wine.DrawerId);
-                if (Drawer.IsFull() == true) return null;
+                if (Drawer.IsFull() == true)
+                {
+                    return null;
+                }
                 wineContext.Wines.Add(wine);
-            //    await wineContext.SaveChangesAsync();
+                //    await wineContext.SaveChangesAsync();
             }
             await wineContext.SaveChangesAsync();
             return WineDuplicate;
