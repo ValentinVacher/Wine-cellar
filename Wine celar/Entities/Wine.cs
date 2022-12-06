@@ -11,7 +11,7 @@ namespace Wine_cellar.Entities
         public string Appelation { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
-        public DateTime Today { get; set; }
+        public DateTime Today { get; set; }//A supprimer
         public int KeepMin { get; set; }
         public int KeepMax { get; set;}
         public Drawer Drawer { get; set; }
@@ -20,8 +20,8 @@ namespace Wine_cellar.Entities
         public bool IsApogee()
         {
             
-            
-            var result = Today.Year;
+             var ToDay= DateTime.Now;
+            var result = ToDay.Year;
             if (result >= KeepMin && result <= KeepMax)
             {
                 return true;
