@@ -84,8 +84,8 @@ namespace Wine_cellar.Controllers
                 Year = wineView.Year,
                 Today = DateTime.Now,
                 KeepMin = wineView.KeepMin,
-                KeepMax = wineView.KeepMax,
-                DrawerId = wineView.DrawerId
+                KeepMax = wineView.KeepMax
+                //DrawerId = wineView.DrawerId
             };
 
             var wineUpdate = await wineRepository.UpdateWineAsync(wine);
