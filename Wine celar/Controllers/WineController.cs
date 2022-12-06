@@ -113,5 +113,10 @@ namespace Wine_cellar.Controllers
         {
             return Ok( await wineRepository.MoveAsync(WineId, newDrawerId));
         }
+        [HttpPost]
+        public async Task<ActionResult<Wine>> Duplicate(int WineId, int NbrDuplicate)
+        {
+            return Ok(await wineRepository.DuplicateAsync(WineId, NbrDuplicate));
+        }
     }
 }

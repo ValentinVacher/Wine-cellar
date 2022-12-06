@@ -14,5 +14,6 @@ namespace Wine_cellar.IRepositories
         Task<Wine> UpdateWineAsync(Wine wine);
         Task<bool> DeleteWineAsync(int WineId);
         Task<Wine> MoveAsync(int WineId,int newDrawerId);
+        Task<Wine> DuplicateAsync(int WineId,int NbrDuplicate);
     }
 }

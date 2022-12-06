@@ -70,11 +70,36 @@ namespace Wine_cellar.Repositories
 
         public async Task<Wine> MoveAsync(int WineId, int newDrawerId)
         {
-            var WineMove=await GetWineByIdAsync(WineId);
+            var WineMove = await GetWineByIdAsync(WineId);
             if (WineMove == null) return null;
             WineMove.DrawerId = newDrawerId;
             await wineContext.SaveChangesAsync();
             return WineMove;
         }
+        public async Task<Wine> DuplicateAsync(int WineId, int NbrDuplicate)
+        {
+            var WineDuplicate = await GetWineByIdAsync(WineId);
+            var wine = new Wine
+            {
+                Color = WineDuplicate.Color,
+                Appelation = WineDuplicate.Appelation,
+                Name = WineDuplicate.Name,
+                Year = WineDuplicate.Year,
+                Today = DateTime.Now,
+                KeepMax = WineDuplicate.KeepMax,
+                KeepMin = WineDuplicate.KeepMin,
+                DrawerId = WineDuplicate.DrawerId
+            };
+            
+            for (int i = 1; i <= NbrDuplicate; i++)
+            {
+                wineContext.Wines.Add(wine);
+            //    await wineContext.SaveChangesAsync();
+            }
+            await wineContext.SaveChangesAsync();
+            return WineDuplicate;
+
+        }
+
     }
 }
