@@ -10,22 +10,26 @@ namespace Wine_cellar.Repositories
         //Creation du context et du logger
         WineContext winecontext;
         ILogger<DrawerRepository> logger;
+
         //Constructeur
         public DrawerRepository(WineContext winecontext, ILogger<DrawerRepository> logger)
         {
             this.winecontext = winecontext;
             this.logger = logger;
         }
+
         //Permet de recuperer tout les tiroirs avec leur bouteilles
         public async Task<List<Drawer>> GetAllWithWineAsync()
         {
             return await winecontext.Drawers.Include(d => d.Wines).ToListAsync();
         }
+
         //Permet de récuperer un tiroir avec ses bouteilles
         public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index)
         {
             return await winecontext.Drawers.Include(d => d.Wines).Include(d=>d.Cellar).FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName);
         }
+
         //Permet de créer un tiroir si la cave n'est pas pleine
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
         {
@@ -51,6 +55,7 @@ namespace Wine_cellar.Repositories
             }
             return drawer;
         }
+
         //Permet de modifier un tiroir
         public async Task<Drawer> UpdateDrawerAsync(Drawer drawer)
         {
@@ -61,6 +66,7 @@ namespace Wine_cellar.Repositories
             await winecontext.SaveChangesAsync();
             return DrawerUpdate;
         }
+
         //Permet de supprimer un tiroir
         public async Task<bool> DeleteDrawerAsync(int cellarId, int index)
         {

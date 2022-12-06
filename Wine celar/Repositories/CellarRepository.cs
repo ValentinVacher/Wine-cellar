@@ -13,22 +13,26 @@ namespace Wine_cellar.Repositories
         //Creation du context et du logger
         WineContext winecontext;
         ILogger<CellarRepository> Logger;
+
         //Constructeur
         public CellarRepository(WineContext winecontext, ILogger<CellarRepository> Logger)
         {
             this.winecontext = winecontext;
             this.Logger = Logger;
         }
+
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync()
         {
             return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).ToListAsync();
         }
+
         //Permet de recuperer une cave avec tout ses elements
         public async Task<Cellar> GetCellarWithAllAsync(int id)
         {
             return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(c => c.CellarId == id);
         }
+
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
         public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
         {
@@ -43,6 +47,7 @@ namespace Wine_cellar.Repositories
             await winecontext.SaveChangesAsync();
             return cellar;
         }
+
         //Permet de supprimer une cave et ses tiroirs
         public async Task<bool> DeleteCellarAsync(int id)
         {
@@ -60,6 +65,7 @@ namespace Wine_cellar.Repositories
             await winecontext.SaveChangesAsync();
             return true;
         }
+
         //Permet de modifier une cave
         public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
         {
