@@ -12,6 +12,6 @@ namespace Wine_cellar.IRepositories
         Task<List<Wine>> GetWineByWordAsync(string word);
         Task<Wine> CreateWineAsync(Wine wine);
         Task<Wine> UpdateWineAsync(Wine wine);
-        Task<Wine> DeleteWineAsync(int WineId);
+        Task<bool> DeleteWineAsync(int WineId);
     }
 }
