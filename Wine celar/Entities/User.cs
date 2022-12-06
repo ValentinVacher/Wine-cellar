@@ -13,8 +13,11 @@
 
         public bool IsOlder()
         {
-            int Age = DateTime.Now.Year - DateOfBirth.Year;
-            if (Age >= 18)
+            var age = DateTime.Now - DateOfBirth;
+
+            var age2 = age.Days / 365.25;
+
+            if (age2 >= 18)
             {
                 return true;
             }
