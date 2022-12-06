@@ -114,5 +114,10 @@ namespace Wine_cellar.Controllers
             else
                 return Problem($"Erreur lors de la suppression du vin");
         }
+        [HttpPut]
+        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
+        {
+            return Ok( await wineRepository.MoveAsync(WineId, newDrawerId));
+        }
     }
 }

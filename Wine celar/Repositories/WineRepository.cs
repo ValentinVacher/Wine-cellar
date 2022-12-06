@@ -78,5 +78,13 @@ namespace Wine_cellar.Repositories
 
         }
 
+        public async Task<Wine> MoveAsync(int WineId, int newDrawerId)
+        {
+            var WineMove=await GetWineByIdAsync(WineId);
+            if (WineMove == null) return null;
+            WineMove.DrawerId = newDrawerId;
+            await wineContext.SaveChangesAsync();
+            return WineMove;
+        }
     }
 }
