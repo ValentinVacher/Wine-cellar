@@ -11,17 +11,20 @@ namespace Wine_cellar.Repositories
         //Declaration du context et du logger
         readonly WineContext wineContext;
         ILogger<WineRepository> logger;
+
         //Constructeur
         public WineRepository(WineContext wineContext, ILogger<WineRepository> logger)
         {
             this.wineContext = wineContext;
             this.logger = logger;
         }
+
         //Permet de recuperer tout les vins dans une liste
         public async Task<List<Wine>> GetAllWinesAsync()
         {
             return await wineContext.Wines.ToListAsync();
         }
+
         //Permet de recuperer tout les vins à leur apogée dans une liste
         public async Task<List<Wine>> GetApogeeAsync()
         {
@@ -48,6 +51,7 @@ namespace Wine_cellar.Repositories
         {
             return await wineContext.Wines.Where(w => w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)).ToListAsync();
         }
+
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
         public async Task<Wine> CreateWineAsync(Wine wine)
         {
