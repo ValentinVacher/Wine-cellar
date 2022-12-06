@@ -9,7 +9,7 @@ namespace Wine_cellar.IRepositories
         //Permet de recuperer toute les caves
         Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity);
         //Permet ded recuperer toutes les caves avec tout ses elements
-        Task<List<Cellar>> GetCellarWithAllAsync(string name, ClaimsIdentity identity);
+        Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity);
         //Permet de supprimer une cave
         Task<bool> DeleteCellarAsync(int id);
         //Permet de mettre a jour/modifier une cave

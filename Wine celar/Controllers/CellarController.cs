@@ -35,7 +35,7 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            var cellar = await cellarRepository.GetCellarWithAllAsync(name, identity);
+            var cellar = await cellarRepository.GetCellarByName(name, identity);
             if (cellar == null)
                 return NotFound($"Cave {name} non trouver");
             return Ok(cellar);       

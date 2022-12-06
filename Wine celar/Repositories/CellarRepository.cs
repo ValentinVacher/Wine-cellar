@@ -29,7 +29,7 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer une cave avec tout ses elements
-        public async Task<List<Cellar>> GetCellarWithAllAsync(string name, ClaimsIdentity identity)
+        public async Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity)
         {
             return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).
                 Where(c => c.Name.Contains(name) && c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
