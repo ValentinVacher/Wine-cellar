@@ -99,23 +99,23 @@ namespace Wine_cellar.Repositories
             var WineDuplicate = await GetWineByIdAsync(WineId);
 
             var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == WineDuplicate.DrawerId);
+            if (Drawer.IsFull() == true)
+            {
+                return null;
+            }
             for (int i = 1; i <= NbrDuplicate; i++)
             {
-            var wine = new Wine
-            {
-                Color = WineDuplicate.Color,
-                Appelation = WineDuplicate.Appelation,
-                Name = WineDuplicate.Name,
-                Year = WineDuplicate.Year,
-                Today = DateTime.Now,
-                KeepMax = WineDuplicate.KeepMax,
-                KeepMin = WineDuplicate.KeepMin,
-                DrawerId = WineDuplicate.DrawerId
-            };
-                //if (Drawer.IsFull() == true)
-                //{
-                //    return null;
-                //}
+                var wine = new Wine
+                {
+                    Color = WineDuplicate.Color,
+                    Appelation = WineDuplicate.Appelation,
+                    Name = WineDuplicate.Name,
+                    Year = WineDuplicate.Year,
+                    Today = DateTime.Now,
+                    KeepMax = WineDuplicate.KeepMax,
+                    KeepMin = WineDuplicate.KeepMin,
+                    DrawerId = WineDuplicate.DrawerId
+                };
                 wineContext.Wines.Add(wine);
                 //await wineContext.SaveChangesAsync();
             }
