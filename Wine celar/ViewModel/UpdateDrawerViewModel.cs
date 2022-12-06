@@ -1,4 +1,4 @@
-﻿namespace Wine_celar.ViewModel
+﻿namespace Wine_cellar.ViewModel
 {
     public class UpdateDrawerViewModel
     {

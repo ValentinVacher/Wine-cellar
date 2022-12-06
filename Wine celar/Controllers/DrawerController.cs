@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_cellar.Repositories;
 
 namespace Wine_cellar.Controllers
 {
@@ -59,10 +60,16 @@ namespace Wine_cellar.Controllers
             };
             return Ok(await drawerRepository.UpdateDrawerAsync(drawer));
         }
+
         [HttpDelete]
         public async Task<ActionResult<Drawer>> DeleteDrawer(int cellarId, int index)
         {
-            return Ok(await drawerRepository.DeleteDrawerAsync(cellarId, index));
+            bool success = await drawerRepository.DeleteDrawerAsync(cellarId, index);
+
+            if (success)
+                return Ok($"Le tiroir {index} de la cave {cellarId} a été supprimé");
+            else
+                return Problem($"Erreur lors de la suppression du tiroir");
         }
 
     }
