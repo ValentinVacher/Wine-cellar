@@ -36,6 +36,12 @@ namespace Wine_cellar.Controllers
             return Ok(wine);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetApogeeAsync(Wine wine)
+        {
+            return Ok(await wineRepository.GetApogeeAsync(wine));
+        }
+
         [HttpGet("{word}")]
         public async Task<IActionResult> GetWineByWord(string word)
         {
@@ -107,6 +113,11 @@ namespace Wine_cellar.Controllers
                 return Ok($"Le vin {id} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du vin");
+        }
+        [HttpPut]
+        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
+        {
+            return Ok( await wineRepository.MoveAsync(WineId, newDrawerId));
         }
     }
 }

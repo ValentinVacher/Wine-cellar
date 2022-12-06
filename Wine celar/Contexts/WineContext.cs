@@ -43,6 +43,9 @@ namespace Wine_cellar.Contexts
             var v8 = new Wine { WineId = 8, Color = "Violet", Appelation = "Appelation8", Name = "20-8", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 4 };
             var v9 = new Wine { WineId = 9, Color = "Orange", Appelation = "Appelation9", Name = "20-9", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 5 };
             var v10 = new Wine { WineId = 10, Color = "Violet", Appelation = "Appelation10", Name = "20-10", Year = 1960, Today = DateTime.Now, KeepMin = 2000, KeepMax = 2002, DrawerId = 5 };
+            var v11 = new Wine { WineId = 11, Color = "Violet", Appelation = "Appelation11", Name = "20-11", Year = 1960, Today = DateTime.Now, KeepMin = 2020, KeepMax = 2024, DrawerId = 5 };
+            var v12 = new Wine { WineId = 12, Color = "Violet", Appelation = "Appelation12", Name = "20-12", Year = 1960, Today = DateTime.Now, KeepMin = 2021, KeepMax = 2025, DrawerId = 5 };
+
 
             var u1 = new User { UserId = 1, FirstName = "G", LastName = "G", Email = "test@test.com", Password = "test" };
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };

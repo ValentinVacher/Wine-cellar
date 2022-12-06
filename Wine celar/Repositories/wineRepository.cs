@@ -20,6 +20,16 @@ namespace Wine_cellar.Repositories
         {
             return await wineContext.Wines.ToListAsync();
         }
+        public async Task<List<Wine>> GetApogeeAsync(Wine wine)
+        {
+
+            if (!wine.IsApogee())
+                return null;
+            else
+            {
+                return await wineContext.Wines.ToListAsync();
+            }
+        }
         public async Task<Wine> GetWineByIdAsync(int wineId)
         {
             return await wineContext.Wines.FirstOrDefaultAsync(p => p.WineId == wineId);
@@ -68,5 +78,13 @@ namespace Wine_cellar.Repositories
 
         }
 
+        public async Task<Wine> MoveAsync(int WineId, int newDrawerId)
+        {
+            var WineMove=await GetWineByIdAsync(WineId);
+            if (WineMove == null) return null;
+            WineMove.DrawerId = newDrawerId;
+            await wineContext.SaveChangesAsync();
+            return WineMove;
+        }
     }
 }

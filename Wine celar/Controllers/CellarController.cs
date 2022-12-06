@@ -4,6 +4,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
@@ -48,8 +49,15 @@ namespace Wine_cellar.Controllers
                 return Problem("Cave non créer");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCellar(Cellar cellar)
+        public async Task<IActionResult> UpdateCellar(UpdateCellarViewModel UpCellar, int id)
         {
+            var cellar = new Cellar()
+            {
+                CellarId = id,
+                Name = UpCellar.Name,
+                UserId= UpCellar.UserId
+                
+            };
             return Ok(await cellarRepository.UpdateCellarAsync(cellar));
 
         }
