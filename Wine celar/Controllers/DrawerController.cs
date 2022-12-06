@@ -49,14 +49,20 @@ namespace Wine_cellar.Controllers
             }
         }
         [HttpPut]
-        public async Task<ActionResult<Drawer>> UpdateDrawer(Drawer drawer)
+        public async Task<ActionResult<Drawer>> UpdateDrawer(UpdateDrawerViewModel updatedrawer)
         {
+            var drawer= new Drawer 
+            {
+                DrawerId= updatedrawer.DrawerId,
+                Index=updatedrawer.Index,
+                NbBottleMax=updatedrawer.NbBottleMax 
+            };
             return Ok(await drawerRepository.UpdateDrawerAsync(drawer));
         }
         [HttpDelete]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName, int index)
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int cellarId, int index)
         {
-            return Ok(await drawerRepository.DeleteDrawerAsync(cellarName, index));
+            return Ok(await drawerRepository.DeleteDrawerAsync(cellarId, index));
         }
 
     }
