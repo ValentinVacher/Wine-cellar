@@ -15,5 +15,6 @@ namespace Wine_cellar.IRepositories
         Task<bool> DeleteWineAsync(int WineId);
         Task<Wine> MoveAsync(int WineId,int newDrawerId);
         Task<List<Wine>> GetApogeeAsync();
+        Task<Wine> DuplicateAsync(int WineId,int NbrDuplicate);
     }
 }
