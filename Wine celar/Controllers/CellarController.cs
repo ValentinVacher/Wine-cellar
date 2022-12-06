@@ -22,14 +22,19 @@ namespace Wine_cellar.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAlls()
         {
-            return Ok(await cellarRepository.GetAllsAsync());
+            var identity = User?.Identity as ClaimsIdentity;
+
+            return Ok(await cellarRepository.GetAllsAsync(identity));
         }
         [HttpGet]
-        public async Task<IActionResult> GetCellarWithAll(int id)
+        public async Task<IActionResult> GetCellarByName(string name)
         {
-            var cellar = await cellarRepository.GetCellarWithAllAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            var cellar = await cellarRepository.GetCellarByName(name, identity);
             if (cellar == null)
-                return NotFound($"Cave {id} non trouver");
+                return NotFound($"Cave {name} non trouver");
             return Ok(cellar);       
         }
         [HttpPost]

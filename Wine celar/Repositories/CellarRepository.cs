@@ -22,15 +22,17 @@ namespace Wine_cellar.Repositories
         }
 
         //Recupere une liste de toute les caves
-        public async Task<List<Cellar>> GetAllsAsync()
+        public async Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).ToListAsync();
+            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).
+                Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
         //Permet de recuperer une cave avec tout ses elements
-        public async Task<Cellar> GetCellarWithAllAsync(int id)
+        public async Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(c => c.CellarId == id);
+            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).
+                Where(c => c.Name.Contains(name) && c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
@@ -52,7 +54,7 @@ namespace Wine_cellar.Repositories
         public async Task<bool> DeleteCellarAsync(int id)
         {
             //Defini la cave a supprimer 
-            var DelCellar = await GetCellarWithAllAsync(id);
+            var DelCellar = await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(e => e.CellarId == id);
             if (DelCellar == null) return false;
             //Supprime les tiroirs
             foreach(var drawer in DelCellar.Drawers)
