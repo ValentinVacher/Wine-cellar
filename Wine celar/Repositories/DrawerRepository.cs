@@ -25,9 +25,13 @@ namespace Wine_cellar.Repositories
 
         public async Task<Drawer> AddDrawerAsync(Drawer drawer)
         {
+            var Cellar = await winecontext.Cellars.Include(d => d.Drawers).FirstOrDefaultAsync(d => d.CellarId == drawer.CellarId);
             try
             {
-                
+                if (Cellar.IsFull() )
+                {
+                    return drawer;
+                }
                 winecontext.Drawers.AddAsync(drawer);
                 await winecontext.SaveChangesAsync();
             }
