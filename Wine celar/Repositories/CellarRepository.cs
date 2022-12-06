@@ -51,7 +51,7 @@ namespace Wine_cellar.Repositories
         public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
         {
             var CellarUpdate = await winecontext.Cellars.FindAsync(cellar.CellarId);
-            if (CellarUpdate != null) return null;
+            if (CellarUpdate == null) return null;
             CellarUpdate.Name = cellar.Name;
             await winecontext.SaveChangesAsync();
             return CellarUpdate;
