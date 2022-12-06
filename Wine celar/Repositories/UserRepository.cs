@@ -17,6 +17,11 @@ namespace Wine_celar.Repositories
             this.logger = logger;
         }
 
+        public async Task<List<User>> GetAllUserAsync()
+        {
+            return await wineContext.Users.Include(c => c.Cellars).ToListAsync();
+        }
+
         public async Task<User> CreateUserAsync(User user)
         {
             wineContext.Users.Add(user);
@@ -24,18 +29,31 @@ namespace Wine_celar.Repositories
             return user;
         }
 
-        public async Task<User> DeleteUserAsync(int Userid)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            var UserDelete = await wineContext.Users.FindAsync(Userid);
-            if (UserDelete != null)
+            var UserUpdate = await wineContext.Users.FindAsync(user.UserId);
+            if (UserUpdate == null)
                 return null;
+            UserUpdate.Email = user.Email;
+            UserUpdate.FirstName = user.FirstName;
+            UserUpdate.LastName = user.LastName;
+
+            await wineContext.SaveChangesAsync();
+            return UserUpdate;
+        }
+
+        public async Task<bool> DeleteUserAsync(int UserId)
+        {
+            var UserDelete = await wineContext.Users.Include(c => c.Cellars).FirstOrDefaultAsync(c => c.UserId == UserId);
+            if (UserDelete == null)
+                return false;
             foreach (var Cellar in UserDelete.Cellars)
             {
                 wineContext.Cellars.Remove(Cellar);
             }
             wineContext.Users.Remove(UserDelete);
             await wineContext.SaveChangesAsync();
-            return UserDelete;
+            return true;
         }
 
         public async Task<User> LoginUser(string login, string pwd)
@@ -52,18 +70,6 @@ namespace Wine_celar.Repositories
                 return userConnected;
             }
             return userConnected;
-        }
-        public async Task<User> UpdateUserAsync(User user)
-        {
-            var UserUpdate = await wineContext.Users.FindAsync(user.UserId);
-            if (UserUpdate == null)
-                return null;
-            UserUpdate.Email = user.Email;
-            UserUpdate.FirstName = user.FirstName; 
-            UserUpdate.LastName = user.LastName;
-
-            await wineContext.SaveChangesAsync();
-            return UserUpdate;
         }
     }
 }
