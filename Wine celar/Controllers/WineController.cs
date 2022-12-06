@@ -36,6 +36,12 @@ namespace Wine_cellar.Controllers
             return Ok(wine);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetApogeeAsync(Wine wine)
+        {
+            return Ok(await wineRepository.GetApogeeAsync(wine));
+        }
+
         [HttpGet("{word}")]
         public async Task<IActionResult> GetWineByWordAsync(string word)
         {
