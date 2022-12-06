@@ -80,10 +80,15 @@ namespace Wine_cellar.Controllers
                 WineId = wineView.WineId,
                 Color = wineView.Color,
                 Appelation = wineView.Appelation,
-                Name = wineView.Name
+                Name = wineView.Name,
+                Year = wineView.Year,
+                Today = DateTime.Now,
+                KeepMin = wineView.KeepMin,
+                KeepMax = wineView.KeepMax,
+                DrawerId = wineView.DrawerId
             };
 
-            var wineUpdate = await wineRepository.CreateWineAsync(wine);
+            var wineUpdate = await wineRepository.UpdateWineAsync(wine);
 
             if(wineUpdate == null)
             {
@@ -91,6 +96,17 @@ namespace Wine_cellar.Controllers
             }
 
             return Ok(wineUpdate);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWineAsync(int id)
+        {
+            bool success = await wineRepository.DeleteWineAsync(id);
+
+            if (success)
+                return Ok($"Le vin {id} supprimé");
+            else
+                return Problem($"Erreur lors de la suppression du vin");
         }
     }
 }
