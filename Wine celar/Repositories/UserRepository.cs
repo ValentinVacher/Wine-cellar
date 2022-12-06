@@ -19,7 +19,7 @@ namespace Wine_celar.Repositories
 
         public async Task<List<User>> GetAllUserAsync()
         {
-            return await wineContext.Users.Include(c => c.Cellars).ToListAsync();
+            return await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).ToListAsync(); ;
         }
 
         public async Task<User> CreateUserAsync(User user)
@@ -44,11 +44,12 @@ namespace Wine_celar.Repositories
 
         public async Task<bool> DeleteUserAsync(int UserId)
         {
-            var UserDelete = await wineContext.Users.Include(c => c.Cellars).FirstOrDefaultAsync(c => c.UserId == UserId);
+            var UserDelete = await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).FirstOrDefaultAsync(c => c.UserId == UserId);
             if (UserDelete == null)
                 return false;
             foreach (var Cellar in UserDelete.Cellars)
             {
+                Cellar.DeleteDrawer(wineContext);
                 wineContext.Cellars.Remove(Cellar);
             }
             wineContext.Users.Remove(UserDelete);

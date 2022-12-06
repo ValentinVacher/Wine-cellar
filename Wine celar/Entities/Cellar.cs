@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Wine_cellar.Contexts;
 
 namespace Wine_cellar.Entities
 {
@@ -15,6 +16,15 @@ namespace Wine_cellar.Entities
         {
             if (Drawers.Count == NbDrawerMax) return true;
             return false;
+        }
+
+        public void DeleteDrawer(WineContext wineContext)
+        {
+            foreach(var drawer in Drawers)
+            {
+                drawer.DeleteWines(wineContext);
+                wineContext.Drawers.Remove(drawer);
+            }
         }
     }
 }

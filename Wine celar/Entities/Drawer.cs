@@ -1,4 +1,6 @@
-﻿namespace Wine_cellar.Entities
+﻿using Wine_cellar.Contexts;
+
+namespace Wine_cellar.Entities
 {
     public class Drawer
     {
@@ -18,6 +20,14 @@
             else
             {
                 return false; 
+            }
+        }
+
+        public void DeleteWines(WineContext wineContext)
+        {
+            foreach(var wine in Wines)
+            {
+                wineContext.Wines.Remove(wine);
             }
         }
     }

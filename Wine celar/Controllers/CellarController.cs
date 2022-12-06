@@ -4,7 +4,8 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
+using Wine_celar.Repositories;
 
 namespace Wine_cellar.Controllers
 {
@@ -36,7 +37,7 @@ namespace Wine_cellar.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int Nbr)
         {
-            Cellar cellar = new Cellar()
+            Cellar cellar = new()
             {
                 Name = cellarViewModel.Name,
                 NbDrawerMax = cellarViewModel.NbDrawerMax,
@@ -64,7 +65,12 @@ namespace Wine_cellar.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCellar(int id)
         {
-            return Ok(await cellarRepository.DeleteCellarAsync(id));
+            bool success = await cellarRepository.DeleteCellarAsync(id);
+
+            if (success)
+                return Ok($"La cave {id} a été supprimé");
+            else
+                return Problem($"Erreur lors de la suppression de la cave");
         }
 
 

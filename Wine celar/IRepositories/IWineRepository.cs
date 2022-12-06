@@ -1,4 +1,4 @@
-﻿using Wine_celar.ViewModel;
+﻿using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 
 namespace Wine_cellar.IRepositories

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 
@@ -104,6 +104,12 @@ namespace Wine_cellar.Controllers
             return Ok(wineUpdate);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
+        {
+            return Ok(await wineRepository.MoveAsync(WineId, newDrawerId));
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWine(int id)
         {
@@ -113,11 +119,6 @@ namespace Wine_cellar.Controllers
                 return Ok($"Le vin {id} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du vin");
-        }
-        [HttpPut]
-        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
-        {
-            return Ok( await wineRepository.MoveAsync(WineId, newDrawerId));
         }
     }
 }

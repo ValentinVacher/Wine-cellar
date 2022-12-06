@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
@@ -70,7 +70,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserA(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             bool success = await UserRepository.DeleteUserAsync(id);
 

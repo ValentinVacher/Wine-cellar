@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
@@ -38,12 +38,18 @@ namespace Wine_cellar.Repositories
 
         }
 
-        public async Task<Cellar> DeleteCellarAsync(int id)
+        public async Task<bool> DeleteCellarAsync(int id)
         {
-            var DelCellar = await winecontext.Cellars.FindAsync(id);
+            var DelCellar = await GetCellarWithAllAsync(id);
+            if (DelCellar == null) return false;
+            foreach(var drawer in DelCellar.Drawers)
+            {
+                drawer.DeleteWines(winecontext);
+                winecontext.Drawers.Remove(drawer);
+            }
             winecontext.Cellars.Remove(DelCellar);
             await winecontext.SaveChangesAsync();
-            return DelCellar;
+            return true;
         }
 
 
