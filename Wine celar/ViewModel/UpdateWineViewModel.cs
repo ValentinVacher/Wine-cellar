@@ -9,6 +9,5 @@
         public int Year { get; set; }
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
-        public int DrawerId { get; set; }
     }
 }
