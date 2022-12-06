@@ -51,9 +51,12 @@ namespace Wine_cellar.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCellar(UpdateCellarViewModel UpCellar, int id)
         {
-            Cellar cellar = new()
+            var cellar = new Cellar()
             {
-                Name = UpCellar.Name
+                CellarId = id,
+                Name = UpCellar.Name,
+                UserId= UpCellar.UserId
+                
             };
             return Ok(await cellarRepository.UpdateCellarAsync(cellar));
 
