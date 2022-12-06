@@ -57,7 +57,7 @@ namespace Wine_cellar.Repositories
         }
         public async Task<Wine> CreateWineAsync(Wine wine)
         {
-            var Drawer = await wineContext.Drawers.Include(d=>d.Wines).FirstOrDefaultAsync(d=>d.DrawerId==wine.DrawerId);
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
             if (Drawer.IsFull() == true) return null;
             wineContext.Wines.Add(wine);
             await wineContext.SaveChangesAsync();
@@ -97,6 +97,10 @@ namespace Wine_cellar.Repositories
         public async Task<Wine> DuplicateAsync(int WineId, int NbrDuplicate)
         {
             var WineDuplicate = await GetWineByIdAsync(WineId);
+
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == WineDuplicate.DrawerId);
+            for (int i = 1; i <= NbrDuplicate; i++)
+            {
             var wine = new Wine
             {
                 Color = WineDuplicate.Color,
@@ -108,16 +112,12 @@ namespace Wine_cellar.Repositories
                 KeepMin = WineDuplicate.KeepMin,
                 DrawerId = WineDuplicate.DrawerId
             };
-
-            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
-            for (int i = 1; i <= NbrDuplicate; i++)
-            {
-                if (Drawer.IsFull() == true)
-                {
-                    return null;
-                }
+                //if (Drawer.IsFull() == true)
+                //{
+                //    return null;
+                //}
                 wineContext.Wines.Add(wine);
-                //    await wineContext.SaveChangesAsync();
+                //await wineContext.SaveChangesAsync();
             }
             await wineContext.SaveChangesAsync();
             return WineDuplicate;
