@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Wine_cellar.Controllers
 {
@@ -65,6 +66,11 @@ namespace Wine_cellar.Controllers
                 Email= userView.Email,
                 Password= userView.Password
             };
+
+            if(!user.IsOlder())
+            {
+                return Problem("L'alcool est interdit au moins de 18 ans");
+            }
 
             var userCreated = await UserRepository.CreateUserAsync(user);
 
