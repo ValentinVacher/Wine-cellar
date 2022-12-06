@@ -6,6 +6,7 @@ using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
 using Wine_cellar.ViewModel;
 using Wine_celar.Repositories;
+using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
 {
@@ -37,11 +38,17 @@ namespace Wine_cellar.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int Nbr)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null)
+                return Problem("Vous devez être connecter pour ajouter une cave");
+
             Cellar cellar = new()
             {
                 Name = cellarViewModel.Name,
                 NbDrawerMax = cellarViewModel.NbDrawerMax,
-                UserId = cellarViewModel.UserId
+                UserId = int.Parse(idCurrentUser.Value)
             };
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
             if (cellarViewModel != null)

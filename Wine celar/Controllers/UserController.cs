@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using System.Text.RegularExpressions;
 
 namespace Wine_cellar.Controllers
 {
@@ -55,9 +56,23 @@ namespace Wine_cellar.Controllers
             return Ok($"{userConnected.LastName} logged");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+
+            return Ok("Logout");
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserViewModel userView)
         {
+            Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
+            if(!regexPsw.Match(userView.Password).Success) return Problem("Mot de passe incorrect");
+
+            Regex regexMail = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            if (!regexMail.Match(userView.Email).Success) return Problem("Email invalide");
+
             User user = new()
             {
                 FirstName= userView.FirstName,
