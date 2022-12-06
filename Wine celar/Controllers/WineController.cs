@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
