@@ -40,9 +40,9 @@ namespace Wine_cellar.Repositories
             return drawer;
         }
 
-        public async Task<Drawer> DeleteDrawerAsync(string cellarName,int index)
+        public async Task<Drawer> DeleteDrawerAsync(int cellarId,int index)
         {
-            var DelDrawer = await winecontext.Drawers.FirstOrDefaultAsync(d=>d.Index==index && d.Cellar.Name==cellarName);
+            var DelDrawer = await winecontext.Drawers.FirstOrDefaultAsync(d=>d.Index==index && d.CellarId==cellarId);
             winecontext.Drawers.Remove(DelDrawer);
             await winecontext.SaveChangesAsync();
             return DelDrawer;
@@ -53,7 +53,7 @@ namespace Wine_cellar.Repositories
         public async Task<Drawer> UpdateDrawerAsync(Drawer drawer)
         {
             var DrawerUpdate = await winecontext.Drawers.FindAsync(drawer.DrawerId);
-            if (DrawerUpdate != null) return null;
+            if (DrawerUpdate == null) return null;
             DrawerUpdate.NbBottleMax = drawer.NbBottleMax;
             DrawerUpdate.Index = drawer.Index;
             await winecontext.SaveChangesAsync();

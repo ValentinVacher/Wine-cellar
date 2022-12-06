@@ -8,6 +8,6 @@ namespace Wine_cellar.IRepositories
         Task<Drawer> GetDrawerwithWineAsync(string cellarName,int index);
         Task<Drawer> AddDrawerAsync(Drawer drawer);
         Task<Drawer> UpdateDrawerAsync(Drawer drawer);
-        Task<Drawer> DeleteDrawerAsync(string cellarName,int index);
+        Task<Drawer> DeleteDrawerAsync(int cellarId,int index);
     }
 }
