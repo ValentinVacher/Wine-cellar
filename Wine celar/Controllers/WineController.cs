@@ -38,7 +38,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetApogeeAsync()
+        public async Task<IActionResult> GetApogee()
         {
             return Ok(await wineRepository.GetApogeeAsync());
         }
