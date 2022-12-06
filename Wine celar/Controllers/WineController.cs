@@ -5,6 +5,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.ViewModel;
+using Wine_cellar.Contexts;
 
 namespace Wine_cellar.Controllers
 {
@@ -68,7 +69,7 @@ namespace Wine_cellar.Controllers
                 KeepMin = wineView.KeepMin,
                 DrawerId = wineView.DrawerId
             };
-
+           
             var wineCreated = await wineRepository.CreateWineAsync(wine);
 
             if (wineCreated ==  null)
