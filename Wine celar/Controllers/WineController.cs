@@ -104,7 +104,7 @@ namespace Wine_cellar.Controllers
             bool success = await wineRepository.DeleteWineAsync(id);
 
             if (success)
-                return Ok($"Le vin {id} supprimé");
+                return Ok($"Le vin {id} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du vin");
         }
