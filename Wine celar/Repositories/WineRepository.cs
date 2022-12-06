@@ -28,7 +28,7 @@ namespace Wine_cellar.Repositories
             {
                 if (wine.IsApogee()==true)
                 {
-                    winess.Add(wine);      
+                    winess.Add(wine); 
                     
                 }
                 //else
