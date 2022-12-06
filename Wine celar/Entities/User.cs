@@ -24,13 +24,5 @@
             else
                 return false;
         }
-
-        public void DeleteCelars()
-        {
-            foreach(var cellar in Cellars)
-            {
-
-            }
-        }
     }
 }
