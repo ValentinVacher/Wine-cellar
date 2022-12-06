@@ -19,7 +19,10 @@ namespace Wine_cellar.Entities
 
         public bool IsApogee()
         {
-            if (Today.Year >= KeepMin && Today.Year <= KeepMax)
+            
+            
+            var result = Today.Year;
+            if (result >= KeepMin && result <= KeepMax)
             {
                 return true;
             }
