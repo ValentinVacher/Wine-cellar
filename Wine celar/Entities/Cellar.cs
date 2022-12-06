@@ -14,7 +14,7 @@ namespace Wine_cellar.Entities
 
         public bool IsFull()
         {
-            if (Drawers.Count() >= NbDrawerMax) return true;
+            if (Drawers.Count() > NbDrawerMax) return true;
             return false;
         }
 
