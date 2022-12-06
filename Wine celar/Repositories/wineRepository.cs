@@ -57,7 +57,8 @@ namespace Wine_cellar.Repositories
         }
         public async Task<Wine> CreateWineAsync(Wine wine)
         {
-
+            var Drawer = await wineContext.Drawers.FindAsync(wine.DrawerId);
+            if (Drawer.IsFull() == true) return null;
             wineContext.Wines.Add(wine);
             await wineContext.SaveChangesAsync();
             return wine;
@@ -110,6 +111,8 @@ namespace Wine_cellar.Repositories
             
             for (int i = 1; i <= NbrDuplicate; i++)
             {
+                var Drawer = await wineContext.Drawers.FindAsync(wine.DrawerId);
+                if (Drawer.IsFull() == true) return null;
                 wineContext.Wines.Add(wine);
             //    await wineContext.SaveChangesAsync();
             }
