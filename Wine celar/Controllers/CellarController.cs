@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
-using Wine_cellar.Repositories;
-using Wine_cellar.ViewModel;
-using Wine_celar.Repositories;
 using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
