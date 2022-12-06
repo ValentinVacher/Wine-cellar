@@ -20,15 +20,22 @@ namespace Wine_cellar.Repositories
         {
             return await wineContext.Wines.ToListAsync();
         }
-        public async Task<List<Wine>> GetApogeeAsync(Wine wine)
+        public async Task<List<Wine>> GetApogeeAsync()
         {
-
-            if (!wine.IsApogee())
-                return null;
-            else
+            var wines = await GetAllWinesAsync();
+            var winess = new List<Wine>();
+            foreach (var wine in wines)
             {
-                return await wineContext.Wines.ToListAsync();
+                if (wine.IsApogee()==true)
+                {
+                    winess.Add(wine);      
+                    
+                }
+                //else
+                //yield return null;
             }
+                return winess;
+                 
         }
         public async Task<Wine> GetWineByIdAsync(int wineId)
         {
