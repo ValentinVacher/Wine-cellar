@@ -4,6 +4,10 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.ComponentModel;
+using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
 {
@@ -23,6 +27,31 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> GetAllUserAsync()
         {
             return Ok(await UserRepository.GetAllUserAsync());
+        }
+
+        [HttpGet("{login}/{pwd}")]
+        public async Task<IActionResult> LoginAsync(string login, string pwd)
+        {
+            var userConnected = await UserRepository.LoginUser(login, pwd);
+
+            if (userConnected == null)
+                return Problem($"Erreur lors du login, vérifiez le login ou mot de passe");
+
+            Claim emailClaim = new(ClaimTypes.Email, userConnected.Email);
+            Claim nameClaim = new(ClaimTypes.Name, userConnected.LastName);
+            Claim gvClaim = new(ClaimTypes.GivenName, userConnected.FirstName);
+            Claim idClaim = new(ClaimTypes.NameIdentifier, userConnected.UserId.ToString());
+
+            ClaimsIdentity identity = new(new List<Claim> {
+                emailClaim,
+                nameClaim,
+                gvClaim,
+                idClaim
+            }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+            return Ok($"{userConnected.LastName} logged");
         }
 
         [HttpPost]

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Wine_celar.Repositories;
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IWineRepository, WineRepository>();
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 var app = builder.Build();
 

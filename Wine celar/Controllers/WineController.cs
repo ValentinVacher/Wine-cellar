@@ -79,6 +79,12 @@ namespace Wine_cellar.Controllers
             return Ok(wineCreated);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Wine>> Duplicate(int WineId, int NbrDuplicate)
+        {
+            return Ok(await wineRepository.DuplicateAsync(WineId, NbrDuplicate));
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateWine(UpdateWineViewModel wineView)
         {
@@ -120,12 +126,6 @@ namespace Wine_cellar.Controllers
                 return Ok($"Le vin {id} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du vin");
-        }
-        
-        [HttpPost]
-        public async Task<ActionResult<Wine>> Duplicate(int WineId, int NbrDuplicate)
-        {
-            return Ok(await wineRepository.DuplicateAsync(WineId, NbrDuplicate));
         }
     }
 }
