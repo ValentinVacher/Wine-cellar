@@ -57,19 +57,12 @@ namespace Wine_celar.Repositories
             return true;
         }
 
-        public async Task<User> LoginUser(string login, string pwd)
+        public async Task<User?> LoginUser(string login, string pwd)
         {
-            var userConnected = await wineContext.Users
-                .FirstOrDefaultAsync(u =>
-                u.Email == login && u.Password == pwd);
+            var userConnected = await wineContext.Users.FirstOrDefaultAsync(u =>
+               u.Email == login && u.Password == pwd
+            );
 
-            if (userConnected == null)
-                return null;
-            if (userConnected.IsOlder())
-            {
-                await wineContext.SaveChangesAsync();
-                return userConnected;
-            }
             return userConnected;
         }
     }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
@@ -120,11 +120,6 @@ namespace Wine_cellar.Controllers
                 return Ok($"Le vin {id} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du vin");
-        }
-        [HttpPut]
-        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
-        {
-            return Ok( await wineRepository.MoveAsync(WineId, newDrawerId));
         }
         [HttpPost]
         public async Task<ActionResult<Wine>> Duplicate(int WineId, int NbrDuplicate)
