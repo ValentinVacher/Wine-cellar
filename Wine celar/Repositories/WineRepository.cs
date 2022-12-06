@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
@@ -19,6 +19,23 @@ namespace Wine_cellar.Repositories
         public async Task<List<Wine>> GetAllWinesAsync()
         {
             return await wineContext.Wines.ToListAsync();
+        }
+        public async Task<List<Wine>> GetApogeeAsync()
+        {
+            var wines = await GetAllWinesAsync();
+            var winess = new List<Wine>();
+            foreach (var wine in wines)
+            {
+                if (wine.IsApogee()==true)
+                {
+                    winess.Add(wine);      
+                    
+                }
+                //else
+                //yield return null;
+            }
+                return winess;
+                 
         }
         public async Task<Wine> GetWineByIdAsync(int wineId)
         {

@@ -1,4 +1,4 @@
-﻿using Wine_celar.ViewModel;
+﻿using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 
 namespace Wine_cellar.IRepositories
@@ -14,6 +14,7 @@ namespace Wine_cellar.IRepositories
         Task<Wine> UpdateWineAsync(Wine wine);
         Task<bool> DeleteWineAsync(int WineId);
         Task<Wine> MoveAsync(int WineId,int newDrawerId);
+        Task<List<Wine>> GetApogeeAsync();
         Task<Wine> DuplicateAsync(int WineId,int NbrDuplicate);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Wine_celar.ViewModel;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
@@ -20,13 +21,13 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllWinesAsync()
+        public async Task<IActionResult> GetAllWines()
         {
             return Ok(await wineRepository.GetAllWinesAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWineByIdAsync(int id)
+        public async Task<IActionResult> GetWineById(int id)
         {
             var wine = await wineRepository.GetWineByIdAsync(id);
 
@@ -36,8 +37,14 @@ namespace Wine_cellar.Controllers
             return Ok(wine);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetApogeeAsync()
+        {
+            return Ok(await wineRepository.GetApogeeAsync());
+        }
+
         [HttpGet("{word}")]
-        public async Task<IActionResult> GetWineByWordAsync(string word)
+        public async Task<IActionResult> GetWineByWord(string word)
         {
             var wine = await wineRepository.GetWineByWordAsync(word);
 
@@ -48,7 +55,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWineAsync (CreateWineViewModel wineView)
+        public async Task<IActionResult> CreateWine (CreateWineViewModel wineView)
         {
             Wine wine = new()
             {
@@ -73,7 +80,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWineAsync(UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWine(UpdateWineViewModel wineView)
         {
             Wine wine = new()
             {
@@ -98,8 +105,14 @@ namespace Wine_cellar.Controllers
             return Ok(wineUpdate);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
+        {
+            return Ok(await wineRepository.MoveAsync(WineId, newDrawerId));
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWineAsync(int id)
+        public async Task<IActionResult> DeleteWine(int id)
         {
             bool success = await wineRepository.DeleteWineAsync(id);
 

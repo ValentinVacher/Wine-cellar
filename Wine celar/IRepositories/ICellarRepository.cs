@@ -7,7 +7,7 @@ namespace Wine_cellar.IRepositories
     {
         Task<List<Cellar>> GetAllsAsync();
         Task<Cellar> GetCellarWithAllAsync(int id);
-        Task<Cellar> DeleteCellarAsync(int id);
+        Task<bool> DeleteCellarAsync(int id);
         Task<Cellar> UpdateCellarAsync(Cellar cellar);
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
     }

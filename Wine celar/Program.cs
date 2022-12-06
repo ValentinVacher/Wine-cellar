@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Wine_celar.Repositories;
 using Wine_cellar.Contexts;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<WineContext>(o =>
 builder.Services.AddScoped<IWineRepository, WineRepository>();
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
