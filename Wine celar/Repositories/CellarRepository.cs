@@ -51,19 +51,17 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de supprimer une cave et ses tiroirs
-        public async Task<bool> DeleteCellarAsync(int id)
+        public async Task<bool> DeleteCellarAsync(Cellar cellar)
         {
-            //Defini la cave a supprimer 
-            var DelCellar = await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(e => e.CellarId == id);
-            if (DelCellar == null) return false;
+            if (cellar == null) return false;
             //Supprime les tiroirs
-            foreach(var drawer in DelCellar.Drawers)
+            foreach(var drawer in cellar.Drawers)
             {
                 drawer.DeleteWines(winecontext);
                 winecontext.Drawers.Remove(drawer);
             }
             //Supprime la cave
-            winecontext.Cellars.Remove(DelCellar);
+            winecontext.Cellars.Remove(cellar);
             await winecontext.SaveChangesAsync();
             return true;
         }
@@ -74,6 +72,7 @@ namespace Wine_cellar.Repositories
             var CellarUpdate = await winecontext.Cellars.FindAsync(cellar.CellarId);
             if (CellarUpdate == null) return null;
             CellarUpdate.Name = cellar.Name;
+            CellarUpdate.UserId = cellar.UserId;
             await winecontext.SaveChangesAsync();
             return CellarUpdate;
         }
