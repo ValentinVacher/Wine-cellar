@@ -1,6 +1,11 @@
-﻿namespace Wine_celar.Controllers
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Wine_celar.Controllers
 {
-    public class ColorController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ColorController : ControllerBase
     {
     }
 }
