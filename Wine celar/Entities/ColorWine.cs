@@ -1,8 +1,6 @@
-﻿using Wine_cellar.Entities;
-
-namespace Wine_celar.Entities
+﻿namespace Wine_cellar.Entities
 {
-    public class Color
+    public class ColorWine
     {
         public int ColorId { get; set; }
         public string Name { get; set; }
