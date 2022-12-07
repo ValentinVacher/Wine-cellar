@@ -70,6 +70,8 @@ namespace Wine_cellar.Contexts
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 });
             modelBuilder.Entity<User>().HasData(new List<User> { u1, u2, u3 });
+            modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6});
+            modelBuilder.Entity<ColorWine>().HasData(new List<ColorWine> {cw1, cw2, cw3, cw4 });
 
             base.OnModelCreating(modelBuilder);
         }
