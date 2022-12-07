@@ -17,9 +17,11 @@ namespace Wine_cellar.Entities
         public Drawer Drawer { get; set; }
         public int DrawerId { get; set; }
         public string PictureName { get; set; }
-        public int ColorId { get; set; }
-        public ColorWine Color { get; set; }
+        public WineColor Color { get; set; }
+        public Appelation Appelation { get; set; }
+        public int AppelationId { get; set; }
 
-       
+
+
     }
 }
