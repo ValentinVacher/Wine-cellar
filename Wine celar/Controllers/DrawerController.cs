@@ -4,6 +4,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
 {
@@ -18,37 +19,50 @@ namespace Wine_cellar.Controllers
             this.drawerRepository = drawerRepository;
 
         }
+
         [HttpGet]
         public async Task<ActionResult<List<Drawer>>> GetDrawers()
         {
-            return Ok(await drawerRepository.GetAllWithWineAsync());
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            return Ok(await drawerRepository.GetAllWithWineAsync(identity));
         }
+
         [HttpGet]
-        public async Task<ActionResult<Drawer>> GetDrawer(string cellarName, int index)
+        public async Task<ActionResult<Drawer>> GetDrawerByIndex(string cellarName, int index)
         {
-            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index));
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity) == null) return Problem("Le tiroir est introuvable");
+
+            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity));
         }
 
         [HttpPost]
         public async Task<ActionResult<Drawer>> PostDrawer(CreateDrawerViewModel createDrawer)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
             Drawer drawer = new()
             {
                 Index = createDrawer.index,
-                NbBottleMax=createDrawer.NbBottleMax,
-                CellarId=createDrawer.CellarId
-
+                NbBottleMax = createDrawer.NbBottleMax,
             };
-            var DrawerCreated = await drawerRepository.AddDrawerAsync(drawer);
-            if (DrawerCreated != null)
-            {
-                return Ok(DrawerCreated);
-            }
-            else
-            {
-                return Problem("tiroir non créer");
-            }
+            var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, identity);
+            if (DrawerCreated == 1) return Ok(DrawerCreated);
+        
+            else if(DrawerCreated == 2)  return Problem("Tiroir non créer, la cave est pleine");
+
+            else return Problem("Cave non trouvé");
         }
+
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer(UpdateDrawerViewModel updatedrawer)
         {

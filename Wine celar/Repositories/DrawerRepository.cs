@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Repositories
 {
@@ -19,41 +21,53 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les tiroirs avec leur bouteilles
-        public async Task<List<Drawer>> GetAllWithWineAsync()
+        public async Task<List<Drawer>> GetAllWithWineAsync(ClaimsIdentity identity)
         {
-            return await winecontext.Drawers.Include(d => d.Wines).ToListAsync();
+            return await winecontext.Drawers.Include(d => d.Wines).
+                Where(c => c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles
-        public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index)
+        public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index, ClaimsIdentity identity)
         {
-            return await winecontext.Drawers.Include(d => d.Wines).Include(d=>d.Cellar).FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName);
+            return await winecontext.Drawers.Include(d => d.Wines).Include(d=>d.Cellar).
+                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name.Contains(cellarName) 
+                && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
         }
 
         //Permet de créer un tiroir si la cave n'est pas pleine
-        public async Task<Drawer> AddDrawerAsync(Drawer drawer)
+        public async Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, ClaimsIdentity identity)
         {
-            var Cellar = await winecontext.Cellars.Include(d => d.Drawers).FirstOrDefaultAsync(d => d.CellarId == drawer.CellarId);
-            try
+            var Cellar = await winecontext.Cellars.Include(d => d.Drawers).FirstOrDefaultAsync(d => d.Name == createDrawer.CellarName);
+            var drawers = await winecontext.Drawers.ToListAsync();
+
+            foreach(Drawer e in drawers)
             {
-                //Verification cave pleine
-                if (Cellar.IsFull() )
+                if(e.Index >= createDrawer.index)
                 {
-                    return drawer;
+                    e.Index++;
                 }
-                //Ajoute le tiroir
-                winecontext.Drawers.AddAsync(drawer);
-                await winecontext.SaveChangesAsync();
             }
-            //En cas d'erreur
-            catch (Exception e)
+
+            if (Cellar == null) return 3;
+
+            //Verification cave pleine
+            if (Cellar.IsFull() )
             {
-
-                logger.LogError(e?.InnerException?.ToString());
-
-                return null;
+                return 2;
             }
-            return drawer;
+
+            Drawer drawer = new()
+            {
+                Index = createDrawer.index,
+                NbBottleMax = createDrawer.NbBottleMax,
+            };
+
+            //Ajoute le tiroir
+            winecontext.Drawers.AddAsync(drawer);
+            await winecontext.SaveChangesAsync();
+
+            return 1;
         }
 
         //Permet de modifier un tiroir
