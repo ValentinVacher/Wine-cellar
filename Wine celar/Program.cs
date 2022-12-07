@@ -18,6 +18,7 @@ builder.Services.AddCors(options =>
                           //.AllowAnyHeader()
                           //.AllowAnyMethod();
                       });
+    
 });
 
 // Add services to the container.
@@ -60,10 +61,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 

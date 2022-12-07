@@ -54,7 +54,7 @@ namespace Wine_cellar.Controllers
             return Ok(wine);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateWineWithPictureAsync([FromForm] 
+        public async Task<IActionResult> CreateWineWithPictureAsync([FromForm]
         CreateWineViewModel WineViewModel)
         {
             var wine = new Wine()
@@ -68,10 +68,11 @@ namespace Wine_cellar.Controllers
                 DrawerId = WineViewModel.DrawerId,
                 PictureName = WineViewModel.Picture?.FileName ?? "",
             };
+            var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
             if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
                 && WineViewModel.Picture.FileName.Length > 0)
             {
-                var path = Path.Combine(environment.WebRootPath, "URL => https://localhost:7286/img/",
+                var path = Path.Combine(environment.WebRootPath, "img/",
                     WineViewModel.Picture.FileName);
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 {
@@ -79,7 +80,6 @@ namespace Wine_cellar.Controllers
                     stream.Close();
                 }
             }
-            var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
 
             if (wineCreated == null)
             {
