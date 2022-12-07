@@ -9,5 +9,6 @@
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
         public int DrawerId { get; set; }
+        public IFormFile Picture { get; set; }
     }
 }

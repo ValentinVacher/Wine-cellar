@@ -53,6 +53,49 @@ namespace Wine_cellar.Controllers
 
             return Ok(wine);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateWineWithPictureAsync([FromForm] 
+        CreateWineViewModel WineViewModel)
+        {
+            var wine = new Wine()
+            {
+                Color = WineViewModel.Color,
+                Appelation = WineViewModel.Appelation,
+                Name = WineViewModel.Name,
+                Year = WineViewModel.Year,
+                KeepMin = WineViewModel.KeepMin,
+                KeepMax = WineViewModel.KeepMax,
+                DrawerId = WineViewModel.DrawerId,
+                PictureName = WineViewModel.Picture?.FileName ?? "",
+            };
+            if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
+                && WineViewModel.Picture.FileName.Length > 0)
+            {
+                var path = Path.Combine(environment.WebRootPath, "URL => https://localhost:7286/img/",
+                    WineViewModel.Picture.FileName);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    await WineViewModel.Picture.CopyToAsync(stream);
+                    stream.Close();
+                }
+            }
+            var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
+
+            if (wineCreated == null)
+            {
+                return Problem("Erreur lors de la création de la bouteille");
+            }
+
+            return Ok(wineCreated);
+
+
+
+        }
+
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreateWine (CreateWineViewModel wineView)

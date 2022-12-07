@@ -63,6 +63,16 @@ namespace Wine_cellar.Repositories
             await wineContext.SaveChangesAsync();
             return wine;
         }
+        public async Task<Wine> CreateWineWithPictureAsync(Wine wine)
+        {
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
+            //Verifie si le tiroir est plein
+            if (Drawer.IsFull() == true) return null;
+            //Ajoute le vin 
+            wineContext.Wines.Add(wine);
+            await wineContext.SaveChangesAsync();
+            return wine;
+        }
 
         //Permet de modifier un vin 
         public async Task<Wine> UpdateWineAsync(Wine wine)

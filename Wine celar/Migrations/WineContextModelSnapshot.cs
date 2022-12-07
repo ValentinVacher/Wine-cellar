@@ -228,6 +228,10 @@ namespace Winecelar.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PictureName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Today")
                         .HasColumnType("datetime2");
 
@@ -250,7 +254,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-1",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5784),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9433),
                             Year = 1960
                         },
                         new
@@ -262,7 +267,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2001,
                             Name = "20-2",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5843),
+                            PictureName = "img/vin1.png",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9482),
                             Year = 1970
                         },
                         new
@@ -274,7 +280,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2001,
                             Name = "20-3",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5849),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9486),
                             Year = 1980
                         },
                         new
@@ -286,7 +293,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-4",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5854),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9490),
                             Year = 1960
                         },
                         new
@@ -298,7 +306,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-5",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5859),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9494),
                             Year = 1960
                         },
                         new
@@ -310,7 +319,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-6",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5864),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9557),
                             Year = 1960
                         },
                         new
@@ -322,7 +332,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-7",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5869),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9561),
                             Year = 1960
                         },
                         new
@@ -334,7 +345,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-8",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5873),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9565),
                             Year = 1960
                         },
                         new
@@ -346,7 +358,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-9",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5878),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9568),
                             Year = 1960
                         },
                         new
@@ -358,7 +371,8 @@ namespace Winecelar.Migrations
                             KeepMax = 2002,
                             KeepMin = 2000,
                             Name = "20-10",
-                            Today = new DateTime(2022, 12, 6, 12, 13, 12, 670, DateTimeKind.Local).AddTicks(5883),
+                            PictureName = "",
+                            Today = new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9572),
                             Year = 1960
                         });
                 });
