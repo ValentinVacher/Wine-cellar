@@ -15,6 +15,7 @@ namespace Wine_cellar.Contexts
         public DbSet<Drawer> Drawers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Wine> Wines { get; set; }
+        public DbSet<ColorWine> ColorWines { get; set; }
         public DbSet<Appelation> Appelations { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
