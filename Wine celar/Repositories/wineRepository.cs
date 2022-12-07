@@ -118,7 +118,6 @@ namespace Wine_cellar.Repositories
                     Appelation = WineDuplicate.Appelation,
                     Name = WineDuplicate.Name,
                     Year = WineDuplicate.Year,
-                    Today = DateTime.Now,
                     KeepMax = WineDuplicate.KeepMax,
                     KeepMin = WineDuplicate.KeepMin,
                     DrawerId = WineDuplicate.DrawerId

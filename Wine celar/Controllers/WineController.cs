@@ -63,8 +63,7 @@ namespace Wine_cellar.Controllers
                 Color = wineView.Color,
                 Appelation = wineView.Appelation,
                 Name = wineView.Name,
-                Year = wineView.Year,
-                Today = DateTime.Now,
+                Year = wineView.Year, 
                 KeepMax = wineView.KeepMax,
                 KeepMin = wineView.KeepMin,
                 DrawerId = wineView.DrawerId
@@ -96,7 +95,6 @@ namespace Wine_cellar.Controllers
                 Appelation = wineView.Appelation,
                 Name = wineView.Name,
                 Year = wineView.Year,
-                Today = DateTime.Now,
                 KeepMin = wineView.KeepMin,
                 KeepMax = wineView.KeepMax
                 //DrawerId = wineView.DrawerId
