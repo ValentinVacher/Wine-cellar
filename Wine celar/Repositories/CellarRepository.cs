@@ -44,7 +44,7 @@ namespace Wine_cellar.Repositories
             //Ajoute les tiroirs
             for (int i = 1; i <= cellar.NbDrawerMax; i++)
             {
-                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, NbBottleMax = NbrButtleDrawer });
+                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
             }
             await winecontext.SaveChangesAsync();
             return cellar;
@@ -57,7 +57,7 @@ namespace Wine_cellar.Repositories
             var DelCellar = await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).FirstOrDefaultAsync(e => e.CellarId == id);
             if (DelCellar == null) return false;
             //Supprime les tiroirs
-            foreach(var drawer in DelCellar.Drawers)
+            foreach (var drawer in DelCellar.Drawers)
             {
                 drawer.DeleteWines(winecontext);
                 winecontext.Drawers.Remove(drawer);
