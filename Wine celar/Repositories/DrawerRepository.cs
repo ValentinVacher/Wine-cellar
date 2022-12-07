@@ -21,7 +21,7 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les tiroirs avec leur bouteilles
         public async Task<List<Drawer>> GetAllWithWineAsync()
         {
-            return await winecontext.Drawers.Include(d => d.Wines).ToListAsync();
+            return await winecontext.Drawers.Include(d => d.Wines).OrderBy(d=>d.Index).ToListAsync();
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles
