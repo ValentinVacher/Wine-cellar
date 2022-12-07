@@ -34,18 +34,18 @@ namespace Wine_cellar.Contexts
             var d5 = new Drawer { DrawerId = 5, Index = 2, CellarId = 2, NbBottleMax = 5 };
             var d6 = new Drawer { DrawerId = 6, Index = 3, CellarId = 2, NbBottleMax = 5 };
 
-            var v1 = new Wine { WineId = 1, Color = "Rosé", Appelation = "Appelation1", Name = "20-1", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 1, PictureName = ""};
-            var v2 = new Wine { WineId = 2, Color = "Bleu", Appelation = "Appelation2", Name = "20-2", Year = 1970,  KeepMin = 2001, KeepMax = 2002, DrawerId = 1 , PictureName = "img/vin1.png" };
-            var v3 = new Wine { WineId = 3, Color = "Verre", Appelation = "Appelation3", Name = "20-3", Year = 1980 , KeepMin = 2001, KeepMax = 2002, DrawerId = 2 , PictureName = "" };
-            var v4 = new Wine { WineId = 4, Color = "Rouge", Appelation = "Appelation4", Name = "20-4", Year = 1960 , KeepMin = 2000, KeepMax = 2002, DrawerId = 2, PictureName = "" };
-            var v5 = new Wine { WineId = 5, Color = "Jaune", Appelation = "Appelation5", Name = "20-5", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 3 , PictureName = "" };
-            var v6 = new Wine { WineId = 6, Color = "Blanc", Appelation = "Appelation6", Name = "20-6", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 3 , PictureName = "" };
-            var v7 = new Wine { WineId = 7, Color = "Rouge", Appelation = "Appelation7", Name = "20-7", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 4 , PictureName = "" };
-            var v8 = new Wine { WineId = 8, Color = "Violet", Appelation = "Appelation8", Name = "20-8", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 4 , PictureName = "" };
-            var v9 = new Wine { WineId = 9, Color = "Orange", Appelation = "Appelation9", Name = "20-9", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 5 , PictureName = "" };
-            var v10 = new Wine { WineId = 10, Color = "Violet", Appelation = "Appelation10", Name = "20-10", Year = 1960, KeepMin = 2000, KeepMax = 2002, DrawerId = 5 , PictureName = "" };
-            var v11 = new Wine { WineId = 11, Color = "Violet", Appelation = "Appelation11", Name = "20-11", Year = 1960, KeepMin = 2020, KeepMax = 2024, DrawerId = 5 , PictureName = "" };
-            var v12 = new Wine { WineId = 12, Color = "Violet", Appelation = "Appelation12", Name = "20-12", Year = 1960, KeepMin = 2021, KeepMax = 2025, DrawerId = 5 , PictureName = "" };
+            var v1 = new Wine { WineId = 1, Name = "20-1", Year = 1960,  DrawerId = 1, PictureName = ""};
+            var v2 = new Wine { WineId = 2, Name = "20-2", Year = 1970,   DrawerId = 1 , PictureName = "img/vin1.png" };
+            var v3 = new Wine { WineId = 3,  Name = "20-3", Year = 1980 ,  DrawerId = 2 , PictureName = "" };
+            var v4 = new Wine { WineId = 4,  Name = "20-4", Year = 1960 ,  DrawerId = 2, PictureName = "" };
+            var v5 = new Wine {WineId = 5, Name = "20-5", Year = 1960, DrawerId = 3, PictureName = "" };
+            var v6 = new Wine {WineId = 6, Name = "20-6", Year = 1960,  DrawerId = 3, PictureName = "" };
+            var v7 = new Wine {WineId = 7, Name = "20-7", Year = 1960, DrawerId = 4, PictureName = "" };
+            var v8 = new Wine {WineId = 8, Name = "20-8", Year = 1960, DrawerId = 4, PictureName = "" };
+            var v9 = new Wine {WineId = 9, Name = "20-9", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v10 = new Wine {WineId = 10, Name = "20-10", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v11 = new Wine {WineId = 11, Name = "20-11", Year = 1960,  DrawerId = 5, PictureName = "" };
+            var v12 = new Wine {WineId = 12, Name = "20-12", Year = 1960, DrawerId = 5, PictureName = "" };
 
 
             var u1 = new User { UserId = 1, FirstName = "G", LastName = "G", Email = "test@test.com", Password = "test" };
