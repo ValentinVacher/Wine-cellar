@@ -3,6 +3,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using System.Security.Claims;
 
 namespace Wine_cellar.Repositories
 {
@@ -20,76 +21,89 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins dans une liste
-        public async Task<List<Wine>> GetAllWinesAsync()
+        public async Task<List<Wine>> GetAllWinesAsync(ClaimsIdentity identity)
         {
-            return await wineContext.Wines.ToListAsync();
+            return await wineContext.Wines
+                .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
+                .OrderBy(w => w.Color).ToListAsync();
         }
 
         //Permet de recuperer tout les vins à leur apogée dans une liste
-        public async Task<List<Wine>> GetApogeeAsync()
+        public async Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity)
         {
-            var wines = await GetAllWinesAsync();
-            var winess = new List<Wine>();
-            foreach (var wine in wines)
-            {
-                if (wine.IsApogee() == true)
-                {
-                    winess.Add(wine);
-                }            
-            }
-            return winess.OrderBy(w=>w.KeepMax).ToList();
+            var wines = (await GetAllWinesAsync(identity)).Where(w => w.IsApogee()).ToList();
+
+            if (wines.Count() == 0) return null;
+
+            return wines.OrderBy(w=>w.KeepMax).ToList();
         }
 
         //Permet de recuperer un vin par son id 
-        public async Task<Wine> GetWineByIdAsync(int wineId)
+        public async Task<Wine> GetWineByIdAsync(int wineId, ClaimsIdentity identity)
         {
-            return await wineContext.Wines.FirstOrDefaultAsync(p => p.WineId == wineId);
+            return await wineContext.Wines
+                .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
         }
 
         //Permet de recuperer une liste de vin selon un terme choisi
-        public async Task<List<Wine>> GetWineByWordAsync(string word)
+        public async Task<List<Wine>> GetWineByWordAsync(string word, ClaimsIdentity identity)
         {
-            return await wineContext.Wines.Where(w => w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)).OrderBy(w=>w.Color).ToListAsync();
+            return await wineContext.Wines
+                .Where(w => (w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)) 
+                && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
+                .OrderBy(w=>w.Color).ToListAsync();
         }
 
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
-        public async Task<Wine> CreateWineAsync(Wine wine)
+        public async Task<int> CreateWineAsync(CreateWineViewModel wineView, ClaimsIdentity identity)
         {
-            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines)
+                .FirstOrDefaultAsync(d => d.Index == wineView.DrawerIndex && d.Cellar.Name == wineView.CellarName 
+                && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
+
+            if (Drawer == null) return 1;
+
             //Verifie si le tiroir est plein
-            if (Drawer.IsFull() == true) return null;
+            if (Drawer.IsFull() == true) return 2;
+
+            var wine = new Wine()
+            {
+                Color = wineView.Color,
+                Appelation = wineView.Appelation,
+                Name = wineView.Name,
+                Year = wineView.Year,
+                KeepMin = wineView.KeepMin,
+                KeepMax = wineView.KeepMax,
+                DrawerId = Drawer.DrawerId,
+                PictureName = wineView.Picture?.FileName ?? "",
+            };
+
             //Ajoute le vin 
             wineContext.Wines.Add(wine);
             await wineContext.SaveChangesAsync();
-            return wine;
-        }
-        public async Task<Wine> CreateWineWithPictureAsync(Wine wine)
-        {
-            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
-            //Verifie si le tiroir est plein
-            if (Drawer.IsFull() == true) return null;
-            //Ajoute le vin 
-            wineContext.Wines.Add(wine);
-            await wineContext.SaveChangesAsync();
-            return wine;
+            return 0;
         }
 
         //Permet de modifier un vin 
-        public async Task<Wine> UpdateWineAsync(Wine wine)
+        public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, ClaimsIdentity identity)
         {
-            var WineUpdate = await GetWineByIdAsync(wine.WineId);
+            var WineUpdate = await GetWineByIdAsync(wine.WineId, identity);
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
             WineUpdate.Color = wine.Color;
             WineUpdate.Appelation = wine.Appelation;
+            WineUpdate.Year = wine.Year;
+            WineUpdate.KeepMin = wine.KeepMin;
+            WineUpdate.KeepMax = wine.KeepMax;
+            
             await wineContext.SaveChangesAsync();
             return WineUpdate;
         }
 
         //Permet de supprimer un vin 
-        public async Task<bool> DeleteWineAsync(int WineId)
+        public async Task<bool> DeleteWineAsync(int WineId, ClaimsIdentity identity)
         {
-            var WineDelete = await GetWineByIdAsync(WineId);
+            var WineDelete = await GetWineByIdAsync(WineId, identity);
             if (WineDelete == null)
                 return false;
             wineContext.Wines.Remove(WineDelete);
@@ -99,9 +113,9 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de deplacer un vin
-        public async Task<Wine> MoveAsync(int WineId, int newDrawerId)
+        public async Task<Wine> MoveAsync(int WineId, int newDrawerId, ClaimsIdentity identity)
         {
-            var WineMove = await GetWineByIdAsync(WineId);
+            var WineMove = await GetWineByIdAsync(WineId, identity);
             if (WineMove == null) return null;
             WineMove.DrawerId = newDrawerId;
             await wineContext.SaveChangesAsync();
@@ -109,36 +123,40 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de dupliquer un vin si le tiroir n'est pas plein
-        public async Task<Wine> DuplicateAsync(int WineId, int NbrDuplicate)
+        public async Task<int> DuplicateAsync(int WineId, int NbrDuplicate, ClaimsIdentity identity)
         {
-            var WineDuplicate = await GetWineByIdAsync(WineId);
+            var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer)
+                .FirstOrDefaultAsync(p => p.WineId == WineId && p.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
+            var nbWine = 0;
+            var nbWinInDrawer = WineDuplicate.Drawer.Wines.Count();
 
-            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == WineDuplicate.DrawerId);
-            //Verifie si le tiroir est plein
-            if (Drawer.IsFull() == true)
+            var wine = new Wine
             {
-                return null;
-            }
+                Color = WineDuplicate.Color,
+                Appelation = WineDuplicate.Appelation,
+                Name = WineDuplicate.Name,
+                Year = WineDuplicate.Year,
+                KeepMax = WineDuplicate.KeepMax,
+                KeepMin = WineDuplicate.KeepMin,
+                DrawerId = WineDuplicate.DrawerId,
+                PictureName = WineDuplicate.PictureName
+            };
+
             //Boucle pour le nombre de duplication 
             for (int i = 1; i <= NbrDuplicate; i++)
             {
-                var wine = new Wine
-                {
-                    Color = WineDuplicate.Color,
-                    Appelation = WineDuplicate.Appelation,
-                    Name = WineDuplicate.Name,
-                    Year = WineDuplicate.Year,
-                    KeepMax = WineDuplicate.KeepMax,
-                    KeepMin = WineDuplicate.KeepMin,
-                    DrawerId = WineDuplicate.DrawerId
-                };
+                //Verifie si le tiroir est plein
+                if (nbWinInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
+
                 wineContext.Wines.Add(wine);
-                
+
+                nbWine++;
+                nbWinInDrawer++;
             }
+
             await wineContext.SaveChangesAsync();
-            return WineDuplicate;
 
+            return nbWine;
         }
-
     }
 }

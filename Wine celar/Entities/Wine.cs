@@ -18,16 +18,13 @@ namespace Wine_cellar.Entities
         public string PictureName { get; set; }
 
         public bool IsApogee()
-        {
-            
-             var ToDay= DateTime.Now;
+        {       
+            var ToDay= DateTime.Now;
             var result = ToDay.Year;
-            if (result >= KeepMin && result <= KeepMax)
-            {
-                return true;
-            }
-            else
-                return false;
+
+            if (result >= KeepMin && result <= KeepMax) return true;
+           
+            return false;
         }
     }
 }

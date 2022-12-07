@@ -12,7 +12,7 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    [Migration("20221207122721_Init")]
+    [Migration("20221207141323_Init")]
     partial class Init
     {
         /// <inheritdoc />

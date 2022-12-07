@@ -8,7 +8,8 @@
         public int Year { get; set; }
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
-        public int DrawerId { get; set; }
-        public IFormFile Picture { get; set; }
+        public int DrawerIndex { get; set; }
+        public string CellarName { get; set; }
+        public IFormFile? Picture { get; set; }
     }
 }

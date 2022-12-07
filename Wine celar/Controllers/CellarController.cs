@@ -23,9 +23,8 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> GetAlls()
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             return Ok(await cellarRepository.GetAllsAsync(identity));
         }
@@ -34,9 +33,8 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> GetCellarByName(string name)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             var cellar = await cellarRepository.GetCellarByName(name, identity);
 
@@ -73,13 +71,12 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, string actualname)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
 
-            if (cellar == null) return Problem("Cave introuvable");
+            if (cellar == null) return NotFound("Cave introuvable");
 
             var cellarUpdate = new Cellar()
             {
@@ -96,9 +93,12 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> DeleteCellar(string name)
         {
             var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
             var cellar = (await cellarRepository.GetCellarByName(name, identity)).FirstOrDefault();
 
-            if (cellar == null) return Problem("Cave introuvable");
+            if (cellar == null) return NotFound("Cave introuvable");
 
             bool success = await cellarRepository.DeleteCellarAsync(cellar);
 

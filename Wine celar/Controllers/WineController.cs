@@ -5,6 +5,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Contexts;
+using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
 {
@@ -23,13 +24,21 @@ namespace Wine_cellar.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllWines()
         {
-            return Ok(await wineRepository.GetAllWinesAsync());
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            return Ok(await wineRepository.GetAllWinesAsync(identity));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWineById(int id)
         {
-            var wine = await wineRepository.GetWineByIdAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            var wine = await wineRepository.GetWineByIdAsync(id, identity);
 
             if (wine == null)
                 return NotFound($"Le vin {id} est introuvable");
@@ -40,35 +49,49 @@ namespace Wine_cellar.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApogee()
         {
-            return Ok(await wineRepository.GetApogeeAsync());
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            var wines = await wineRepository.GetApogeeAsync(identity);
+
+            if (wines == null) return NotFound("Aucun vin n'est a l'apogée");
+
+            return Ok(wines);
         }
 
         [HttpGet("{word}")]
         public async Task<IActionResult> GetWineByWord(string word)
         {
-            var wine = await wineRepository.GetWineByWordAsync(word);
+            var identity = User?.Identity as ClaimsIdentity;
 
-            if (wine == null)
-                return NotFound($"Le vin {word} est introuvable");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            var wine = await wineRepository.GetWineByWordAsync(word, identity);
+
+            if (wine == null) return NotFound($"Le vin {word} est introuvable");
 
             return Ok(wine);
         }
+
         [HttpPost]
-        public async Task<IActionResult> CreateWineWithPictureAsync([FromForm]
+        public async Task<IActionResult> CreateWineAsync([FromForm]
         CreateWineViewModel WineViewModel)
         {
-            var wine = new Wine()
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, identity);
+
+            switch(wineCreated)
             {
-                Color = WineViewModel.Color,
-                Appelation = WineViewModel.Appelation,
-                Name = WineViewModel.Name,
-                Year = WineViewModel.Year,
-                KeepMin = WineViewModel.KeepMin,
-                KeepMax = WineViewModel.KeepMax,
-                DrawerId = WineViewModel.DrawerId,
-                PictureName = WineViewModel.Picture?.FileName ?? "",
-            };
-            var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
+                case 1 : return NotFound("Tiroir introuvable");
+                case 2 : return Problem("Le tiroir est plein");
+                default: break;
+            }
+
             if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
                 && WineViewModel.Picture.FileName.Length > 0)
             {
@@ -81,87 +104,57 @@ namespace Wine_cellar.Controllers
                 }
             }
 
-            if (wineCreated == null)
-            {
-                return Problem("Erreur lors de la création de la bouteille");
-            }
-
-            return Ok(wineCreated);
-
-
-
-        }
-
-
-
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> CreateWine ([FromForm] CreateWineViewModel wineView)
-        {
-            Wine wine = new()
-            {
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
-                Name = wineView.Name,
-                Year = wineView.Year, 
-                KeepMax = wineView.KeepMax,
-                KeepMin = wineView.KeepMin,
-                DrawerId = wineView.DrawerId
-            };
-           
-            var wineCreated = await wineRepository.CreateWineAsync(wine);
-
-            if (wineCreated ==  null)
-            {
-                return Problem("Erreur lors de la création de la bouteille");
-            }
-
-            return Ok(wineCreated);
+            return Ok(WineViewModel);
         }
 
         [HttpPost]
         public async Task<ActionResult<Wine>> Duplicate(int WineId, int NbrDuplicate)
         {
-            return Ok(await wineRepository.DuplicateAsync(WineId, NbrDuplicate));
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            int NbrWineCreate = await wineRepository.DuplicateAsync(WineId, NbrDuplicate, identity);
+
+            if (NbrWineCreate != NbrDuplicate) return Ok($"{NbrDuplicate - NbrWineCreate} vin n'ont pas été crée car il n'y a plus de place dans le tiroir");
+
+            return Ok($"Le vin {WineId} a été dupliquer {NbrWineCreate} fois");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
-            Wine wine = new()
-            {
-                WineId = wineView.WineId,
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
-                Name = wineView.Name,
-                Year = wineView.Year,
-                KeepMin = wineView.KeepMin,
-                KeepMax = wineView.KeepMax
-                //DrawerId = wineView.DrawerId
-            };
+            var identity = User?.Identity as ClaimsIdentity;
 
-            var wineUpdate = await wineRepository.UpdateWineAsync(wine);
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
-            if(wineUpdate == null)
-            {
-                return Problem("Erreur lors de la mise a jour de la bouteille");
-            }
+            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, identity);
 
+            if(wineUpdate == null) return NotFound("Bouteille introuvable");
+            
             return Ok(wineUpdate);
         }
 
         [HttpPut]
         public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
         {
-            return Ok(await wineRepository.MoveAsync(WineId, newDrawerId));
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            return Ok(await wineRepository.MoveAsync(WineId, newDrawerId, identity));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWine(int id)
         {
-            bool success = await wineRepository.DeleteWineAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            bool success = await wineRepository.DeleteWineAsync(id, identity);
 
             if (success)
                 return Ok($"Le vin {id} a été supprimé");
