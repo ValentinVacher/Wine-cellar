@@ -24,7 +24,7 @@ namespace Wine_cellar.Repositories
         public async Task<List<Drawer>> GetAllWithWineAsync(ClaimsIdentity identity)
         {
             return await winecontext.Drawers.Include(d => d.Wines).
-                Where(c => c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+                Where(c => c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).OrderBy(d => d.Index).ToListAsync();
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles

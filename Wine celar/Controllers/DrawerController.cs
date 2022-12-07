@@ -45,7 +45,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Drawer>> PostDrawer(CreateDrawerViewModel createDrawer)
+        public async Task<ActionResult<Drawer>> PostDrawer([FromForm] CreateDrawerViewModel createDrawer)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -64,7 +64,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Drawer>> UpdateDrawer(UpdateDrawerViewModel updatedrawer)
+        public async Task<ActionResult<Drawer>> UpdateDrawer([FromForm] UpdateDrawerViewModel updatedrawer)
         {
             var drawer= new Drawer 
             {

@@ -22,7 +22,7 @@ namespace Wine_celar.Repositories
         //Permet de recuperer tout les utilisateurs
         public async Task<List<User>> GetAllUserAsync()
         {
-            return await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).ToListAsync(); ;
+            return await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers.OrderBy(d=>d.Index)).ThenInclude(w => w.Wines).ToListAsync(); ;
         }
 
         //Permet de créer un user

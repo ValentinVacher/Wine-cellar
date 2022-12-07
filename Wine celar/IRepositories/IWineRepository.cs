@@ -14,6 +14,7 @@ namespace Wine_cellar.IRepositories
         //Permet de rajouter un vin 
         Task<Wine> CreateWineAsync(Wine wine);
         //Permet de mettre à jour un vin
+        Task<Wine> CreateWineWithPictureAsync(Wine wine);
         Task<Wine> UpdateWineAsync(Wine wine);
         //Permet de supprimer un vin
         Task<bool> DeleteWineAsync(int WineId);

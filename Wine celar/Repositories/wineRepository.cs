@@ -37,7 +37,7 @@ namespace Wine_cellar.Repositories
                     winess.Add(wine);
                 }            
             }
-            return winess;
+            return winess.OrderBy(w=>w.KeepMax).ToList();
         }
 
         //Permet de recuperer un vin par son id 
@@ -49,11 +49,21 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer une liste de vin selon un terme choisi
         public async Task<List<Wine>> GetWineByWordAsync(string word)
         {
-            return await wineContext.Wines.Where(w => w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)).ToListAsync();
+            return await wineContext.Wines.Where(w => w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)).OrderBy(w=>w.Color).ToListAsync();
         }
 
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
         public async Task<Wine> CreateWineAsync(Wine wine)
+        {
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
+            //Verifie si le tiroir est plein
+            if (Drawer.IsFull() == true) return null;
+            //Ajoute le vin 
+            wineContext.Wines.Add(wine);
+            await wineContext.SaveChangesAsync();
+            return wine;
+        }
+        public async Task<Wine> CreateWineWithPictureAsync(Wine wine)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines).FirstOrDefaultAsync(d => d.DrawerId == wine.DrawerId);
             //Verifie si le tiroir est plein
@@ -118,7 +128,6 @@ namespace Wine_cellar.Repositories
                     Appelation = WineDuplicate.Appelation,
                     Name = WineDuplicate.Name,
                     Year = WineDuplicate.Year,
-                    Today = DateTime.Now,
                     KeepMax = WineDuplicate.KeepMax,
                     KeepMin = WineDuplicate.KeepMin,
                     DrawerId = WineDuplicate.DrawerId

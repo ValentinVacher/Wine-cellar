@@ -65,7 +65,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserViewModel userView)
+        public async Task<IActionResult> CreateUser([FromForm] CreateUserViewModel userView)
         {
             Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
             if(!regexPsw.Match(userView.Password).Success) return Problem("Mot de passe incorrect");
@@ -98,7 +98,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(UpdateUserViewModel userView)
+        public async Task<IActionResult> UpdateUser([FromForm] UpdateUserViewModel userView)
         {
             User user = new()
             {

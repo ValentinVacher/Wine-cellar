@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
-using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 
 namespace Wine_cellar.Controllers
@@ -54,17 +53,59 @@ namespace Wine_cellar.Controllers
 
             return Ok(wine);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateWineWithPictureAsync([FromForm]
+        CreateWineViewModel WineViewModel)
+        {
+            var wine = new Wine()
+            {
+                Color = WineViewModel.Color,
+                Appelation = WineViewModel.Appelation,
+                Name = WineViewModel.Name,
+                Year = WineViewModel.Year,
+                KeepMin = WineViewModel.KeepMin,
+                KeepMax = WineViewModel.KeepMax,
+                DrawerId = WineViewModel.DrawerId,
+                PictureName = WineViewModel.Picture?.FileName ?? "",
+            };
+            var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
+            if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
+                && WineViewModel.Picture.FileName.Length > 0)
+            {
+                var path = Path.Combine(environment.WebRootPath, "img/",
+                    WineViewModel.Picture.FileName);
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    await WineViewModel.Picture.CopyToAsync(stream);
+                    stream.Close();
+                }
+            }
+
+            if (wineCreated == null)
+            {
+                return Problem("Erreur lors de la création de la bouteille");
+            }
+
+            return Ok(wineCreated);
+
+
+
+        }
+
+
+
+
+
 
         [HttpPost]
-        public async Task<IActionResult> CreateWine (CreateWineViewModel wineView)
+        public async Task<IActionResult> CreateWine ([FromForm] CreateWineViewModel wineView)
         {
             Wine wine = new()
             {
                 Color = wineView.Color,
                 Appelation = wineView.Appelation,
                 Name = wineView.Name,
-                Year = wineView.Year,
-                Today = DateTime.Now,
+                Year = wineView.Year, 
                 KeepMax = wineView.KeepMax,
                 KeepMin = wineView.KeepMin,
                 DrawerId = wineView.DrawerId
@@ -87,7 +128,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWine(UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
             Wine wine = new()
             {
@@ -96,7 +137,6 @@ namespace Wine_cellar.Controllers
                 Appelation = wineView.Appelation,
                 Name = wineView.Name,
                 Year = wineView.Year,
-                Today = DateTime.Now,
                 KeepMin = wineView.KeepMin,
                 KeepMax = wineView.KeepMax
                 //DrawerId = wineView.DrawerId

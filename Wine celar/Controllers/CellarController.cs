@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
-using Wine_cellar.Repositories;
-using Wine_cellar.ViewModel;
-using Wine_celar.Repositories;
 using System.Security.Claims;
 
 namespace Wine_cellar.Controllers
@@ -48,7 +45,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int Nbr)
+        public async Task<IActionResult> AddCellar([FromForm]CreateCellarViewModel cellarViewModel, int Nbr)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -72,10 +69,10 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCellar(UpdateCellarViewModel UpCellar, string name)
+        public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, string actualname)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var cellar = (await cellarRepository.GetCellarByName(name, identity)).FirstOrDefault();
+            var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
 
             if (cellar == null) return Problem("Cave introuvable");
 

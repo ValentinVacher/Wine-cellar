@@ -8,6 +8,19 @@ using Wine_cellar.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      builder =>
+                      {
+                          builder.WithOrigins("*");
+                          //builder.WithOrigins("https://localhost:XXX", "http://localhost:XXX")
+                          //.AllowAnyHeader()
+                          //.AllowAnyMethod();
+                      });
+    
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(options => 
@@ -50,7 +63,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
