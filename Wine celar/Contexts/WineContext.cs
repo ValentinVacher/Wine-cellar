@@ -35,23 +35,36 @@ namespace Wine_cellar.Contexts
             var d5 = new Drawer { DrawerId = 5, Index = 2, CellarId = 2, NbBottleMax = 5 };
             var d6 = new Drawer { DrawerId = 6, Index = 3, CellarId = 2, NbBottleMax = 5 };
 
-            var v1 = new Wine { WineId = 1, Name = "20-1", Year = 1960,  DrawerId = 1, PictureName = ""};
-            var v2 = new Wine { WineId = 2, Name = "20-2", Year = 1970,   DrawerId = 1 , PictureName = "img/vin1.png" };
-            var v3 = new Wine { WineId = 3,  Name = "20-3", Year = 1980 ,  DrawerId = 2 , PictureName = "" };
-            var v4 = new Wine { WineId = 4,  Name = "20-4", Year = 1960 ,  DrawerId = 2, PictureName = "" };
-            var v5 = new Wine {WineId = 5, Name = "20-5", Year = 1960, DrawerId = 3, PictureName = "" };
-            var v6 = new Wine {WineId = 6, Name = "20-6", Year = 1960,  DrawerId = 3, PictureName = "" };
-            var v7 = new Wine {WineId = 7, Name = "20-7", Year = 1960, DrawerId = 4, PictureName = "" };
-            var v8 = new Wine {WineId = 8, Name = "20-8", Year = 1960, DrawerId = 4, PictureName = "" };
-            var v9 = new Wine {WineId = 9, Name = "20-9", Year = 1960, DrawerId = 5, PictureName = "" };
-            var v10 = new Wine {WineId = 10, Name = "20-10", Year = 1960, DrawerId = 5, PictureName = "" };
-            var v11 = new Wine {WineId = 11, Name = "20-11", Year = 1960,  DrawerId = 5, PictureName = "" };
-            var v12 = new Wine {WineId = 12, Name = "20-12", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v1 = new Wine { WineId = 1, Name = "20-1", Year = 1960, DrawerId = 1, PictureName = "" };
+            var v2 = new Wine { WineId = 2, Name = "20-2", Year = 1970, DrawerId = 1, PictureName = "img/vin1.png" };
+            var v3 = new Wine { WineId = 3, Name = "20-3", Year = 1980, DrawerId = 2, PictureName = "" };
+            var v4 = new Wine { WineId = 4, Name = "20-4", Year = 1960, DrawerId = 2, PictureName = "" };
+            var v5 = new Wine { WineId = 5, Name = "20-5", Year = 1960, DrawerId = 3, PictureName = "" };
+            var v6 = new Wine { WineId = 6, Name = "20-6", Year = 1960, DrawerId = 3, PictureName = "" };
+            var v7 = new Wine { WineId = 7, Name = "20-7", Year = 1960, DrawerId = 4, PictureName = "" };
+            var v8 = new Wine { WineId = 8, Name = "20-8", Year = 1960, DrawerId = 4, PictureName = "" };
+            var v9 = new Wine { WineId = 9, Name = "20-9", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v10 = new Wine { WineId = 10, Name = "20-10", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v11 = new Wine { WineId = 11, Name = "20-11", Year = 1960, DrawerId = 5, PictureName = "" };
+            var v12 = new Wine { WineId = 12, Name = "20-12", Year = 1960, DrawerId = 5, PictureName = "" };
 
 
             var u1 = new User { UserId = 1, FirstName = "G", LastName = "G", Email = "test@test.com", Password = "test" };
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
             var u3 = new User { UserId = 3, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
+
+            var cw1 = new ColorWine { ColorId = 1, Name = "Rouge" };
+            var cw2 = new ColorWine { ColorId = 2, Name = "Blanc" };
+            var cw3 = new ColorWine { ColorId = 3, Name = "Rosé" };
+            var cw4 = new ColorWine { ColorId = 4, Name = "Vert" };
+
+            var a1 = new Appelation { AppelationId = 1, AppelationName = "Bordeaux", KeepMin = 5, KeepMax = 10 };
+            var a2 = new Appelation { AppelationId = 2, AppelationName = "Loire", KeepMin = 4, KeepMax = 6 };
+            var a3 = new Appelation { AppelationId = 3, AppelationName = "Bordeaux, Grands crus", KeepMin = 10, KeepMax = 20 };
+            var a4 = new Appelation { AppelationId = 4, AppelationName = "Sud-Ouest", KeepMin = 5, KeepMax = 10 };
+            var a5 = new Appelation { AppelationId = 5, AppelationName = "Languedoc & Provence", KeepMin = 5, KeepMax = 8 };
+            var a6 = new Appelation { AppelationId = 6, AppelationName = "Côtes du Rhône", KeepMin = 4, KeepMax = 6 };
+
 
             modelBuilder.Entity<Cellar>().HasData(new List<Cellar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
