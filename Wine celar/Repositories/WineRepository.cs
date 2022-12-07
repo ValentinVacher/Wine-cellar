@@ -32,7 +32,7 @@ namespace Wine_cellar.Repositories
             var winess = new List<Wine>();
             foreach (var wine in wines)
             {
-                if (wine.Appelation.IsApogee()== true)
+                if (wine.Appelation.IsApogee())
                 {
                     winess.Add(wine);
                 }            
