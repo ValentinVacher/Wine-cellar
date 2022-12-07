@@ -20,17 +20,6 @@ namespace Wine_cellar.Entities
         public int ColorId { get; set; }
         public Color Color { get; set; }
 
-        public bool IsApogee()
-        {
-            
-             var ToDay= DateTime.Now;
-            var result = ToDay.Year;
-            if (result >= KeepMin && result <= KeepMax)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
+       
     }
 }
