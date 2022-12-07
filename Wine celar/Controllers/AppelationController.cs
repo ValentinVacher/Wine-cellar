@@ -8,7 +8,7 @@ using Wine_cellar.Repositories;
 
 namespace Wine_celar.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class AppelationController : ControllerBase
     {
@@ -56,6 +56,7 @@ namespace Wine_celar.Controllers
             return Ok(AppelationCreated);
         }
 
+        [HttpPut]
         public async Task<Appelation> UpdateAppelation(CreateAppelationViewModel appelViewModel)
         {
             Appelation appel = new()
@@ -74,7 +75,7 @@ namespace Wine_celar.Controllers
 
             return appelUpdate;
         }
-
+        [HttpDelete]
         public async Task<Appelation> DeleteAppelation(string appelationName)
         {
             var success = await AppelationRepository.DeleteAppelationAsync(appelationName);

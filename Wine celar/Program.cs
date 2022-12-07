@@ -38,6 +38,8 @@ builder.Services.AddScoped<IWineRepository, WineRepository>();
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAppelationRepository, AppelationRepository>();
+builder.Services.AddScoped<IColorRepository, ColorRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
