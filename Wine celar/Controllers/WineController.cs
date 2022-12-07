@@ -56,7 +56,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWine (CreateWineViewModel wineView)
+        public async Task<IActionResult> CreateWine ([FromForm] CreateWineViewModel wineView)
         {
             Wine wine = new()
             {
@@ -86,7 +86,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWine(UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
             Wine wine = new()
             {
