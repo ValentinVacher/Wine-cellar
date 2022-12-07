@@ -24,14 +24,14 @@ namespace Wine_cellar.Repositories
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).
+            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d=>d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
         //Permet de recuperer une cave avec tout ses elements
         public async Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers).ThenInclude(d => d.Wines).
+            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d=>d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.Name.Contains(name) && c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
