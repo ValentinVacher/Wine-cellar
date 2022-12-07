@@ -1,4 +1,4 @@
-﻿namespace Wine_celar.Entities
+﻿namespace Wine_cellar.Entities
 {
     public class Appelation
     {
@@ -6,6 +6,6 @@
         public string AppelationName { get; set; }
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
-        public List<Color> Color { get; set; }
+        public List<ColorWine> Color { get; set; }
     }
 }

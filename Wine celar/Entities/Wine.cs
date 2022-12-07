@@ -18,7 +18,7 @@ namespace Wine_cellar.Entities
         public int DrawerId { get; set; }
         public string PictureName { get; set; }
         public int ColorId { get; set; }
-        public Color Color { get; set; }
+        public ColorWine Color { get; set; }
 
         public bool IsApogee()
         {
