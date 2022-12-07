@@ -1,6 +1,7 @@
-﻿namespace Wine_celar.Entities
+﻿namespace Wine_cellar.Entities
 {
-    public class WineColor
+    public enum WineColor
     {
+        Rouge,Rosé,Blanc,Vert
     }
 }
