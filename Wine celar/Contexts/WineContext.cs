@@ -79,7 +79,7 @@ namespace Wine_cellar.Contexts
             var a23 = new Appelation { AppelationId = 23, AppelationName = "Jura", KeepMin = 8, KeepMax = 20, Color = WineColor.Blanc };
             var a24 = new Appelation { AppelationId = 24, AppelationName = "Alsace", KeepMin = 4, KeepMax = 5, Color = WineColor.Blanc };
             var a25 = new Appelation { AppelationId = 25, AppelationName = "Languedoc", KeepMin = 3, KeepMax = 4, Color = WineColor.Rosé };
-            var a26 = new Appelation { AppelationId = 26, AppelationName = "Provence", KeepMin = 3, KeepMax = 3, ColorIDColor = WineColor.Rosé };
+            var a26 = new Appelation { AppelationId = 26, AppelationName = "Provence", KeepMin = 3, KeepMax = 3, Color = WineColor.Rosé };
             var a27 = new Appelation { AppelationId = 27, AppelationName = "Rhône", KeepMin = 2, KeepMax = 2, Color = WineColor.Rosé };
 
 
@@ -88,7 +88,7 @@ namespace Wine_cellar.Contexts
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 });
             modelBuilder.Entity<User>().HasData(new List<User> { u1, u2, u3 });
             modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6});
-            modelBuilder.Entity<ColorWine>().HasData(new List<ColorWine> {cw1, cw2, cw3, cw4 });
+          
 
             base.OnModelCreating(modelBuilder);
         }
