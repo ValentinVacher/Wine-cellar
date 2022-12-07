@@ -30,7 +30,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Drawer>> PostDrawer(CreateDrawerViewModel createDrawer)
+        public async Task<ActionResult<Drawer>> PostDrawer([FromForm] CreateDrawerViewModel createDrawer)
         {
             Drawer drawer = new()
             {
@@ -50,7 +50,7 @@ namespace Wine_cellar.Controllers
             }
         }
         [HttpPut]
-        public async Task<ActionResult<Drawer>> UpdateDrawer(UpdateDrawerViewModel updatedrawer)
+        public async Task<ActionResult<Drawer>> UpdateDrawer([FromForm] UpdateDrawerViewModel updatedrawer)
         {
             var drawer= new Drawer 
             {

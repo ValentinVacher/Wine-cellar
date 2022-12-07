@@ -11,7 +11,6 @@ namespace Wine_cellar.Entities
         public string Appelation { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
-        public DateTime Today { get; set; }//A supprimer
         public int KeepMin { get; set; }
         public int KeepMax { get; set;}
         public Drawer Drawer { get; set; }

@@ -23,28 +23,37 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> GetAlls()
         {
             var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
 
             return Ok(await cellarRepository.GetAllsAsync(identity));
         }
+
         [HttpGet]
         public async Task<IActionResult> GetCellarByName(string name)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
             var cellar = await cellarRepository.GetCellarByName(name, identity);
-            if (cellar == null)
-                return NotFound($"Cave {name} non trouver");
+
+            if (cellar == null) return NotFound($"Cave {name} non trouver");
             return Ok(cellar);       
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddCellar(CreateCellarViewModel cellarViewModel, int Nbr)
+        public async Task<IActionResult> AddCellar([FromForm]CreateCellarViewModel cellarViewModel, int Nbr)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+            var verif = (await cellarRepository.GetAllsAsync(identity)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
-            if (idCurrentUser == null)
-                return Problem("Vous devez être connecter pour ajouter une cave");
+            if (verif != null) return Problem("Ce nom est déjà pris");
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter pour ajouter une cave");
 
             Cellar cellar = new()
             {
@@ -58,30 +67,40 @@ namespace Wine_cellar.Controllers
             else
                 return Problem("Cave non créer");
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCellar(UpdateCellarViewModel UpCellar, int id)
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, string actualname)
         {
-            var cellar = new Cellar()
+            var identity = User?.Identity as ClaimsIdentity;
+            var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
+
+            if (cellar == null) return Problem("Cave introuvable");
+
+            var cellarUpdate = new Cellar()
             {
-                CellarId = id,
+                CellarId = cellar.CellarId,
                 Name = UpCellar.Name,
                 UserId= UpCellar.UserId
                 
             };
-            return Ok(await cellarRepository.UpdateCellarAsync(cellar));
 
+            return Ok(await cellarRepository.UpdateCellarAsync(cellarUpdate));
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCellar(int id)
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCellar(string name)
         {
-            bool success = await cellarRepository.DeleteCellarAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+            var cellar = (await cellarRepository.GetCellarByName(name, identity)).FirstOrDefault();
+
+            if (cellar == null) return Problem("Cave introuvable");
+
+            bool success = await cellarRepository.DeleteCellarAsync(cellar);
 
             if (success)
-                return Ok($"La cave {id} a été supprimé");
+                return Ok($"La cave {name} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression de la cave");
         }
-
-
     }
 }
