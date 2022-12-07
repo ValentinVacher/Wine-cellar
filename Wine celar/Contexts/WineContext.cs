@@ -58,13 +58,28 @@ namespace Wine_cellar.Contexts
             var cw3 = new ColorWine { ColorId = 3, Name = "Rosé" };
             var cw4 = new ColorWine { ColorId = 4, Name = "Vert" };
 
-            var a1 = new Appelation { AppelationId = 1, AppelationName = "Bordeaux", KeepMin = 5, KeepMax = 10 };
-            var a2 = new Appelation { AppelationId = 2, AppelationName = "Loire", KeepMin = 4, KeepMax = 6 };
-            var a3 = new Appelation { AppelationId = 3, AppelationName = "Bordeaux, Grands crus", KeepMin = 10, KeepMax = 20 };
-            var a4 = new Appelation { AppelationId = 4, AppelationName = "Sud-Ouest", KeepMin = 5, KeepMax = 10 };
-            var a5 = new Appelation { AppelationId = 5, AppelationName = "Languedoc & Provence", KeepMin = 5, KeepMax = 8 };
-            var a6 = new Appelation { AppelationId = 6, AppelationName = "Côtes du Rhône", KeepMin = 4, KeepMax = 6 };
-
+            var a1 = new Appelation { AppelationId = 1, AppelationName = "Bordeaux", KeepMin = 5, KeepMax = 10, ColorID = 1 };
+            var a2 = new Appelation { AppelationId = 2, AppelationName = "Loire", KeepMin = 4, KeepMax = 6, ColorID = 1 };
+            var a3 = new Appelation { AppelationId = 3, AppelationName = "Bordeaux, Grands crus", KeepMin = 10, KeepMax = 20, ColorID = 1 };
+            var a4 = new Appelation { AppelationId = 4, AppelationName = "Sud-Ouest", KeepMin = 5, KeepMax = 10, ColorID = 1 };
+            var a5 = new Appelation { AppelationId = 5, AppelationName = "Languedoc & Provence", KeepMin = 5, KeepMax = 8, ColorID = 1 };
+            var a6 = new Appelation { AppelationId = 6, AppelationName = "Côtes du Rhône", KeepMin = 4, KeepMax = 6, ColorID = 1 };
+            var a7 = new Appelation { AppelationId = 7, AppelationName = "Cotes du Rhônes, Grands Crus", KeepMin = 10, KeepMax = 20, ColorID = 1 };
+            var a8 = new Appelation { AppelationId = 8, AppelationName = "Beaujolais", KeepMin = 4, KeepMax = 5, ColorID = 1 };
+            var a9 = new Appelation { AppelationId = 9, AppelationName = "Beaujolais, Crus", KeepMin = 5, KeepMax = 8, ColorID = 1 };
+            var a10 = new Appelation { AppelationId = 10, AppelationName = "Bourgogne, Saône-et-Loire", KeepMin = 5, KeepMax = 10, ColorID = 1 };
+            var a11 = new Appelation { AppelationId = 11, AppelationName = "Bourgogne, Côte-d'Or", KeepMin = 10, KeepMax = 20, ColorID = 1 };
+            var a12 = new Appelation { AppelationId = 12, AppelationName = "Loire, Sec", KeepMin = 3, KeepMax = 4, ColorID = 2 };
+            var a13 = new Appelation { AppelationId = 13, AppelationName = "Loire, moelleux et liquoreux", KeepMin = 10, KeepMax = 20, ColorID = 2 };
+            var a14 = new Appelation { AppelationId = 14, AppelationName = "Bordeaux, sec", KeepMin = 5, KeepMax = 8, ColorID = 2 };
+            var a15 = new Appelation { AppelationId = 15, AppelationName = "Bordeaux, liquoreux", KeepMin = 15, KeepMax = 20, ColorID = 2 };
+            var a16 = new Appelation { AppelationId = 16, AppelationName = "Sud-Ouest, sec", KeepMin = 4, KeepMax = 5, ColorID = 2 };
+            var a17 = new Appelation { AppelationId = 17, AppelationName = "Sud-Ouest, liquoreux", KeepMin = 10, KeepMax = 15, ColorID = 2 };
+            var a18 = new Appelation { AppelationId = 18, AppelationName = "Languedoc & Provence", KeepMin = 3, KeepMax = 3, ColorID = 2 };
+            var a19 = new Appelation { AppelationId = 19, AppelationName = "Côtes du Rhône", KeepMin = 3, KeepMax = 4, ColorID = 2 };
+            var a20 = new Appelation { AppelationId = 20, AppelationName = "Bourgogne, Saône-et-Loire", KeepMin = 4, KeepMax = 4, ColorID = 2 };
+            var a21 = new Appelation { AppelationId = 21, AppelationName = "Bourgogne, Côte-d'Or", KeepMin = 7, KeepMax = 10, ColorID = 2 };
+            var a22 = new Appelation { AppelationId = 22, AppelationName = "Jura", KeepMin = 8, KeepMax = 20, ColorID = 2 };
 
             modelBuilder.Entity<Cellar>().HasData(new List<Cellar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
