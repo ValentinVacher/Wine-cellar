@@ -63,6 +63,14 @@ namespace Wine_cellar.Repositories
             if (DrawerUpdate == null) return null;
             DrawerUpdate.NbBottleMax = drawer.NbBottleMax;
             DrawerUpdate.Index = drawer.Index;
+            var DrawersCheck= await winecontext.Drawers.Where(d=>d.CellarId==DrawerUpdate.CellarId).ToListAsync();
+            foreach (var drawercheck in DrawersCheck)
+            {
+                if (drawercheck.Index==drawer.Index)
+                {
+                    return null;
+                }
+            }
             await winecontext.SaveChangesAsync();
             return DrawerUpdate;
         }
@@ -73,6 +81,15 @@ namespace Wine_cellar.Repositories
             var DelDrawer = await winecontext.Drawers.Include(w => w.Wines).FirstOrDefaultAsync(d => d.Index == index && d.CellarId == cellarId);
             if (DelDrawer == null) return false;
             winecontext.Drawers.Remove(DelDrawer);
+            await winecontext.SaveChangesAsync();
+            var DrawersIndex = await winecontext.Drawers.Where(d => d.CellarId == DelDrawer.CellarId).ToListAsync();
+            foreach (var drawerindex in DrawersIndex)
+            {
+                if (drawerindex.Index>DelDrawer.Index)
+                {
+                    drawerindex.Index--;
+                }
+            }
             await winecontext.SaveChangesAsync();
             return true;
         }
