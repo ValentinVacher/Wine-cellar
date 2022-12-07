@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Wine_celar.Repositories;
 using Wine_cellar.Contexts;
+using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
 
@@ -39,6 +40,7 @@ builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAppelationRepository, AppelationRepository>();
+
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

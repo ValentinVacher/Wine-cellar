@@ -57,7 +57,7 @@ namespace Wine_celar.Controllers
         }
 
         [HttpPut]
-        public async Task<Appelation> UpdateAppelation(CreateAppelationViewModel appelViewModel)
+        public async Task<Appelation> UpdateAppelation([FromForm]CreateAppelationViewModel appelViewModel)
         {
             Appelation appel = new()
             {

@@ -17,6 +17,7 @@ namespace Wine_cellar.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Wine> Wines { get; set; }
         public DbSet<Appelation> Appelations { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -87,7 +88,8 @@ namespace Wine_cellar.Contexts
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 });
             modelBuilder.Entity<User>().HasData(new List<User> { u1, u2, u3 });
-            modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6});
+            modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, 
+            a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27});
           
 
             base.OnModelCreating(modelBuilder);
