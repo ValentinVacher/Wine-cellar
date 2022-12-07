@@ -49,11 +49,12 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
             var verif = (await cellarRepository.GetAllsAsync(identity)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
             if (verif != null) return Problem("Ce nom est déjà pris");
-
-            if (idCurrentUser == null) return Problem("Vous devez être connecter pour ajouter une cave");
 
             Cellar cellar = new()
             {
@@ -72,6 +73,10 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, string actualname)
         {
             var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
             var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
 
             if (cellar == null) return Problem("Cave introuvable");

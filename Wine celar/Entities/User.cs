@@ -1,4 +1,6 @@
-﻿namespace Wine_cellar.Entities
+﻿using System.Security.Claims;
+
+namespace Wine_cellar.Entities
 {
     public class User
     {
@@ -24,5 +26,7 @@
             else
                 return false;
         }
+
+        
     }
 }

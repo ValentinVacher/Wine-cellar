@@ -50,38 +50,48 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            Drawer drawer = new()
-            {
-                Index = createDrawer.index,
-                NbBottleMax = createDrawer.NbBottleMax,
-            };
-            var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, identity);
-            if (DrawerCreated == 1) return Ok(DrawerCreated);
-        
-            else if(DrawerCreated == 2)  return Problem("Tiroir non créer, la cave est pleine");
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
 
-            else return Problem("Cave non trouvé");
+            var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, identity);
+
+            switch (DrawerCreated)
+            {
+                case 1: return Ok(createDrawer);
+                case 2: return Problem("Tiroir non créer, la cave est pleine");
+                default: return Problem("Cave non trouvé");
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer([FromForm] UpdateDrawerViewModel updatedrawer)
         {
-            var drawer= new Drawer 
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, identity);
+
+            switch(drawer)
             {
-                DrawerId= updatedrawer.DrawerId,
-                Index=updatedrawer.Index,
-                NbBottleMax=updatedrawer.NbBottleMax 
-            };
-            return Ok(await drawerRepository.UpdateDrawerAsync(drawer));
+                case 1: return Problem("Le tiroir est introuvable");
+                case 2: return Problem("Cave introuvable");
+                default: return Ok(updatedrawer);
+            }
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(int cellarId, int index)
+        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName, int index)
         {
-            bool success = await drawerRepository.DeleteDrawerAsync(cellarId, index);
+            var identity = User?.Identity as ClaimsIdentity;
+            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+
+            bool success = await drawerRepository.DeleteDrawerAsync(cellarName, index, identity);
 
             if (success)
-                return Ok($"Le tiroir {index} de la cave {cellarId} a été supprimé");
+                return Ok($"Le tiroir {index} de la cave {cellarName} a été supprimé");
             else
                 return Problem($"Erreur lors de la suppression du tiroir");
         }

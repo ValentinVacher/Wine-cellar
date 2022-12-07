@@ -82,7 +82,6 @@ namespace Winecelar.Migrations
                     Appelation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
-                    Today = table.Column<DateTime>(type: "datetime2", nullable: false),
                     KeepMin = table.Column<int>(type: "int", nullable: false),
                     KeepMax = table.Column<int>(type: "int", nullable: false),
                     DrawerId = table.Column<int>(type: "int", nullable: false),
@@ -134,19 +133,19 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Wines",
-                columns: new[] { "WineId", "Appelation", "Color", "DrawerId", "KeepMax", "KeepMin", "Name", "PictureName", "Today", "Year" },
+                columns: new[] { "WineId", "Appelation", "Color", "DrawerId", "KeepMax", "KeepMin", "Name", "PictureName", "Year" },
                 values: new object[,]
                 {
-                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9433), 1960 },
-                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", "img/vin1.png", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9482), 1970 },
-                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9486), 1980 },
-                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9490), 1960 },
-                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9494), 1960 },
-                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9557), 1960 },
-                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9561), 1960 },
-                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9565), 1960 },
-                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9568), 1960 },
-                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", "", new DateTime(2022, 12, 7, 10, 22, 3, 269, DateTimeKind.Local).AddTicks(9572), 1960 }
+                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", "", 1960 },
+                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", "img/vin1.png", 1970 },
+                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", "", 1980 },
+                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", "", 1960 },
+                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", "", 1960 },
+                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", "", 1960 },
+                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", "", 1960 },
+                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", "", 1960 },
+                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", "", 1960 },
+                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", "", 1960 }
                 });
 
             migrationBuilder.CreateIndex(
