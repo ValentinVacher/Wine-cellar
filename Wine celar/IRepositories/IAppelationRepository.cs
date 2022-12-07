@@ -5,8 +5,9 @@ namespace Wine_cellar.IRepositories
     public interface IAppelationRepository
     {
         Task<List<Appelation>> GetAllAppelationsAsync();
+        Task<Appelation> GetAppelationAsync(string appelationName);
         Task<Appelation> CreateAppelationAsync(Appelation appelation);
-        Task<Appelation> UpdateAppelationAsync(string appelationName);
+        Task<Appelation> UpdateAppelationAsync(Appelation appelation);
         Task<Appelation> DeleteAppelationAsync(string appelationName);
     }
 }

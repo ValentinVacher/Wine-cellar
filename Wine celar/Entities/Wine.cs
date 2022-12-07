@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Wine_celar.Entities;
+using Wine_cellar.Entities;
 
 namespace Wine_cellar.Entities
 {
