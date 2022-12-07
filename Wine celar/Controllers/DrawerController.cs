@@ -39,7 +39,7 @@ namespace Wine_cellar.Controllers
 
             if (idCurrentUser == null) return Problem("Vous devez être connecter");
 
-            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity) == null) return Problem("Le tiroir est introuvable");
+            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity) == null) return NotFound("Le tiroir est introuvable");
 
             return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity));
         }
@@ -72,12 +72,9 @@ namespace Wine_cellar.Controllers
 
             var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, identity);
 
-            switch(drawer)
-            {
-                case 1: return Problem("Le tiroir est introuvable");
-                case 2: return Problem("Cave introuvable");
-                default: return Ok(updatedrawer);
-            }
+            if (drawer == null) return Problem("Le tiroir est introuvable");
+
+            return Ok(drawer);
         }
 
         [HttpDelete]
@@ -93,7 +90,7 @@ namespace Wine_cellar.Controllers
             if (success)
                 return Ok($"Le tiroir {index} de la cave {cellarName} a été supprimé");
             else
-                return Problem($"Erreur lors de la suppression du tiroir");
+                return Problem($"Le tiroir est introuvable");
         }
 
     }

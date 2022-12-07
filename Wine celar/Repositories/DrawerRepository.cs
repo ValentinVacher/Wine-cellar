@@ -39,8 +39,8 @@ namespace Wine_cellar.Repositories
         //Permet de créer un tiroir si la cave n'est pas pleine
         public async Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, ClaimsIdentity identity)
         {
-            var Cellar = await winecontext.Cellars.Include(d => d.Drawers).FirstOrDefaultAsync(d => d.Name == createDrawer.CellarName);
-            var drawers = await winecontext.Drawers.ToListAsync();
+            var Cellar = await winecontext.Cellars.Include(d => d.Drawers)
+                .FirstOrDefaultAsync(d => d.Name == createDrawer.CellarName && d.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (Cellar == null) return 3;
 
@@ -50,7 +50,7 @@ namespace Wine_cellar.Repositories
                 return 2;
             }
 
-            foreach (Drawer e in drawers)
+            foreach (Drawer e in Cellar.Drawers)
             {
                 if (e.Index >= createDrawer.index)
                 {
@@ -73,24 +73,20 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier un tiroir
-        public async Task<int> UpdateDrawerAsync(UpdateDrawerViewModel drawer, ClaimsIdentity identity)
+        public async Task<Drawer> UpdateDrawerAsync(UpdateDrawerViewModel drawer, ClaimsIdentity identity)
         {
             Drawer DrawerUpdate = await winecontext.Drawers.
                 FirstOrDefaultAsync(d => d.Index == drawer.Index && d.Cellar.Name == drawer.CellarName
                 && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            if (DrawerUpdate == null) return 1;
-
-            var cellar = winecontext.Cellars.FirstOrDefault(c => c.Name == drawer.CellarName);
-
-            if (cellar == null) return 2;
+            if (DrawerUpdate == null) return null;
 
             DrawerUpdate.NbBottleMax = drawer.NbBottleMax;
             DrawerUpdate.Index = drawer.Index;
 
             await winecontext.SaveChangesAsync();
 
-            return 0;
+            return DrawerUpdate;
         }
 
         //Permet de supprimer un tiroir

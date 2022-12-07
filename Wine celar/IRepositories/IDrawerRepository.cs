@@ -14,7 +14,7 @@ namespace Wine_cellar.IRepositories
         //Permet d'ajouter un tiroir 
         Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, ClaimsIdentity identity);
         //Permet de mettre a jour un tiroir 
-        Task<int> UpdateDrawerAsync(UpdateDrawerViewModel drawer, ClaimsIdentity identity);
+        Task<Drawer> UpdateDrawerAsync(UpdateDrawerViewModel drawer, ClaimsIdentity identity);
         //Permet de supprimer un tiroir
         Task<bool> DeleteDrawerAsync(string cellarName, int index, ClaimsIdentity identity);
     }
