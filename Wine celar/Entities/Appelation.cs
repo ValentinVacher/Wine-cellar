@@ -7,6 +7,7 @@
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
         public WineColor Color { get; set; }
+        public List<Wine> Wines { get; set; }
 
         public bool IsApogee()
         {
