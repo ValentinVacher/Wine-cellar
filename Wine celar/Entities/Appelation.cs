@@ -6,7 +6,8 @@
         public string AppelationName { get; set; }
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
-        public List<ColorWine> Color { get; set; }
+        public int ColorID { get; set; }
+        public ColorWine ColorWine { get; set; }
 
         public bool IsApogee()
         {
