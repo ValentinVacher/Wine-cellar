@@ -59,12 +59,9 @@ namespace Wine_cellar.Controllers
         {
             var wine = new Wine()
             {
-                Color = WineViewModel.Color,
-                Appelation = WineViewModel.Appelation,
+                
                 Name = WineViewModel.Name,
                 Year = WineViewModel.Year,
-                KeepMin = WineViewModel.KeepMin,
-                KeepMax = WineViewModel.KeepMax,
                 DrawerId = WineViewModel.DrawerId,
                 PictureName = WineViewModel.Picture?.FileName ?? "",
             };
@@ -102,12 +99,9 @@ namespace Wine_cellar.Controllers
         {
             Wine wine = new()
             {
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
+                
                 Name = wineView.Name,
                 Year = wineView.Year, 
-                KeepMax = wineView.KeepMax,
-                KeepMin = wineView.KeepMin,
                 DrawerId = wineView.DrawerId
             };
            
@@ -133,12 +127,9 @@ namespace Wine_cellar.Controllers
             Wine wine = new()
             {
                 WineId = wineView.WineId,
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
                 Name = wineView.Name,
-                Year = wineView.Year,
-                KeepMin = wineView.KeepMin,
-                KeepMax = wineView.KeepMax
+                Year = wineView.Year
+               
                 //DrawerId = wineView.DrawerId
             };
 

@@ -32,12 +32,12 @@ namespace Wine_cellar.Repositories
             var winess = new List<Wine>();
             foreach (var wine in wines)
             {
-                if (wine.IsApogee() == true)
+                if (wine.Color.Appelations[1].IsApogee()== true)
                 {
                     winess.Add(wine);
                 }            
             }
-            return winess.OrderBy(w=>w.KeepMax).ToList();
+            return winess.OrderBy(w => w.Color).ToList();
         }
 
         //Permet de recuperer un vin par son id 
@@ -49,7 +49,7 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer une liste de vin selon un terme choisi
         public async Task<List<Wine>> GetWineByWordAsync(string word)
         {
-            return await wineContext.Wines.Where(w => w.Color.Contains(word) || w.Appelation.Contains(word) || w.Name.Contains(word)).OrderBy(w=>w.Color).ToListAsync();
+            return await wineContext.Wines.Where(w => w.Name.Contains(word)).OrderBy(w=>w.Color).ToListAsync();
         }
 
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
@@ -81,7 +81,6 @@ namespace Wine_cellar.Repositories
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
             WineUpdate.Color = wine.Color;
-            WineUpdate.Appelation = wine.Appelation;
             await wineContext.SaveChangesAsync();
             return WineUpdate;
         }
@@ -124,12 +123,9 @@ namespace Wine_cellar.Repositories
             {
                 var wine = new Wine
                 {
-                    Color = WineDuplicate.Color,
-                    Appelation = WineDuplicate.Appelation,
+                    
                     Name = WineDuplicate.Name,
                     Year = WineDuplicate.Year,
-                    KeepMax = WineDuplicate.KeepMax,
-                    KeepMin = WineDuplicate.KeepMin,
                     DrawerId = WineDuplicate.DrawerId
                 };
                 wineContext.Wines.Add(wine);
