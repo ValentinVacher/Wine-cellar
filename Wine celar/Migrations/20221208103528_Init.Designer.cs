@@ -12,7 +12,7 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    [Migration("20221207141323_Init")]
+    [Migration("20221208103528_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,6 +24,250 @@ namespace Winecelar.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Wine_cellar.Entities.Appelation", b =>
+                {
+                    b.Property<int>("AppelationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppelationId"));
+
+                    b.Property<string>("AppelationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KeepMax")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KeepMin")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppelationId");
+
+                    b.ToTable("Appelations");
+
+                    b.HasData(
+                        new
+                        {
+                            AppelationId = 1,
+                            AppelationName = "Bordeaux",
+                            Color = 0,
+                            KeepMax = 10,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 2,
+                            AppelationName = "Loire",
+                            Color = 0,
+                            KeepMax = 6,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 3,
+                            AppelationName = "Bordeaux, Grands crus",
+                            Color = 0,
+                            KeepMax = 20,
+                            KeepMin = 10
+                        },
+                        new
+                        {
+                            AppelationId = 4,
+                            AppelationName = "Sud-Ouest",
+                            Color = 0,
+                            KeepMax = 10,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 5,
+                            AppelationName = "Languedoc & Provence",
+                            Color = 0,
+                            KeepMax = 8,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 6,
+                            AppelationName = "Côtes du Rhône",
+                            Color = 0,
+                            KeepMax = 6,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 7,
+                            AppelationName = "Cotes du Rhônes, Grands Crus",
+                            Color = 0,
+                            KeepMax = 20,
+                            KeepMin = 10
+                        },
+                        new
+                        {
+                            AppelationId = 8,
+                            AppelationName = "Beaujolais",
+                            Color = 0,
+                            KeepMax = 5,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 9,
+                            AppelationName = "Beaujolais, Crus",
+                            Color = 0,
+                            KeepMax = 8,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 10,
+                            AppelationName = "Bourgogne, Saône-et-Loire",
+                            Color = 0,
+                            KeepMax = 10,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 11,
+                            AppelationName = "Bourgogne, Côte-d'Or",
+                            Color = 0,
+                            KeepMax = 20,
+                            KeepMin = 10
+                        },
+                        new
+                        {
+                            AppelationId = 12,
+                            AppelationName = "Loire, Sec",
+                            Color = 2,
+                            KeepMax = 4,
+                            KeepMin = 3
+                        },
+                        new
+                        {
+                            AppelationId = 13,
+                            AppelationName = "Loire, moelleux et liquoreux",
+                            Color = 2,
+                            KeepMax = 20,
+                            KeepMin = 10
+                        },
+                        new
+                        {
+                            AppelationId = 14,
+                            AppelationName = "Bordeaux, sec",
+                            Color = 2,
+                            KeepMax = 8,
+                            KeepMin = 5
+                        },
+                        new
+                        {
+                            AppelationId = 15,
+                            AppelationName = "Bordeaux, liquoreux",
+                            Color = 2,
+                            KeepMax = 20,
+                            KeepMin = 15
+                        },
+                        new
+                        {
+                            AppelationId = 16,
+                            AppelationName = "Sud-Ouest, sec",
+                            Color = 2,
+                            KeepMax = 5,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 17,
+                            AppelationName = "Sud-Ouest, liquoreux",
+                            Color = 2,
+                            KeepMax = 15,
+                            KeepMin = 10
+                        },
+                        new
+                        {
+                            AppelationId = 18,
+                            AppelationName = "Languedoc & Provence",
+                            Color = 2,
+                            KeepMax = 3,
+                            KeepMin = 3
+                        },
+                        new
+                        {
+                            AppelationId = 19,
+                            AppelationName = "Côtes du Rhône",
+                            Color = 2,
+                            KeepMax = 4,
+                            KeepMin = 3
+                        },
+                        new
+                        {
+                            AppelationId = 20,
+                            AppelationName = "Bourgogne, Saône-et-Loire",
+                            Color = 2,
+                            KeepMax = 4,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 21,
+                            AppelationName = "Bourgogne, Côte-d'Or",
+                            Color = 2,
+                            KeepMax = 10,
+                            KeepMin = 7
+                        },
+                        new
+                        {
+                            AppelationId = 22,
+                            AppelationName = "Jura",
+                            Color = 2,
+                            KeepMax = 20,
+                            KeepMin = 8
+                        },
+                        new
+                        {
+                            AppelationId = 23,
+                            AppelationName = "Jura",
+                            Color = 2,
+                            KeepMax = 20,
+                            KeepMin = 8
+                        },
+                        new
+                        {
+                            AppelationId = 24,
+                            AppelationName = "Alsace",
+                            Color = 2,
+                            KeepMax = 5,
+                            KeepMin = 4
+                        },
+                        new
+                        {
+                            AppelationId = 25,
+                            AppelationName = "Languedoc",
+                            Color = 1,
+                            KeepMax = 4,
+                            KeepMin = 3
+                        },
+                        new
+                        {
+                            AppelationId = 26,
+                            AppelationName = "Provence",
+                            Color = 1,
+                            KeepMax = 3,
+                            KeepMin = 3
+                        },
+                        new
+                        {
+                            AppelationId = 27,
+                            AppelationName = "Rhône",
+                            Color = 1,
+                            KeepMax = 2,
+                            KeepMin = 2
+                        });
+                });
 
             modelBuilder.Entity("Wine_cellar.Entities.Cellar", b =>
                 {
@@ -210,21 +454,13 @@ namespace Winecelar.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WineId"));
 
-                    b.Property<string>("Appelation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AppelationId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Color")
+                        .HasColumnType("int");
 
                     b.Property<int>("DrawerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("KeepMax")
-                        .HasColumnType("int");
-
-                    b.Property<int>("KeepMin")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -232,13 +468,14 @@ namespace Winecelar.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PictureName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("WineId");
+
+                    b.HasIndex("AppelationId");
 
                     b.HasIndex("DrawerId");
 
@@ -248,11 +485,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 1,
-                            Appelation = "Appelation1",
-                            Color = "Rosé",
+                            AppelationId = 1,
+                            Color = 0,
                             DrawerId = 1,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-1",
                             PictureName = "",
                             Year = 1960
@@ -260,11 +495,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 2,
-                            Appelation = "Appelation2",
-                            Color = "Bleu",
+                            AppelationId = 2,
+                            Color = 0,
                             DrawerId = 1,
-                            KeepMax = 2002,
-                            KeepMin = 2001,
                             Name = "20-2",
                             PictureName = "img/vin1.png",
                             Year = 1970
@@ -272,11 +505,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 3,
-                            Appelation = "Appelation3",
-                            Color = "Verre",
+                            AppelationId = 3,
+                            Color = 0,
                             DrawerId = 2,
-                            KeepMax = 2002,
-                            KeepMin = 2001,
                             Name = "20-3",
                             PictureName = "",
                             Year = 1980
@@ -284,11 +515,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 4,
-                            Appelation = "Appelation4",
-                            Color = "Rouge",
+                            AppelationId = 4,
+                            Color = 0,
                             DrawerId = 2,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-4",
                             PictureName = "",
                             Year = 1960
@@ -296,11 +525,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 5,
-                            Appelation = "Appelation5",
-                            Color = "Jaune",
+                            AppelationId = 5,
+                            Color = 0,
                             DrawerId = 3,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-5",
                             PictureName = "",
                             Year = 1960
@@ -308,11 +535,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 6,
-                            Appelation = "Appelation6",
-                            Color = "Blanc",
+                            AppelationId = 6,
+                            Color = 0,
                             DrawerId = 3,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-6",
                             PictureName = "",
                             Year = 1960
@@ -320,11 +545,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 7,
-                            Appelation = "Appelation7",
-                            Color = "Rouge",
+                            AppelationId = 12,
+                            Color = 2,
                             DrawerId = 4,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-7",
                             PictureName = "",
                             Year = 1960
@@ -332,11 +555,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 8,
-                            Appelation = "Appelation8",
-                            Color = "Violet",
+                            AppelationId = 13,
+                            Color = 2,
                             DrawerId = 4,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-8",
                             PictureName = "",
                             Year = 1960
@@ -344,11 +565,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 9,
-                            Appelation = "Appelation9",
-                            Color = "Orange",
+                            AppelationId = 14,
+                            Color = 2,
                             DrawerId = 5,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-9",
                             PictureName = "",
                             Year = 1960
@@ -356,11 +575,9 @@ namespace Winecelar.Migrations
                         new
                         {
                             WineId = 10,
-                            Appelation = "Appelation10",
-                            Color = "Violet",
+                            AppelationId = 12,
+                            Color = 2,
                             DrawerId = 5,
-                            KeepMax = 2002,
-                            KeepMin = 2000,
                             Name = "20-10",
                             PictureName = "",
                             Year = 1960
@@ -391,13 +608,26 @@ namespace Winecelar.Migrations
 
             modelBuilder.Entity("Wine_cellar.Entities.Wine", b =>
                 {
+                    b.HasOne("Wine_cellar.Entities.Appelation", "Appelation")
+                        .WithMany("Wines")
+                        .HasForeignKey("AppelationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Wine_cellar.Entities.Drawer", "Drawer")
                         .WithMany("Wines")
                         .HasForeignKey("DrawerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Appelation");
+
                     b.Navigation("Drawer");
+                });
+
+            modelBuilder.Entity("Wine_cellar.Entities.Appelation", b =>
+                {
+                    b.Navigation("Wines");
                 });
 
             modelBuilder.Entity("Wine_cellar.Entities.Cellar", b =>

@@ -14,6 +14,22 @@ namespace Winecelar.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Appelations",
+                columns: table => new
+                {
+                    AppelationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppelationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KeepMin = table.Column<int>(type: "int", nullable: false),
+                    KeepMax = table.Column<int>(type: "int", nullable: false),
+                    Color = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appelations", x => x.AppelationId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -78,24 +94,62 @@ namespace Winecelar.Migrations
                 {
                     WineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Appelation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
-                    KeepMin = table.Column<int>(type: "int", nullable: false),
-                    KeepMax = table.Column<int>(type: "int", nullable: false),
                     DrawerId = table.Column<int>(type: "int", nullable: false),
-                    PictureName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PictureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<int>(type: "int", nullable: false),
+                    AppelationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wines", x => x.WineId);
+                    table.ForeignKey(
+                        name: "FK_Wines_Appelations_AppelationId",
+                        column: x => x.AppelationId,
+                        principalTable: "Appelations",
+                        principalColumn: "AppelationId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Wines_Drawers_DrawerId",
                         column: x => x.DrawerId,
                         principalTable: "Drawers",
                         principalColumn: "DrawerId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appelations",
+                columns: new[] { "AppelationId", "AppelationName", "Color", "KeepMax", "KeepMin" },
+                values: new object[,]
+                {
+                    { 1, "Bordeaux", 0, 10, 5 },
+                    { 2, "Loire", 0, 6, 4 },
+                    { 3, "Bordeaux, Grands crus", 0, 20, 10 },
+                    { 4, "Sud-Ouest", 0, 10, 5 },
+                    { 5, "Languedoc & Provence", 0, 8, 5 },
+                    { 6, "Côtes du Rhône", 0, 6, 4 },
+                    { 7, "Cotes du Rhônes, Grands Crus", 0, 20, 10 },
+                    { 8, "Beaujolais", 0, 5, 4 },
+                    { 9, "Beaujolais, Crus", 0, 8, 5 },
+                    { 10, "Bourgogne, Saône-et-Loire", 0, 10, 5 },
+                    { 11, "Bourgogne, Côte-d'Or", 0, 20, 10 },
+                    { 12, "Loire, Sec", 2, 4, 3 },
+                    { 13, "Loire, moelleux et liquoreux", 2, 20, 10 },
+                    { 14, "Bordeaux, sec", 2, 8, 5 },
+                    { 15, "Bordeaux, liquoreux", 2, 20, 15 },
+                    { 16, "Sud-Ouest, sec", 2, 5, 4 },
+                    { 17, "Sud-Ouest, liquoreux", 2, 15, 10 },
+                    { 18, "Languedoc & Provence", 2, 3, 3 },
+                    { 19, "Côtes du Rhône", 2, 4, 3 },
+                    { 20, "Bourgogne, Saône-et-Loire", 2, 4, 4 },
+                    { 21, "Bourgogne, Côte-d'Or", 2, 10, 7 },
+                    { 22, "Jura", 2, 20, 8 },
+                    { 23, "Jura", 2, 20, 8 },
+                    { 24, "Alsace", 2, 5, 4 },
+                    { 25, "Languedoc", 1, 4, 3 },
+                    { 26, "Provence", 1, 3, 3 },
+                    { 27, "Rhône", 1, 2, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -133,19 +187,19 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Wines",
-                columns: new[] { "WineId", "Appelation", "Color", "DrawerId", "KeepMax", "KeepMin", "Name", "PictureName", "Year" },
+                columns: new[] { "WineId", "AppelationId", "Color", "DrawerId", "Name", "PictureName", "Year" },
                 values: new object[,]
                 {
-                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", "", 1960 },
-                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", "img/vin1.png", 1970 },
-                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", "", 1980 },
-                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", "", 1960 },
-                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", "", 1960 },
-                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", "", 1960 },
-                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", "", 1960 },
-                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", "", 1960 },
-                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", "", 1960 },
-                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", "", 1960 }
+                    { 1, 1, 0, 1, "20-1", "", 1960 },
+                    { 2, 2, 0, 1, "20-2", "img/vin1.png", 1970 },
+                    { 3, 3, 0, 2, "20-3", "", 1980 },
+                    { 4, 4, 0, 2, "20-4", "", 1960 },
+                    { 5, 5, 0, 3, "20-5", "", 1960 },
+                    { 6, 6, 0, 3, "20-6", "", 1960 },
+                    { 7, 12, 2, 4, "20-7", "", 1960 },
+                    { 8, 13, 2, 4, "20-8", "", 1960 },
+                    { 9, 14, 2, 5, "20-9", "", 1960 },
+                    { 10, 12, 2, 5, "20-10", "", 1960 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -159,6 +213,11 @@ namespace Winecelar.Migrations
                 column: "CellarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Wines_AppelationId",
+                table: "Wines",
+                column: "AppelationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wines_DrawerId",
                 table: "Wines",
                 column: "DrawerId");
@@ -169,6 +228,9 @@ namespace Winecelar.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Wines");
+
+            migrationBuilder.DropTable(
+                name: "Appelations");
 
             migrationBuilder.DropTable(
                 name: "Drawers");

@@ -6,6 +6,7 @@ using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Contexts;
 using System.Security.Claims;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
@@ -72,6 +73,13 @@ namespace Wine_cellar.Controllers
             if (wine == null) return NotFound($"Le vin {word} est introuvable");
 
             return Ok(wine);
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
+        {
+            var wines=await wineRepository.GetWineByColorAsync(color);
+            if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
+            return Ok(wines);
         }
 
         [HttpPost]
