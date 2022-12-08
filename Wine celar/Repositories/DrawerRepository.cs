@@ -31,8 +31,8 @@ namespace Wine_cellar.Repositories
         //Permet de récuperer un tiroir avec ses bouteilles
         public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index, ClaimsIdentity identity)
         {
-            return await winecontext.Drawers.Include(d => d.Wines).Include(d=>d.Cellar).
-                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name.Contains(cellarName) 
+            return await winecontext.Drawers.Include(d => d.Wines).Include(d => d.Cellar).
+                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name.Contains(cellarName)
                 && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
         }
 
@@ -45,7 +45,7 @@ namespace Wine_cellar.Repositories
             if (Cellar == null) return 3;
 
             //Verification cave pleine
-            if (Cellar.IsFull() )
+            if (Cellar.IsFull())
             {
                 return 2;
             }
@@ -93,7 +93,7 @@ namespace Wine_cellar.Repositories
         public async Task<bool> DeleteDrawerAsync(string cellarName, int index, ClaimsIdentity identity)
         {
             var DelDrawer = await winecontext.Drawers.Include(w => w.Wines).
-                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName 
+                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name == cellarName
                 && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (DelDrawer == null) return false;
@@ -102,7 +102,7 @@ namespace Wine_cellar.Repositories
             var DrawersIndex = await winecontext.Drawers.Where(d => d.CellarId == DelDrawer.CellarId).ToListAsync();
             foreach (var drawerindex in DrawersIndex)
             {
-                if (drawerindex.Index>DelDrawer.Index)
+                if (drawerindex.Index > DelDrawer.Index)
                 {
                     drawerindex.Index--;
                 }
