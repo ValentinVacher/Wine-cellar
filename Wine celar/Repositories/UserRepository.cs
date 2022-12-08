@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using System.Security.Claims;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
@@ -54,9 +55,12 @@ namespace Wine_celar.Repositories
         }
 
         //Permet de supprimer un user
-        public async Task<bool> DeleteUserAsync(int UserId)
+        public async Task<bool> DeleteUserAsync(int UserId, ClaimsIdentity identity)
         {
             var UserDelete = await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).FirstOrDefaultAsync(c => c.UserId == UserId);
+
+            if (UserDelete.UserId == int.Parse(identity?.FindFirst(ClaimTypes.NameIdentifier).Value)) return false;
+
             if (UserDelete == null)
                 return false;
             //Supprime les caves associées

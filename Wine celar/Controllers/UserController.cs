@@ -156,7 +156,7 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
 
-            bool success = await UserRepository.DeleteUserAsync(id);
+            bool success = await UserRepository.DeleteUserAsync(id, identity);
 
             if (success)
                 return Ok($"L'utilisateur {id} a été supprimé");
