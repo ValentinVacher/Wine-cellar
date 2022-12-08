@@ -51,8 +51,11 @@ namespace Wine_celar.Controllers
 
             if (AppelationCreated == null)
             {
-                return Problem("Erreur lors de la création de la bouteille");
+                return Ok("Le vin existe deja");
+                
             }
+            
+            
             return Ok(AppelationCreated);
         }
 

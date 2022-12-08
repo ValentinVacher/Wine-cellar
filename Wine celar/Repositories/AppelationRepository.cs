@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
@@ -29,9 +30,18 @@ namespace Wine_celar.Repositories
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
+            foreach (var appel in winecontext.Appelations)
+            {
+                if (appel.AppelationName == appelation.AppelationName)
+                {
+                    return null;
+                }
+            }
             winecontext.Appelations.Add(appelation);
             await winecontext.SaveChangesAsync();
             return appelation;
+            
+
         }
 
 
@@ -46,7 +56,7 @@ namespace Wine_celar.Repositories
             return AppelationUpdate;
         }
 
-    public async Task<Appelation> DeleteAppelationAsync(string appelationName)
+        public async Task<Appelation> DeleteAppelationAsync(string appelationName)
         {
             var AppelationDelete = await GetAppelationAsync(appelationName);
             if (AppelationDelete == null)
