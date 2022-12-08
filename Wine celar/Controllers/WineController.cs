@@ -139,9 +139,8 @@ namespace Wine_cellar.Controllers
         public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerIndex, string cellar)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, identity);
 
@@ -158,16 +157,15 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> DeleteWine(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             bool success = await wineRepository.DeleteWineAsync(id, identity);
 
             if (success)
                 return Ok($"Le vin {id} a été supprimé");
             else
-                return Problem($"Erreur lors de la suppression du vin");
+                return Problem("Vin introuvable");
         }
     }
 }
