@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wine_cellar.Contexts;
 
@@ -11,9 +12,11 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    partial class WineContextModelSnapshot : ModelSnapshot
+    [Migration("20221208090259_UpdatePicture")]
+    partial class UpdatePicture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
