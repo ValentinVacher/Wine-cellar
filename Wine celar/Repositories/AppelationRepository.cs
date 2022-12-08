@@ -46,7 +46,7 @@ namespace Wine_celar.Repositories
             return AppelationUpdate;
         }
 
-    public async Task<Appelation> DeleteAppelationAsync(string appelationName)
+        public async Task<Appelation> DeleteAppelationAsync(string appelationName)
         {
             var AppelationDelete = await GetAppelationAsync(appelationName);
             if (AppelationDelete == null)
@@ -56,11 +56,13 @@ namespace Wine_celar.Repositories
             return AppelationDelete;
         }
 
-      
+
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
-            return await winecontext.Appelations.Where(a => a.Color == color).ToListAsync();
+            var AppelationsColor = await winecontext.Appelations.Where(a => a.Color == color).ToListAsync();
+            if (AppelationsColor.Count() == 0) return null;
+            return AppelationsColor;
         }
     }
 }

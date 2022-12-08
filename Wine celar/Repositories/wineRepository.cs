@@ -139,7 +139,9 @@ namespace Wine_cellar.Repositories
 
         public async Task<List<Wine>> GetWineByColorAsync(WineColor color)
         {
-            return await wineContext.Wines.Where(w=>w.Color== color).ToListAsync();
+            var WinesColor= await wineContext.Wines.Where(w=>w.Color== color).ToListAsync();
+            if (WinesColor.Count == 0) return null;
+            return WinesColor;
         }
     }
 }
