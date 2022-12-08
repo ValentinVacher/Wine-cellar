@@ -1,4 +1,6 @@
-﻿namespace Wine_celar.ViewModel
+﻿using Wine_cellar.Entities;
+
+namespace Wine_celar.ViewModel
 {
     public class CreateAppelationViewModel
     {
@@ -6,6 +8,7 @@
         public int KeepMax { get; set; }
         public int KeepMin { get; set;}
         public int AppelationId { get; set; }
+        public WineColor Color { get; set; }
         
     }
 }
