@@ -36,20 +36,25 @@ namespace Wine_cellar.Controllers
         {
             var userConnected = await UserRepository.LoginUser(login, pwd);
 
-            if (userConnected == null)
-                return Problem($"Erreur lors du login, vérifiez le login ou mot de passe");
+            if (userConnected == null) return Problem($"Erreur lors du login, vérifiez le login ou mot de passe");
 
-            Claim emailClaim = new(ClaimTypes.Email, userConnected.Email);
-            Claim nameClaim = new(ClaimTypes.Name, userConnected.LastName);
-            Claim gvClaim = new(ClaimTypes.GivenName, userConnected.FirstName);
-            Claim idClaim = new(ClaimTypes.NameIdentifier, userConnected.UserId.ToString());
+            List<Claim> claims = new List<Claim>();
 
-            ClaimsIdentity identity = new(new List<Claim> {
-                emailClaim,
-                nameClaim,
-                gvClaim,
-                idClaim
-            }, CookieAuthenticationDefaults.AuthenticationScheme);
+            claims.Add(new(ClaimTypes.Email, userConnected.Email));
+            claims.Add(new(ClaimTypes.Name, userConnected.LastName));
+            claims.Add(new(ClaimTypes.GivenName, userConnected.FirstName));
+            claims.Add(new(ClaimTypes.NameIdentifier, userConnected.UserId.ToString()));
+
+            if (userConnected.IsAdmin)
+            {
+                claims.Add(new(ClaimTypes.Role, "admin"));
+            }
+            else
+            {
+                claims.Add(new(ClaimTypes.Role, ""));
+            }
+
+            ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 

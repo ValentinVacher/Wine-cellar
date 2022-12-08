@@ -74,9 +74,7 @@ namespace Wine_celar.Repositories
         //Permet de se connecter
         public async Task<User?> LoginUser(string login, string pwd)
         {
-            var userConnected = await wineContext.Users.FirstOrDefaultAsync(u =>
-               u.Email == login && u.Password == pwd
-            );
+            var userConnected = await wineContext.Users.FirstOrDefaultAsync(u => u.Email == login && u.Password == pwd);
 
             return userConnected;
         }

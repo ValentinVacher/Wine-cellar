@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Wine_celar.Repositories;
 using Wine_celar.ViewModel;
 using Wine_cellar.Entities;
@@ -48,6 +50,12 @@ namespace Wine_celar.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             Appelation appel = new()
             {
                 AppelationName = appelViewModel.AppelationName,
@@ -58,8 +66,7 @@ namespace Wine_celar.Controllers
 
             if (AppelationCreated == null)
             {
-                return Ok("Le vin existe deja");
-                
+                return Ok("L'appelation existe deja");             
             }
             
             
@@ -67,8 +74,14 @@ namespace Wine_celar.Controllers
         }
 
         [HttpPut]
-        public async Task<Appelation> UpdateAppelation([FromForm]CreateAppelationViewModel appelViewModel)
+        public async Task<IActionResult> UpdateAppelation([FromForm]CreateAppelationViewModel appelViewModel)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             Appelation appel = new()
             {
                 AppelationName = appelViewModel.AppelationName,
@@ -83,15 +96,21 @@ namespace Wine_celar.Controllers
                 return null;
             }
 
-            return appelUpdate;
+            return Ok(appelUpdate);
         }
         [HttpDelete]
-        public async Task<Appelation> DeleteAppelation(string appelationName)
+        public async Task<IActionResult> DeleteAppelation(string appelationName)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             var success = await AppelationRepository.DeleteAppelationAsync(appelationName);
 
             if (success != null)
-                return success;
+                return Ok(success);
             else
                 return null;
         }
