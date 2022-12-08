@@ -1,4 +1,5 @@
-﻿using Wine_cellar.Entities;
+﻿using System.Security.Claims;
+using Wine_cellar.Entities;
 
 namespace Wine_cellar.IRepositories
 {
@@ -11,7 +12,7 @@ namespace Wine_cellar.IRepositories
         //Permet de mettre à jour les infos du user
         Task<User> UpdateUserAsync(User user);
         //Permet de supprimer un user
-        Task<bool> DeleteUserAsync(int UserId);
+        Task<bool> DeleteUserAsync(int UserId, ClaimsIdentity identity);
         //Permet de se connecter en tant que user
         Task<User> LoginUser(string login, string pwd);
     }

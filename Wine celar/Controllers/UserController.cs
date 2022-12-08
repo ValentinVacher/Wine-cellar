@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
+using System.Security.Principal;
 
 namespace Wine_cellar.Controllers
 {
@@ -28,6 +29,12 @@ namespace Wine_cellar.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUserAsync()
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             return Ok(await UserRepository.GetAllUserAsync());
         }
 
@@ -70,7 +77,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromForm] CreateUserViewModel userView)
+        public async Task<IActionResult> SignIn([FromForm] CreateUserViewModel userView)
         {
             Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
             if(!regexPsw.Match(userView.Password).Success) return Problem("Mot de passe incorrect");
@@ -78,13 +85,23 @@ namespace Wine_cellar.Controllers
             Regex regexMail = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             if (!regexMail.Match(userView.Email).Success) return Problem("Email invalide");
 
+            if(userView.IsAdmin)
+            {
+                var identity = User?.Identity as ClaimsIdentity;
+
+                if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+                if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+            }
+
             User user = new()
             {
                 FirstName= userView.FirstName,
                 LastName= userView.LastName,
                 DateOfBirth = userView.DateOfBirth,
                 Email= userView.Email,
-                Password= userView.Password
+                Password= userView.Password,
+                IsAdmin= userView.IsAdmin
             };
 
             if(!user.IsOlder())
@@ -105,6 +122,12 @@ namespace Wine_cellar.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromForm] UpdateUserViewModel userView)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             User user = new()
             {
                 UserId = userView.UserId,
@@ -127,6 +150,12 @@ namespace Wine_cellar.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
+
             bool success = await UserRepository.DeleteUserAsync(id);
 
             if (success)

@@ -52,7 +52,7 @@ namespace Wine_celar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
 
@@ -74,7 +74,7 @@ namespace Wine_celar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
 
@@ -99,7 +99,7 @@ namespace Wine_celar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier).Value == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return Problem("Vous devez être admin");
 
