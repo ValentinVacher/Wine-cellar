@@ -17,5 +17,5 @@ namespace Wine_cellar.Entities
         public WineColor Color { get; set; }
         public List<Wine> Wines { get; set; }
 
-       
+    }
 }
