@@ -3,6 +3,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using System.Runtime.InteropServices;
 
 namespace Wine_cellar.Repositories
 {
@@ -136,5 +137,9 @@ namespace Wine_cellar.Repositories
 
         }
 
+        public async Task<List<Wine>> GetWineByColorAsync(WineColor color)
+        {
+            return await wineContext.Wines.Where(w=>w.Color== color).ToListAsync();
+        }
     }
 }
