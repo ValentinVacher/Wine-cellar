@@ -29,15 +29,19 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins à leur apogée dans une liste
         public async Task<List<Wine>> GetApogeeAsync()
         {
-            var wines = await GetAllWinesAsync();
+            var wines = await wineContext.Wines.Include(w=>w.Appelation).ToListAsync();
             var winess = new List<Wine>();
             foreach (var wine in wines)
             {
-                if (wine.Appelation.IsApogee())
+                var ToDay = DateTime.Now.Year;
+                var max = wine.Year + wine.Appelation.KeepMax;
+                var min = wine.Year + wine.Appelation.KeepMin;
+                if(ToDay>=min && ToDay <=max) 
                 {
-                    winess.Add(wine);
-                }            
+                winess.Add(wine);
+                }   
             }
+            if (winess.Count == 0) return null; 
             return winess.OrderBy(w => w.Color).ToList();
         }
 
