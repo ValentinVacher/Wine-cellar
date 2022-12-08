@@ -83,8 +83,12 @@ namespace Wine_cellar.Repositories
                 Year = WineView.Year,
                 DrawerId = Drawer.DrawerId,
                 PictureName = WineView.Picture?.FileName ?? "",
-                AppelationId = WineView.AppelationId
+                AppelationId = WineView.AppelationId,
+                Color= WineView.Color,
             };
+            //Vérifie les couleurs du vin et de l'appelation
+            var appelation = await wineContext.Appelations.FindAsync(wine.AppelationId);
+            if (wine.Color != appelation.Color) return 3;
 
             //Ajoute le vin 
             wineContext.Wines.Add(wine);
