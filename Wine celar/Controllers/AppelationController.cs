@@ -64,12 +64,8 @@ namespace Wine_celar.Controllers
             };
             var AppelationCreated = await AppelationRepository.CreateAppelationAsync(appel);
 
-            if (AppelationCreated == null)
-            {
-                return Ok("L'appelation existe deja");             
-            }
-            
-            
+            if (AppelationCreated == null) return Ok("L'appelation existe deja");             
+          
             return Ok(AppelationCreated);
         }
 
