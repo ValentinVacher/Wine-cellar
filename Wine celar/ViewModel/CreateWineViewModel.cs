@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public int Year { get; set; }
         public int DrawerIndex { get; set; }
-        public IFormFile Picture { get; set; }
+        public IFormFile? Picture { get; set; }
         public int AppelationId { get; set; }
 
         public string CellarName { get; set; }

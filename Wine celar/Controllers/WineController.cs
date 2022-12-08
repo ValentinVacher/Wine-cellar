@@ -77,7 +77,11 @@ namespace Wine_cellar.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
         {
-            var wines=await wineRepository.GetWineByColorAsync(color);
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+            var wines=await wineRepository.GetWineByColorAsync(color, identity);
             if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
             return Ok(wines);
         }
