@@ -85,7 +85,7 @@ namespace Wine_cellar.Repositories
         public async Task<List<Wine>> GetWineByWordAsync(string word, ClaimsIdentity identity)
         {
             return await wineContext.Wines.Include(a => a.Appelation)
-                .Where(w => w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word)
+                .Where(w => (w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word))
                 && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .OrderBy(w => w.Color).ToListAsync();
         }
