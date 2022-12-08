@@ -3,6 +3,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 namespace Wine_cellar.Repositories
@@ -31,11 +32,21 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins à leur apogée dans une liste
         public async Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity)
         {
-            var wines = (await GetAllWinesAsync(identity)).Where(w => w.IsApogee()).ToList();
-
-            if (wines.Count() == 0) return null;
-
-            return wines.OrderBy(w=>w.KeepMax).ToList();
+            var wines = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+                .where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+            var winess = new List<Wine>();
+            foreach (var wine in wines)
+            {
+                var ToDay = DateTime.Now.Year;
+                var max = wine.Year + wine.Appelation.KeepMax;
+                var min = wine.Year + wine.Appelation.KeepMin;
+                if(ToDay>=min && ToDay <=max) 
+                {
+                winess.Add(wine);
+                }   
+            }
+            if (winess.Count == 0) return null; 
+            return winess.OrderBy(w => w.Color).ToList();
         }
 
         //Permet de recuperer un vin par son id 
@@ -68,14 +79,11 @@ namespace Wine_cellar.Repositories
 
             var wine = new Wine()
             {
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
-                Name = wineView.Name,
-                Year = wineView.Year,
-                KeepMin = wineView.KeepMin,
-                KeepMax = wineView.KeepMax,
-                DrawerId = Drawer.DrawerId,
-                PictureName = wineView.Picture?.FileName ?? "",
+                Name = WineViewModel.Name,
+                Year = WineViewModel.Year,
+                DrawerId = WineViewModel.DrawerId,
+                PictureName = WineViewModel.Picture?.FileName ?? "",
+                AppelationId = WineViewModel.AppelationId
             };
 
             //Ajoute le vin 
@@ -91,11 +99,6 @@ namespace Wine_cellar.Repositories
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
             WineUpdate.Color = wine.Color;
-            WineUpdate.Appelation = wine.Appelation;
-            WineUpdate.Year = wine.Year;
-            WineUpdate.KeepMin = wine.KeepMin;
-            WineUpdate.KeepMax = wine.KeepMax;
-            
             await wineContext.SaveChangesAsync();
             return WineUpdate;
         }
@@ -169,6 +172,13 @@ namespace Wine_cellar.Repositories
             await wineContext.SaveChangesAsync();
 
             return nbWine;
+        }
+
+        public async Task<List<Wine>> GetWineByColorAsync(WineColor color)
+        {
+            var WinesColor= await wineContext.Wines.Where(w=>w.Color== color).ToListAsync();
+            if (WinesColor.Count == 0) return null;
+            return WinesColor;
         }
     }
 }

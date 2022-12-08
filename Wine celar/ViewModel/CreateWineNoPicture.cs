@@ -1,12 +1,10 @@
-﻿namespace Wine_cellar.ViewModel
+﻿namespace Wine_celar.ViewModel
 {
-    public class CreateWineViewModel
+    public class CreateWineNoPicture
     {
-        
         public string Name { get; set; }
         public int Year { get; set; }
         public int DrawerId { get; set; }
-        public IFormFile Picture { get; set; }
         public int AppelationId { get; set; }
     }
 }

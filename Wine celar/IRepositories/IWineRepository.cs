@@ -24,5 +24,6 @@ namespace Wine_cellar.IRepositories
         Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity);
         //Permet de dupliquer un vin
         Task<int> DuplicateAsync(int WineId,int NbrDuplicate, ClaimsIdentity identity);
+        Task<List<Wine>> GetWineByColorAsync(WineColor color);
     }
 }
