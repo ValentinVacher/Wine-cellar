@@ -1,6 +1,10 @@
-﻿namespace Wine_celar.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Wine_celar.Entities
 {
-    public class CellarType
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum CellarType
     {
+        Vieillissement, Conservation, Service, MultiTempérature, Professionnelle
     }
 }

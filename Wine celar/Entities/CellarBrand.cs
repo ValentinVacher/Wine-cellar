@@ -1,6 +1,10 @@
-﻿namespace Wine_celar.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Wine_celar.Entities
 {
-    public class CellarBrand
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum CellarBrand
     {
+        Artevino, Liebherr, Avintage, Climadiff, LaSommelière, Haier, Klarstein, ContinentalEdison, Caviss, Vinosphere
     }
 }
