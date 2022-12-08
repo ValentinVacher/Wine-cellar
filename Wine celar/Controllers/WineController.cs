@@ -57,7 +57,7 @@ namespace Wine_cellar.Controllers
         public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
         {
             var wines=await wineRepository.GetWineByColorAsync(color);
-            if (wines == null) return NotFound("$Vous n'avez aucun vin {color}");
+            if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
             return Ok(wines);
         }
 

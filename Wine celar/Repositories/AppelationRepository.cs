@@ -66,11 +66,13 @@ namespace Wine_celar.Repositories
             return AppelationDelete;
         }
 
-      
+
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
-            return await winecontext.Appelations.Where(a => a.Color == color).ToListAsync();
+            var AppelationsColor = await winecontext.Appelations.Where(a => a.Color == color).ToListAsync();
+            if (AppelationsColor.Count() == 0) return null;
+            return AppelationsColor;
         }
     }
 }
