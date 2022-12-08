@@ -39,7 +39,8 @@ namespace Winecelar.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,12 +155,12 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "DateOfBirth", "Email", "FirstName", "LastName", "Password" },
+                columns: new[] { "UserId", "DateOfBirth", "Email", "FirstName", "IsAdmin", "LastName", "Password" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "test@test.com", "G", "G", "test" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "test2@test.com", "G2", "G2", "test2" },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "test3@test.com", "G3", "G3", "test3" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@admin.com", "Admin", true, "Admin", "admin" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "test2@test.com", "G2", false, "G2", "test2" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "test3@test.com", "G3", false, "G3", "test3" }
                 });
 
             migrationBuilder.InsertData(
@@ -167,7 +168,7 @@ namespace Winecelar.Migrations
                 columns: new[] { "CellarId", "Name", "NbDrawerMax", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Cellar 1", 5, 1 },
+                    { 1, "Cellar 1", 5, 2 },
                     { 2, "Cellar 2", 10, 2 },
                     { 3, "Cellar 3", 20, 3 }
                 });
