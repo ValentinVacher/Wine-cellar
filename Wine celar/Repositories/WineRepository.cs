@@ -84,7 +84,7 @@ namespace Wine_cellar.Repositories
                 DrawerId = Drawer.DrawerId,
                 PictureName = WineView.Picture?.FileName ?? "",
                 AppelationId = WineView.AppelationId,
-                Color= WineView.Color,
+                Color = WineView.Color,
             };
             //Vérifie les couleurs du vin et de l'appelation
             var appelation = await wineContext.Appelations.FindAsync(wine.AppelationId);
