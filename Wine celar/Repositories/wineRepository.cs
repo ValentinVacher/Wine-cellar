@@ -32,8 +32,8 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins à leur apogée dans une liste
         public async Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity)
         {
-            var wines = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar).
-                Where(d => d.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+            var wines = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+                .where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
             var winess = new List<Wine>();
             foreach (var wine in wines)
             {
@@ -79,14 +79,11 @@ namespace Wine_cellar.Repositories
 
             var wine = new Wine()
             {
-                Color = wineView.Color,
-                Appelation = wineView.Appelation,
-                Name = wineView.Name,
-                Year = wineView.Year,
-                KeepMin = wineView.KeepMin,
-                KeepMax = wineView.KeepMax,
-                DrawerId = Drawer.DrawerId,
-                PictureName = wineView.Picture?.FileName ?? "",
+                Name = WineViewModel.Name,
+                Year = WineViewModel.Year,
+                DrawerId = WineViewModel.DrawerId,
+                PictureName = WineViewModel.Picture?.FileName ?? "",
+                AppelationId = WineViewModel.AppelationId
             };
 
             //Ajoute le vin 
@@ -102,7 +99,6 @@ namespace Wine_cellar.Repositories
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
             WineUpdate.Color = wine.Color;
-            WineUpdate.Year = wine.Year;
             await wineContext.SaveChangesAsync();
             return WineUpdate;
         }
@@ -152,9 +148,11 @@ namespace Wine_cellar.Repositories
             var wine = new Wine
             {
                 Color = WineDuplicate.Color,
-                AppelationId = WineDuplicate.AppelationId,
+                Appelation = WineDuplicate.Appelation,
                 Name = WineDuplicate.Name,
                 Year = WineDuplicate.Year,
+                KeepMax = WineDuplicate.KeepMax,
+                KeepMin = WineDuplicate.KeepMin,
                 DrawerId = WineDuplicate.DrawerId,
                 PictureName = WineDuplicate.PictureName
             };
