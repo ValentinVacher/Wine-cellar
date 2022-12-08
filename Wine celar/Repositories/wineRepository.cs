@@ -86,7 +86,7 @@ namespace Wine_cellar.Repositories
         {
             return await wineContext.Wines.Include(a => a.Appelation)
                 .Where(w => (w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word))
-                && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
+                && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .OrderBy(w => w.Color).ToListAsync();
         }
 
