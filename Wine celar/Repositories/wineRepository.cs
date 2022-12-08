@@ -104,10 +104,12 @@ namespace Wine_cellar.Repositories
         public async Task<bool> DeleteWineAsync(int WineId, ClaimsIdentity identity)
         {
             var WineDelete = await GetWineByIdAsync(WineId, identity);
-            if (WineDelete == null)
-                return false;
+
+            if (WineDelete == null) return false;
+
             wineContext.Wines.Remove(WineDelete);
             await wineContext.SaveChangesAsync();
+
             return true;
 
         }
