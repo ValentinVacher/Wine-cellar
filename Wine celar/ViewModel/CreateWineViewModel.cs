@@ -1,4 +1,6 @@
-﻿namespace Wine_cellar.ViewModel
+﻿using Wine_cellar.Entities;
+
+namespace Wine_cellar.ViewModel
 {
     public class CreateWineViewModel
     {
@@ -8,7 +10,7 @@
         public int DrawerIndex { get; set; }
         public IFormFile Picture { get; set; }
         public int AppelationId { get; set; }
-
+        public WineColor Color { get; set; }
         public string CellarName { get; set; }
     }
 }

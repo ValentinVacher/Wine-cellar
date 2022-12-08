@@ -97,6 +97,7 @@ namespace Wine_cellar.Controllers
             {
                 case 1 : return NotFound("Tiroir introuvable");
                 case 2 : return Problem("Le tiroir est plein");
+                case 3: return Problem("Le vin et l'appélation ne correspond pas");
                 default: break;
             }
 
