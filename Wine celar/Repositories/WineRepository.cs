@@ -25,14 +25,7 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins dans une liste
         public async Task<List<Wine>> GetAllWinesAsync(ClaimsIdentity identity)
         {
-            var result = await wineContext.Wines
-                .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .OrderBy(w => w.Color).ToListAsync();
-
-            string fileName = "UserCellar.json";
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, result);
-            await createStream.DisposeAsync();
+            
 
             return await wineContext.Wines
                 .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
