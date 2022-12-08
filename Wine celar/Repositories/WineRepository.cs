@@ -35,7 +35,7 @@ namespace Wine_cellar.Repositories
 
             if (wines.Count() == 0) return null;
 
-            return wines.OrderBy(w=>w.KeepMax).ToList();
+             return wines.OrderBy(w=>w.KeepMax).ToList();
         }
 
         //Permet de recuperer un vin par son id 
