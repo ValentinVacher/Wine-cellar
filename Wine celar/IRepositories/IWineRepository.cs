@@ -1,13 +1,14 @@
 ﻿using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using System.Security.Claims;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.IRepositories
 {
     public interface IWineRepository
     {
         //Permet de recuperer tout les vins 
-        Task<List<Wine>> GetAllWinesAsync(ClaimsIdentity identity);
+        Task<List<WineViewModel>> GetAllWinesAsync(ClaimsIdentity identity);
         //Permet de recuperer un vin par son id
         Task<Wine> GetWineByIdAsync(int Wineid, ClaimsIdentity identity);
         //Permet de recuperer un vin contenant le mot saisi
@@ -21,7 +22,7 @@ namespace Wine_cellar.IRepositories
         //Permet de deplacer un vin dans un autre tiroir
         Task<int> MoveAsync(int WineId,int newDrawerId, string cellar, ClaimsIdentity identity);
         //Permet de récuperer tout les vins qui sont à leur apogée
-        Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity);
+        Task<List<WineViewModel>> GetApogeeAsync(ClaimsIdentity identity);
         //Permet de dupliquer un vin
         Task<int> DuplicateAsync(int WineId,int NbrDuplicate, ClaimsIdentity identity);
         Task<List<Wine>> GetWineByColorAsync(WineColor color, ClaimsIdentity identity);

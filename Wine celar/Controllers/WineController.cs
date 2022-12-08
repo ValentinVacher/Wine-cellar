@@ -43,8 +43,18 @@ namespace Wine_cellar.Controllers
 
             if (wine == null)
                 return NotFound($"Le vin {id} est introuvable");
+            var WineView = new WineViewModel()
+            {
+                WineId = wine.WineId,
+                WineName = wine.Name,
+                CellarName = wine.Drawer.Cellar.Name,
+                Year = wine.Year,
+                Color = wine.Color,
+                AppelationName = wine.Appelation.AppelationName,
+                DrawerIndex = wine.Drawer.Index
+            };
 
-            return Ok(wine);
+            return Ok(WineView);
         }
 
         [HttpGet]
@@ -81,7 +91,7 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
 
-            var wines=await wineRepository.GetWineByColorAsync(color, identity);
+            var wines = await wineRepository.GetWineByColorAsync(color, identity);
             if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
             return Ok(wines);
         }
@@ -97,10 +107,10 @@ namespace Wine_cellar.Controllers
 
             var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, identity);
 
-            switch(wineCreated)
+            switch (wineCreated)
             {
-                case 1 : return NotFound("Tiroir introuvable");
-                case 2 : return Problem("Le tiroir est plein");
+                case 1: return NotFound("Tiroir introuvable");
+                case 2: return Problem("Le tiroir est plein");
                 case 3: return Problem("Le vin et l'appélation ne correspond pas");
                 default: break;
             }
@@ -143,8 +153,8 @@ namespace Wine_cellar.Controllers
 
             var wineUpdate = await wineRepository.UpdateWineAsync(wineView, identity);
 
-            if(wineUpdate == null) return NotFound("Bouteille introuvable");
-            
+            if (wineUpdate == null) return NotFound("Bouteille introuvable");
+
             return Ok(wineUpdate);
         }
 
@@ -157,7 +167,7 @@ namespace Wine_cellar.Controllers
 
             var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, identity);
 
-            switch(wineMove)
+            switch (wineMove)
             {
                 case 1: return NotFound("Vin introuvable");
                 case 2: return NotFound("Tiroir introuvable");
