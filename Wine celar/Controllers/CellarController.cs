@@ -107,5 +107,10 @@ namespace Wine_cellar.Controllers
             else
                 return Problem($"Erreur lors de la suppression de la cave");
         }
+        [HttpPost]
+        public async Task<IActionResult> ImportJson()
+        {
+            return (IActionResult)await cellarRepository.ImportJson();
+        }
     }
 }

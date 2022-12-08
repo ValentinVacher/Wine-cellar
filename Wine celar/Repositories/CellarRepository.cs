@@ -6,6 +6,7 @@ using Wine_cellar.IRepositories;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Wine_cellar.Repositories
 {
@@ -26,15 +27,17 @@ namespace Wine_cellar.Repositories
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity)
         {
+            //Creation de la variable de serialisation
             var result = await winecontext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
                 .ThenInclude(d => d.Wines).ThenInclude(a =>a.Appelation).
                 Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
-
+            
+            //Serialisation
             string fileName = "UserCellar.json";
             using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {ReferenceHandler = ReferenceHandler.IgnoreCycles }
+            await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {WriteIndented = true ,ReferenceHandler = ReferenceHandler.IgnoreCycles }
             ) ; 
             await createStream.DisposeAsync();
 
@@ -90,6 +93,18 @@ namespace Wine_cellar.Repositories
             await winecontext.SaveChangesAsync();
             return CellarUpdate;
         }
+
+        public async Task<List<Cellar>> ImportJson()
+        {
+            string fileName = "UserCellar.json";
+            using FileStream openStream = File.OpenRead(fileName);
+            List<Cellar?> cellarJson =
+                await JsonSerializer.DeserializeAsync<List<Cellar>>(openStream);
+            
+            return cellarJson;
+        }
+
+
     }
 }
 
