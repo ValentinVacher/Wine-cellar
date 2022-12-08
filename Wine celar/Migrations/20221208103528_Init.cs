@@ -96,13 +96,8 @@ namespace Winecelar.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
-<<<<<<<< HEAD:Wine celar/Migrations/20221207141323_Init.cs
-                    KeepMin = table.Column<int>(type: "int", nullable: false),
-                    KeepMax = table.Column<int>(type: "int", nullable: false),
-========
->>>>>>>> V2:Wine celar/Migrations/20221207184956_Init.cs
                     DrawerId = table.Column<int>(type: "int", nullable: false),
-                    PictureName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PictureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Color = table.Column<int>(type: "int", nullable: false),
                     AppelationId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -192,21 +187,6 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Wines",
-<<<<<<<< HEAD:Wine celar/Migrations/20221207141323_Init.cs
-                columns: new[] { "WineId", "Appelation", "Color", "DrawerId", "KeepMax", "KeepMin", "Name", "PictureName", "Year" },
-                values: new object[,]
-                {
-                    { 1, "Appelation1", "Rosé", 1, 2002, 2000, "20-1", "", 1960 },
-                    { 2, "Appelation2", "Bleu", 1, 2002, 2001, "20-2", "img/vin1.png", 1970 },
-                    { 3, "Appelation3", "Verre", 2, 2002, 2001, "20-3", "", 1980 },
-                    { 4, "Appelation4", "Rouge", 2, 2002, 2000, "20-4", "", 1960 },
-                    { 5, "Appelation5", "Jaune", 3, 2002, 2000, "20-5", "", 1960 },
-                    { 6, "Appelation6", "Blanc", 3, 2002, 2000, "20-6", "", 1960 },
-                    { 7, "Appelation7", "Rouge", 4, 2002, 2000, "20-7", "", 1960 },
-                    { 8, "Appelation8", "Violet", 4, 2002, 2000, "20-8", "", 1960 },
-                    { 9, "Appelation9", "Orange", 5, 2002, 2000, "20-9", "", 1960 },
-                    { 10, "Appelation10", "Violet", 5, 2002, 2000, "20-10", "", 1960 }
-========
                 columns: new[] { "WineId", "AppelationId", "Color", "DrawerId", "Name", "PictureName", "Year" },
                 values: new object[,]
                 {
@@ -220,7 +200,6 @@ namespace Winecelar.Migrations
                     { 8, 13, 2, 4, "20-8", "", 1960 },
                     { 9, 14, 2, 5, "20-9", "", 1960 },
                     { 10, 12, 2, 5, "20-10", "", 1960 }
->>>>>>>> V2:Wine celar/Migrations/20221207184956_Init.cs
                 });
 
             migrationBuilder.CreateIndex(

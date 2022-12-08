@@ -12,13 +12,8 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-<<<<<<<< HEAD:Wine celar/Migrations/20221207141323_Init.Designer.cs
-    [Migration("20221207141323_Init")]
+    [Migration("20221208103528_Init")]
     partial class Init
-========
-    [Migration("20221208090259_UpdatePicture")]
-    partial class UpdatePicture
->>>>>>>> V2:Wine celar/Migrations/20221208090259_UpdatePicture.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
