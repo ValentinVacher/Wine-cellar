@@ -7,6 +7,7 @@ using Wine_cellar.IRepositories;
 using Wine_cellar.Contexts;
 using System.Security.Claims;
 using Wine_celar.ViewModel;
+using System.Text.Json;
 
 namespace Wine_cellar.Controllers
 {
@@ -28,6 +29,9 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+
+           
+
 
             return Ok(await wineRepository.GetAllWinesAsync(identity));
         }
