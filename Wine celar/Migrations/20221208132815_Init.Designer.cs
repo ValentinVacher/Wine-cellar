@@ -12,7 +12,7 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    [Migration("20221208103528_Init")]
+    [Migration("20221208132815_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -299,7 +299,7 @@ namespace Winecelar.Migrations
                             CellarId = 1,
                             Name = "Cellar 1",
                             NbDrawerMax = 5,
-                            UserId = 1
+                            UserId = 2
                         },
                         new
                         {
@@ -404,6 +404,9 @@ namespace Winecelar.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -421,10 +424,11 @@ namespace Winecelar.Migrations
                         {
                             UserId = 1,
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "test@test.com",
-                            FirstName = "G",
-                            LastName = "G",
-                            Password = "test"
+                            Email = "admin@admin.com",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "Admin",
+                            Password = "admin"
                         },
                         new
                         {
@@ -432,6 +436,7 @@ namespace Winecelar.Migrations
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "test2@test.com",
                             FirstName = "G2",
+                            IsAdmin = false,
                             LastName = "G2",
                             Password = "test2"
                         },
@@ -441,6 +446,7 @@ namespace Winecelar.Migrations
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "test3@test.com",
                             FirstName = "G3",
+                            IsAdmin = false,
                             LastName = "G3",
                             Password = "test3"
                         });

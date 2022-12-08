@@ -30,13 +30,8 @@ namespace Wine_celar.Repositories
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
-            foreach (var appel in winecontext.Appelations)
-            {
-                if (appel.AppelationName == appelation.AppelationName)
-                {
-                    return null ;
-                }
-            }
+            if (await winecontext.Appelations.FirstOrDefaultAsync(a => a.AppelationName == appelation.AppelationName) == null) return null;
+
             winecontext.Appelations.Add(appelation);
             await winecontext.SaveChangesAsync();
             return appelation;

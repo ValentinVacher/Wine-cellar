@@ -25,7 +25,7 @@ namespace Wine_cellar.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var c1 = new Cellar { CellarId = 1, Name = "Cellar 1", NbDrawerMax = 5, UserId = 1 };
+            var c1 = new Cellar { CellarId = 1, Name = "Cellar 1", NbDrawerMax = 5, UserId = 2 };
             var c2 = new Cellar { CellarId = 2, Name = "Cellar 2", NbDrawerMax = 10, UserId = 2 };
             var c3 = new Cellar { CellarId = 3, Name = "Cellar 3", NbDrawerMax = 20, UserId = 3 };
 
@@ -50,7 +50,7 @@ namespace Wine_cellar.Contexts
             var v12 = new Wine { WineId = 12, Name = "20-12", Year = 1960, DrawerId = 5, PictureName = "", Color = WineColor.Rosé, AppelationId = 27 };
 
 
-            var u1 = new User { UserId = 1, FirstName = "G", LastName = "G", Email = "test@test.com", Password = "test" };
+            var u1 = new User { UserId = 1, FirstName = "Admin", LastName = "Admin", Email = "admin@admin.com", Password = "admin", IsAdmin = true };
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
             var u3 = new User { UserId = 3, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
 

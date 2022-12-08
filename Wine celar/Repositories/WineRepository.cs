@@ -5,7 +5,8 @@ using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
-using System.Text.Json;
+using Wine_celar.ViewModel;
+using Microsoft.Identity.Client;
 
 namespace Wine_cellar.Repositories
 {
@@ -23,29 +24,50 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins dans une liste
-        public async Task<List<Wine>> GetAllWinesAsync(ClaimsIdentity identity)
+        public async Task<List<WineViewModel>> GetAllWinesAsync(ClaimsIdentity identity)
         {
-            
-
-            return await wineContext.Wines
+            var Wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
                 .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .OrderBy(w => w.Color).ToListAsync();
+                .ToListAsync();
+            var WinesView = new List<WineViewModel>();
+            foreach (var w in Wines)
+            {
+                var Wine = new WineViewModel();
+                Wine.WineId = w.WineId;
+                Wine.WineName = w.Name;
+                Wine.CellarName = w.Drawer.Cellar.Name;
+                Wine.Year = w.Year;
+                Wine.Color = w.Color;
+                Wine.AppelationName = w.Appelation.AppelationName;
+                Wine.DrawerIndex = w.Drawer.Index;
+                WinesView.Add(Wine);
+            }
+            return WinesView.ToList();
+
         }
 
         //Permet de recuperer tout les vins à leur apogée dans une liste
-        public async Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity)
+        public async Task<List<WineViewModel>> GetApogeeAsync(ClaimsIdentity identity)
         {
             var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
                 .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
-            var winess = new List<Wine>();
-            foreach (var wine in wines)
+            var winess = new List<WineViewModel> ();
+            foreach (var w in wines)
             {
                 var ToDay = DateTime.Now.Year;
-                var max = wine.Year + wine.Appelation.KeepMax;
-                var min = wine.Year + wine.Appelation.KeepMin;
+                var max = w.Year + w.Appelation.KeepMax;
+                var min = w.Year + w.Appelation.KeepMin;
                 if (ToDay >= min && ToDay <= max)
                 {
-                    winess.Add(wine);
+                    var Wine = new WineViewModel();
+                    Wine.WineId = w.WineId;
+                    Wine.WineName = w.Name;
+                    Wine.CellarName = w.Drawer.Cellar.Name;
+                    Wine.Year = w.Year;
+                    Wine.Color = w.Color;
+                    Wine.AppelationName = w.Appelation.AppelationName;
+                    Wine.DrawerIndex = w.Drawer.Index;
+                    winess.Add(Wine);
                 }
             }
             if (winess.Count == 0) return null;
@@ -55,7 +77,7 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer un vin par son id 
         public async Task<Wine> GetWineByIdAsync(int wineId, ClaimsIdentity identity)
         {
-            return await wineContext.Wines
+            return await wineContext.Wines.Include(w=>w.Appelation).Include(w=>w.Drawer).ThenInclude(d=>d.Cellar)
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
         }
 
@@ -87,7 +109,7 @@ namespace Wine_cellar.Repositories
                 DrawerId = Drawer.DrawerId,
                 PictureName = WineView.Picture?.FileName ?? "",
                 AppelationId = WineView.AppelationId,
-                Color= WineView.Color,
+                Color = WineView.Color,
             };
             //Vérifie les couleurs du vin et de l'appelation
             var appelation = await wineContext.Appelations.FindAsync(wine.AppelationId);
@@ -181,7 +203,7 @@ namespace Wine_cellar.Repositories
 
         public async Task<List<Wine>> GetWineByColorAsync(WineColor color, ClaimsIdentity identity)
         {
-            var WinesColor= await wineContext.Wines.Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+            var WinesColor = await wineContext.Wines.Include(d => d.Drawer).ThenInclude(c => c.Cellar)
                 .Where(w => w.Color == color && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
 
             if (WinesColor.Count == 0) return null;
