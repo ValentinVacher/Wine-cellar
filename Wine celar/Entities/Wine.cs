@@ -16,7 +16,7 @@ namespace Wine_cellar.Entities
         //public int KeepMax { get; set;}
         public Drawer Drawer { get; set; }
         public int DrawerId { get; set; }
-        public string PictureName { get; set; }
+        public string? PictureName { get; set; }
         public WineColor Color { get; set; }
         
         public int AppelationId { get; set; }

@@ -5,6 +5,7 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Contexts;
+using Wine_celar.ViewModel;
 
 namespace Wine_cellar.Controllers
 {
@@ -74,6 +75,7 @@ namespace Wine_cellar.Controllers
                 Year = WineViewModel.Year,
                 DrawerId = WineViewModel.DrawerId,
                 PictureName = WineViewModel.Picture?.FileName ?? "",
+                AppelationId = WineViewModel.AppelationId
             };
             var wineCreated = await wineRepository.CreateWineWithPictureAsync(wine);
             if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
@@ -87,32 +89,24 @@ namespace Wine_cellar.Controllers
                     stream.Close();
                 }
             }
-
             if (wineCreated == null)
             {
                 return Problem("Erreur lors de la création de la bouteille");
             }
-
             return Ok(wineCreated);
-
-
-
         }
 
 
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> CreateWine ([FromForm] CreateWineViewModel wineView)
+        public async Task<IActionResult> CreateWine ([FromForm] CreateWineNoPicture wineView)
         {
             Wine wine = new()
             {
                 
                 Name = wineView.Name,
                 Year = wineView.Year, 
-                DrawerId = wineView.DrawerId
+                DrawerId = wineView.DrawerId,
+                AppelationId = wineView.AppelationId
             };
            
             var wineCreated = await wineRepository.CreateWineAsync(wine);
@@ -138,7 +132,8 @@ namespace Wine_cellar.Controllers
             {
                 WineId = wineView.WineId,
                 Name = wineView.Name,
-                Year = wineView.Year
+                Year = wineView.Year,
+                
                
                 //DrawerId = wineView.DrawerId
             };
