@@ -85,8 +85,21 @@ namespace Wine_cellar.Controllers
             var wine = await wineRepository.GetWineByWordAsync(word, identity);
 
             if (wine == null) return NotFound($"Le vin {word} est introuvable");
+            var WinesView = new List<WineViewModel>();
+            foreach (var w in wine)
+            {
+                var WineView = new WineViewModel();
+                WineView.WineId = w.WineId;
+                WineView.WineName = w.Name;
+                WineView.CellarName = w.Drawer.Cellar.Name;
+                WineView.Year = w.Year;
+                WineView.Color = w.Color;
+                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.DrawerIndex = w.Drawer.Index;
+                WinesView.Add(WineView);
+            }
 
-            return Ok(wine);
+            return Ok(WinesView);
         }
         [HttpGet]
         public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
@@ -97,7 +110,20 @@ namespace Wine_cellar.Controllers
 
             var wines = await wineRepository.GetWineByColorAsync(color, identity);
             if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
-            return Ok(wines);
+            var WinesView = new List<WineViewModel>();
+            foreach (var w in wines)
+            {
+                var WineView = new WineViewModel();
+                WineView.WineId = w.WineId;
+                WineView.WineName = w.Name;
+                WineView.CellarName = w.Drawer.Cellar.Name;
+                WineView.Year = w.Year;
+                WineView.Color = w.Color;
+                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.DrawerIndex = w.Drawer.Index;
+                WinesView.Add(WineView);
+            }
+            return Ok(WinesView);
         }
 
         [HttpPost]
