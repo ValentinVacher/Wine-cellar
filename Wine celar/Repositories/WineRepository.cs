@@ -5,6 +5,7 @@ using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Wine_cellar.Repositories
 {
@@ -24,6 +25,15 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins dans une liste
         public async Task<List<Wine>> GetAllWinesAsync(ClaimsIdentity identity)
         {
+            var result = await wineContext.Wines
+                .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
+                .OrderBy(w => w.Color).ToListAsync();
+
+            string fileName = "UserCellar.json";
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, result);
+            await createStream.DisposeAsync();
+
             return await wineContext.Wines
                 .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
                 .OrderBy(w => w.Color).ToListAsync();
@@ -32,7 +42,7 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer tout les vins à leur apogée dans une liste
         public async Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity)
         {
-            var wines = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+            var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
                 .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
             var winess = new List<Wine>();
             foreach (var wine in wines)
@@ -40,12 +50,12 @@ namespace Wine_cellar.Repositories
                 var ToDay = DateTime.Now.Year;
                 var max = wine.Year + wine.Appelation.KeepMax;
                 var min = wine.Year + wine.Appelation.KeepMin;
-                if(ToDay>=min && ToDay <=max) 
+                if (ToDay >= min && ToDay <= max)
                 {
-                winess.Add(wine);
-                }   
+                    winess.Add(wine);
+                }
             }
-            if (winess.Count == 0) return null; 
+            if (winess.Count == 0) return null;
             return winess.OrderBy(w => w.Color).ToList();
         }
 
@@ -62,14 +72,14 @@ namespace Wine_cellar.Repositories
             return await wineContext.Wines.Include(a => a.Appelation)
                 .Where(w => w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word)
                 && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .OrderBy(w=>w.Color).ToListAsync();
+                .OrderBy(w => w.Color).ToListAsync();
         }
 
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
         public async Task<int> CreateWineAsync(CreateWineViewModel WineView, ClaimsIdentity identity)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines)
-                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerIndex && d.Cellar.Name == WineView.CellarName 
+                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerIndex && d.Cellar.Name == WineView.CellarName
                 && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (Drawer == null) return 1;
@@ -125,7 +135,7 @@ namespace Wine_cellar.Repositories
             if (WineMove == null) return 1;
 
             var drawer = await wineContext.Drawers.Include(c => c.Cellar).Include(c => c.Wines)
-                .Where(c => c.Cellar.Name == cellar && c.Index == newDrawerIndex 
+                .Where(c => c.Cellar.Name == cellar && c.Index == newDrawerIndex
                 && c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).FirstOrDefaultAsync();
 
             if (drawer == null) return 2;
@@ -174,7 +184,7 @@ namespace Wine_cellar.Repositories
 
         public async Task<List<Wine>> GetWineByColorAsync(WineColor color)
         {
-            var WinesColor= await wineContext.Wines.Where(w=>w.Color== color).ToListAsync();
+            var WinesColor = await wineContext.Wines.Where(w => w.Color == color).ToListAsync();
             if (WinesColor.Count == 0) return null;
             return WinesColor;
         }
