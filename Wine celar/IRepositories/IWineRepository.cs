@@ -19,7 +19,7 @@ namespace Wine_cellar.IRepositories
         //Permet de supprimer un vin
         Task<bool> DeleteWineAsync(int WineId, ClaimsIdentity identity);
         //Permet de deplacer un vin dans un autre tiroir
-        Task<Wine> MoveAsync(int WineId,int newDrawerId, ClaimsIdentity identity);
+        Task<int> MoveAsync(int WineId,int newDrawerId, string cellar, ClaimsIdentity identity);
         //Permet de récuperer tout les vins qui sont à leur apogée
         Task<List<Wine>> GetApogeeAsync(ClaimsIdentity identity);
         //Permet de dupliquer un vin

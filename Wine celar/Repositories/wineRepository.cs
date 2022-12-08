@@ -113,13 +113,23 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de deplacer un vin
-        public async Task<Wine> MoveAsync(int WineId, int newDrawerId, ClaimsIdentity identity)
+        public async Task<int> MoveAsync(int WineId, int newDrawerIndex, string cellar, ClaimsIdentity identity)
         {
             var WineMove = await GetWineByIdAsync(WineId, identity);
-            if (WineMove == null) return null;
-            WineMove.DrawerId = newDrawerId;
+
+            if (WineMove == null) return 1;
+
+            var drawer = await wineContext.Drawers.Include(c => c.Cellar).Include(c => c.Wines)
+                .Where(c => c.Cellar.Name == cellar && c.Index == newDrawerIndex 
+                && c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).FirstOrDefaultAsync();
+
+            if (drawer == null) return 2;
+
+            if (drawer.IsFull()) return 3;
+
+            WineMove.DrawerId = drawer.CellarId;
             await wineContext.SaveChangesAsync();
-            return WineMove;
+            return 0;
         }
 
         //Permet de dupliquer un vin si le tiroir n'est pas plein

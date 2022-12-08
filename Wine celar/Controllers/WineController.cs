@@ -136,14 +136,22 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerId)
+        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerIndex, string cellar)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
             if (idCurrentUser == null) return Problem("Vous devez être connecter");
 
-            return Ok(await wineRepository.MoveAsync(WineId, newDrawerId, identity));
+            var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, identity);
+
+            switch(wineMove)
+            {
+                case 1: return NotFound("Vin introuvable");
+                case 2: return NotFound("Tiroir introuvable");
+                case 3: return NotFound("Le tiroire est plein");
+                default: return Ok($"Le vin {WineId} a bien été déplacer");
+            }
         }
 
         [HttpDelete("{id}")]
