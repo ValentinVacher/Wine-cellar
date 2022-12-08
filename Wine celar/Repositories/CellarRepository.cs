@@ -4,6 +4,8 @@ using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Wine_cellar.Repositories
 {
@@ -24,14 +26,26 @@ namespace Wine_cellar.Repositories
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d=>d.Index)).ThenInclude(d => d.Wines).
+            var result = await winecontext.Cellars
+                .Include(c => c.Drawers
+                .OrderBy(d => d.Index))
+                .ThenInclude(d => d.Wines).ThenInclude(a =>a.Appelation).
+                Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+
+            string fileName = "UserCellar.json";
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {ReferenceHandler = ReferenceHandler.IgnoreCycles }
+            ) ; 
+            await createStream.DisposeAsync();
+
+            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
         //Permet de recuperer une cave avec tout ses elements
         public async Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d=>d.Index)).ThenInclude(d => d.Wines).
+            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.Name.Contains(name) && c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
         }
 
@@ -55,7 +69,7 @@ namespace Wine_cellar.Repositories
         {
             if (cellar == null) return false;
             //Supprime les tiroirs
-            foreach(var drawer in cellar.Drawers)
+            foreach (var drawer in cellar.Drawers)
             {
                 drawer.DeleteWines(winecontext);
                 winecontext.Drawers.Remove(drawer);
