@@ -37,6 +37,13 @@ namespace Wine_celar.Controllers
 
             return Ok(appel);
         }
+        [HttpGet]
+        public async Task<ActionResult<List<Appelation>>> GetAppelationsByColor(WineColor color)
+        {
+            var appelations = await AppelationRepository.GetAppelationsByColoAsync(color);
+            if (appelations == null) return NotFound($"Aucune Appelation pour un vin {color}");
+            return appelations;
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
