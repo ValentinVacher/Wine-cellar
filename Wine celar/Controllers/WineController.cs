@@ -53,6 +53,14 @@ namespace Wine_cellar.Controllers
 
             return Ok(wine);
         }
+        [HttpGet]
+        public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
+        {
+            var wines=await wineRepository.GetWineByColorAsync(color);
+            if (wines == null) return NotFound("$Vous n'avez aucun vin {color}");
+            return Ok(wines);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateWineWithPictureAsync([FromForm]
         CreateWineViewModel WineViewModel)

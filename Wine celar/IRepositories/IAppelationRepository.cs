@@ -9,5 +9,6 @@ namespace Wine_cellar.IRepositories
         Task<Appelation> CreateAppelationAsync(Appelation appelation);
         Task<Appelation> UpdateAppelationAsync(Appelation appelation);
         Task<Appelation> DeleteAppelationAsync(string appelationName);
+        Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color);
     }
 }
