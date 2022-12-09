@@ -29,11 +29,8 @@ namespace Wine_celar.Repositories
         //Permet de créer un user
         public async Task<User> CreateUserAsync(User user)
         {
-            if(await wineContext.Users.FirstOrDefaultAsync(e => e.Email == user.Email) != null)
-            {
-                return null;
-            }
-
+            if(await wineContext.Users.FirstOrDefaultAsync(e => e.Email == user.Email) != null) return null;
+          
             wineContext.Users.Add(user);
             await wineContext.SaveChangesAsync();
             return user;
@@ -55,11 +52,11 @@ namespace Wine_celar.Repositories
         }
 
         //Permet de supprimer un user
-        public async Task<bool> DeleteUserAsync(int UserId, ClaimsIdentity identity)
+        public async Task<bool> DeleteUserAsync(int UserId, int thisUserId)
         {
             var UserDelete = await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).FirstOrDefaultAsync(c => c.UserId == UserId);
 
-            if (UserDelete.UserId == int.Parse(identity?.FindFirst(ClaimTypes.NameIdentifier).Value)) return false;
+            if (UserDelete.UserId == thisUserId) return false;
 
             if (UserDelete == null)
                 return false;
@@ -72,6 +69,7 @@ namespace Wine_celar.Repositories
             //Supprime user
             wineContext.Users.Remove(UserDelete);
             await wineContext.SaveChangesAsync();
+
             return true;
         }
 

@@ -24,11 +24,10 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins dans une liste
-        public async Task<List<WineViewModel>> GetAllWinesAsync(ClaimsIdentity identity)
+        public async Task<List<WineViewModel>> GetAllWinesAsync(int userId)
         {
             var Wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
-                .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .ToListAsync();
+                .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
             var WinesView = new List<WineViewModel>();
             foreach (var w in Wines)
             {
@@ -47,10 +46,10 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins à leur apogée dans une liste
-        public async Task<List<WineViewModel>> GetApogeeAsync(ClaimsIdentity identity)
+        public async Task<List<WineViewModel>> GetApogeeAsync(int userId)
         {
             var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
-                .Where(w => w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+                .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
             var winess = new List<WineViewModel>();
             foreach (var w in wines)
             {
@@ -75,27 +74,25 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer un vin par son id 
-        public async Task<Wine> GetWineByIdAsync(int wineId, ClaimsIdentity identity)
+        public async Task<Wine> GetWineByIdAsync(int wineId, int userId)
         {
             return await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
-                .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
+                .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
         }
 
         //Permet de recuperer une liste de vin selon un terme choisi
-        public async Task<List<Wine>> GetWineByWordAsync(string word, ClaimsIdentity identity)
+        public async Task<List<Wine>> GetWineByWordAsync(string word, int userId)
         {
             return await wineContext.Wines.Include(a => a.Appelation)
                 .Where(w => (w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word))
-                && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value))
-                .OrderBy(w => w.Color).ToListAsync();
+                && w.Drawer.Cellar.UserId == userId).OrderBy(w => w.Color).ToListAsync();
         }
 
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
-        public async Task<int> CreateWineAsync(CreateWineViewModel WineView, ClaimsIdentity identity)
+        public async Task<int> CreateWineAsync(CreateWineViewModel WineView, int userId)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines)
-                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerIndex && d.Cellar.Name == WineView.CellarName
-                && d.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
+                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerIndex && d.Cellar.Name == WineView.CellarName && d.Cellar.UserId == userId);
 
             if (Drawer == null) return 1;
 
@@ -122,9 +119,9 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier un vin 
-        public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, ClaimsIdentity identity)
+        public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, int userId)
         {
-            var WineUpdate = await GetWineByIdAsync(wine.WineId, identity);
+            var WineUpdate = await GetWineByIdAsync(wine.WineId, userId);
             if (WineUpdate == null) return null;
             WineUpdate.Name = wine.Name;
             WineUpdate.Color = wine.Color;
@@ -133,9 +130,9 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de supprimer un vin 
-        public async Task<bool> DeleteWineAsync(int WineId, ClaimsIdentity identity)
+        public async Task<bool> DeleteWineAsync(int WineId, int userId)
         {
-            var WineDelete = await GetWineByIdAsync(WineId, identity);
+            var WineDelete = await GetWineByIdAsync(WineId, userId);
 
             if (WineDelete == null) return false;
 
@@ -147,15 +144,15 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de deplacer un vin
-        public async Task<int> MoveAsync(int WineId, int newDrawerIndex, string cellar, ClaimsIdentity identity)
+        public async Task<int> MoveAsync(int WineId, int newDrawerIndex, string cellar, int userId)
         {
-            var WineMove = await GetWineByIdAsync(WineId, identity);
+            var WineMove = await GetWineByIdAsync(WineId, userId);
 
             if (WineMove == null) return 1;
 
             var drawer = await wineContext.Drawers.Include(c => c.Cellar).Include(c => c.Wines)
                 .Where(c => c.Cellar.Name == cellar && c.Index == newDrawerIndex
-                && c.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).FirstOrDefaultAsync();
+                && c.Cellar.UserId == userId).FirstOrDefaultAsync();
 
             if (drawer == null) return 2;
 
@@ -167,10 +164,10 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de dupliquer un vin si le tiroir n'est pas plein
-        public async Task<int> DuplicateAsync(int WineId, int NbrDuplicate, ClaimsIdentity identity)
+        public async Task<int> DuplicateAsync(int WineId, int NbrDuplicate, int userId)
         {
             var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer)
-                .FirstOrDefaultAsync(p => p.WineId == WineId && p.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value));
+                .FirstOrDefaultAsync(p => p.WineId == WineId && p.Drawer.Cellar.UserId == userId);
             var nbWine = 0;
             var nbWinInDrawer = WineDuplicate.Drawer.Wines.Count();
 
@@ -201,20 +198,20 @@ namespace Wine_cellar.Repositories
             return nbWine;
         }
 
-        public async Task<List<Wine>> GetWineByColorAsync(WineColor color, ClaimsIdentity identity)
+        public async Task<List<Wine>> GetWineByColorAsync(WineColor color, int userId)
         {
             var WinesColor = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
-                .Where(w => w.Color == color && w.Drawer.Cellar.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+                .Where(w => w.Color == color && w.Drawer.Cellar.UserId == userId).ToListAsync();
 
             if (WinesColor.Count == 0) return null;
             return WinesColor;
         }
 
-        public async Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity)
+        public async Task<int> DeleteEFbyIdAsync(int WineId, int userId)
         {
-            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+           
             return await wineContext.Wines.
-               Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == UserIdentity).ExecuteDeleteAsync();
+               Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
         }
 
         public async Task<int> UpdateEFbyidAsync(UpdateWineViewModel updateWine, int UserId)

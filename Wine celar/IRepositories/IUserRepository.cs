@@ -12,7 +12,7 @@ namespace Wine_cellar.IRepositories
         //Permet de mettre à jour les infos du user
         Task<User> UpdateUserAsync(User user);
         //Permet de supprimer un user
-        Task<bool> DeleteUserAsync(int UserId, ClaimsIdentity identity);
+        Task<bool> DeleteUserAsync(int UserId, int thisUserId);
         //Permet de se connecter en tant que user
         Task<User> LoginUser(string login, string pwd);
     }
