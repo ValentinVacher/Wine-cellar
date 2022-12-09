@@ -213,10 +213,17 @@ namespace Wine_cellar.Repositories
         public async Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity)
         {
             var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            //return await wineContext.Wines.Include(w => w.Drawer).ThenInclude(d => d.Cellar).
-            //    Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == UserIdentity).ExecuteDeleteAsync();
             return await wineContext.Wines.
                Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == UserIdentity).ExecuteDeleteAsync();
+        }
+
+        public async Task<int> UpdateEFbyidAsync(UpdateWineViewModel updateWine, int UserId)
+        {
+            return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).
+                ExecuteUpdateAsync(updates=>updates
+                .SetProperty(w=>w.Color,updateWine.Color)
+                .SetProperty(w=>w.Name,updateWine.Name)
+                .SetProperty(w=>w.AppelationId,updateWine.AppelationId));
         }
     }
 }
