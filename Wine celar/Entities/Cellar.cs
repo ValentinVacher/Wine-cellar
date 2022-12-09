@@ -10,6 +10,7 @@ namespace Wine_cellar.Entities
         public int NbDrawerMax { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        //public int temperature { get; set; }
         public List<Drawer> Drawers { get; set; }
 
         public bool IsFull()

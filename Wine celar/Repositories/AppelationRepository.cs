@@ -35,10 +35,7 @@ namespace Wine_celar.Repositories
             winecontext.Appelations.Add(appelation);
             await winecontext.SaveChangesAsync();
             return appelation;
-            
-
         }
-
 
         public async Task<Appelation> UpdateAppelationAsync(Appelation appelation)
         {
@@ -60,8 +57,6 @@ namespace Wine_celar.Repositories
             await winecontext.SaveChangesAsync();
             return AppelationDelete;
         }
-
-
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
