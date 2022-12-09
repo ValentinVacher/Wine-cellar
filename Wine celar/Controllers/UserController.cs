@@ -77,8 +77,10 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromForm] CreateUserViewModel userView)
+        public async Task<IActionResult> SignIn([FromForm] CreateUserViewModel userView, bool CGU)
         {
+            if (!CGU) return Problem("Vous devez accepter les condition generale d'utilisation");
+
             Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
             if(!regexPsw.Match(userView.Password).Success) return Problem("Mot de passe incorrect");
 
