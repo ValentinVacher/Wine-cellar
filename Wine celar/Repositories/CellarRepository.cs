@@ -26,16 +26,15 @@ namespace Wine_cellar.Repositories
         }
 
         //Recupere une liste de toute les caves
-        public async Task<List<Cellar>> GetAllsAsync(ClaimsIdentity identity)
+        public async Task<List<Cellar>> GetAllsAsync(int userId)
         {
             //Creation de la variable de serialisation
             var result = await winecontext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
                 .ThenInclude(d => d.Wines).ThenInclude(a =>a.Appelation).
-                Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
-            
-            //Serialisation
+                Where(c => c.UserId == userId).ToListAsync();
+
             string fileName = "UserCellar.json";
             using FileStream createStream = File.Create("Json\\ " + fileName);
             await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {WriteIndented = true ,ReferenceHandler = ReferenceHandler.IgnoreCycles }
@@ -43,14 +42,14 @@ namespace Wine_cellar.Repositories
             await createStream.DisposeAsync();
 
             return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
-                Where(c => c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+                Where(c => c.UserId == userId).ToListAsync();
         }
 
         //Permet de recuperer une cave avec tout ses elements
-        public async Task<List<Cellar>> GetCellarByName(string name, ClaimsIdentity identity)
+        public async Task<List<Cellar>> GetCellarByName(string name, int userId)
         {
             return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
-                Where(c => c.Name.Contains(name) && c.UserId == int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value)).ToListAsync();
+                Where(c => c.Name.Contains(name) && c.UserId == userId).ToListAsync();
         }
 
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
