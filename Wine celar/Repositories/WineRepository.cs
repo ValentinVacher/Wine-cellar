@@ -209,5 +209,14 @@ namespace Wine_cellar.Repositories
             if (WinesColor.Count == 0) return null;
             return WinesColor;
         }
+
+        public async Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity)
+        {
+            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            //return await wineContext.Wines.Include(w => w.Drawer).ThenInclude(d => d.Cellar).
+            //    Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == UserIdentity).ExecuteDeleteAsync();
+            return await wineContext.Wines.
+               Where(w => w.WineId == WineId).ExecuteDeleteAsync();
+        }
     }
 }
