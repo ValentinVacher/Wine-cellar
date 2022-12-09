@@ -99,6 +99,8 @@ namespace Wine_cellar.Repositories
             //Verifie si le tiroir est plein
             if (Drawer.IsFull() == true) return 2;
 
+            if (!wineContext.Appelations.Any(a => a.AppelationId == WineView.AppelationId)) return 3;
+
             var wine = new Wine()
             {
                 Name = WineView.Name,
@@ -108,6 +110,7 @@ namespace Wine_cellar.Repositories
                 AppelationId = WineView.AppelationId,
                 Color = WineView.Color,
             };
+
             //Vérifie les couleurs du vin et de l'appelation
             if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;
 
