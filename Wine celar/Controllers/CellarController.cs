@@ -26,7 +26,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            return Ok(await cellarRepository.GetAllsAsync(identity));
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            return Ok(await cellarRepository.GetAllsAsync(userId));
         }
 
         [HttpGet]
@@ -36,7 +38,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var cellar = await cellarRepository.GetCellarByName(name, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var cellar = await cellarRepository.GetCellarByName(name, userId);
 
             if (cellar == null) return NotFound($"Cave {name} non trouver");
             return Ok(cellar);       
@@ -46,11 +49,11 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> AddCellar([FromForm]CreateCellarViewModel cellarViewModel, int Nbr)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var verif = (await cellarRepository.GetAllsAsync(identity)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var verif = (await cellarRepository.GetAllsAsync(userId)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
             if (verif != null) return BadRequest("Ce nom est déjà pris");
 
@@ -58,7 +61,7 @@ namespace Wine_cellar.Controllers
             {
                 Name = cellarViewModel.Name,
                 NbDrawerMax = cellarViewModel.NbDrawerMax,
-                UserId = int.Parse(idCurrentUser.Value)
+                UserId = userId
             };
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
 
@@ -72,7 +75,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var cellar = (await cellarRepository.GetCellarByName(actualname, userId)).FirstOrDefault();
 
             if (cellar == null) return NotFound("Cave introuvable");
 
@@ -80,8 +84,7 @@ namespace Wine_cellar.Controllers
             {
                 CellarId = cellar.CellarId,
                 Name = UpCellar.Name,
-                UserId= UpCellar.UserId
-                
+                UserId= UpCellar.UserId    
             };
 
             return Ok(await cellarRepository.UpdateCellarAsync(cellarUpdate));
@@ -94,7 +97,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var cellar = (await cellarRepository.GetCellarByName(name, identity)).FirstOrDefault();
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var cellar = (await cellarRepository.GetCellarByName(name, userId)).FirstOrDefault();
 
             if (cellar == null) return NotFound("Cave introuvable");
 

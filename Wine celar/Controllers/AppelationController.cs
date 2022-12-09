@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Security.Claims;
 using Wine_celar.Repositories;
 using Wine_celar.ViewModel;
@@ -74,7 +75,7 @@ namespace Wine_celar.Controllers
         public async Task<IActionResult> UpdateAppelation([FromForm]CreateAppelationViewModel appelViewModel)
         {
             var identity = User?.Identity as ClaimsIdentity;
-
+            
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");

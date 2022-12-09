@@ -30,7 +30,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            return Ok(await wineRepository.GetAllWinesAsync(identity));
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            return Ok(await wineRepository.GetAllWinesAsync(userId));
         }
 
         [HttpGet("{id}")]
@@ -40,7 +42,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wine = await wineRepository.GetWineByIdAsync(id, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var wine = await wineRepository.GetWineByIdAsync(id, userId);
 
             if (wine == null) return NotFound($"Le vin {id} est introuvable");
 
@@ -65,7 +69,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wines = await wineRepository.GetApogeeAsync(identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var wines = await wineRepository.GetApogeeAsync(userId);
 
             if (wines == null) return NotFound("Aucun vin n'est a l'apogée");
 
@@ -79,7 +85,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wine = await wineRepository.GetWineByWordAsync(word, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wine = await wineRepository.GetWineByWordAsync(word, userId);
 
             if (wine == null) return NotFound($"Le vin {word} est introuvable");
 
@@ -106,9 +113,13 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wines = await wineRepository.GetWineByColorAsync(color, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wines = await wineRepository.GetWineByColorAsync(color, userId);
+
             if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
+
             var WinesView = new List<WineViewModel>();
+
             foreach (var w in wines)
             {
                 var WineView = new WineViewModel();
@@ -133,7 +144,8 @@ namespace Wine_cellar.Controllers
 
             if (idCurrentUser == null) return BadRequest("Vous devez être connecter");
 
-            var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, userId);
 
             switch (wineCreated)
             {
@@ -165,7 +177,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            int NbrWineCreate = await wineRepository.DuplicateAsync(WineId, NbrDuplicate, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int NbrWineCreate = await wineRepository.DuplicateAsync(WineId, NbrDuplicate, userId);
 
             if (NbrWineCreate != NbrDuplicate) return Ok($"{NbrDuplicate - NbrWineCreate} vin n'ont pas été crée car il n'y a plus de place dans le tiroir");
 
@@ -179,7 +192,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
 
             if (wineUpdate == null) return NotFound("Bouteille introuvable");
 
@@ -193,7 +207,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, userId);
 
             switch (wineMove)
             {
@@ -211,7 +226,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            bool success = await wineRepository.DeleteWineAsync(id, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            bool success = await wineRepository.DeleteWineAsync(id, userId);
 
             if (success) return Ok($"Le vin {id} a été supprimé");
             

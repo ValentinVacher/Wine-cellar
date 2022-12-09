@@ -27,7 +27,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            return Ok(await drawerRepository.GetAllWithWineAsync(identity));
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            return Ok(await drawerRepository.GetAllWithWineAsync(userId));
         }
 
         [HttpGet]
@@ -37,9 +39,11 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity) == null) return NotFound("Le tiroir est introuvable");
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, identity));
+            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
+
+            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId));
         }
 
         [HttpPost]
@@ -49,7 +53,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, userId);
 
             switch (DrawerCreated)
             {
@@ -66,7 +72,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, userId);
 
             if (drawer == null) return NotFound("Le tiroir est introuvable");
 
@@ -80,7 +88,9 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            bool success = await drawerRepository.DeleteDrawerAsync(cellarName, index, identity);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            bool success = await drawerRepository.DeleteDrawerAsync(cellarName, index, userId);
 
             if (success) return Ok($"Le tiroir {index} de la cave {cellarName} a été supprimé");
             
