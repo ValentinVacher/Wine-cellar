@@ -124,16 +124,7 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
-            User user = new()
-            {
-                UserId = userView.UserId,
-                FirstName = userView.FirstName,
-                LastName = userView.LastName,
-                Email = userView.Email,
-                Password = userView.Password
-            };
-
-            var userUpdate = await UserRepository.UpdateUserAsync(user);
+            var userUpdate = await UserRepository.UpdateUserAsync(userView);
 
             if (userUpdate == null) return NotFound("Utilisateur introuvable");
             

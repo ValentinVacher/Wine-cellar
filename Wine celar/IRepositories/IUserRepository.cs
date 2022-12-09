@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Wine_cellar.Entities;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.IRepositories
 {
@@ -10,7 +11,7 @@ namespace Wine_cellar.IRepositories
         //Permet de créer un user 
         Task<User> CreateUserAsync(User user);
         //Permet de mettre à jour les infos du user
-        Task<User> UpdateUserAsync(User user);
+        Task<int> UpdateUserAsync(UpdateUserViewModel userView);
         //Permet de supprimer un user
         Task<int> DeleteUserAsync(int UserId);
         //Permet de se connecter en tant que user

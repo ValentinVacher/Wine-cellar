@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_cellar.ViewModel;
 
 namespace Wine_celar.Repositories
 {
@@ -37,18 +38,14 @@ namespace Wine_celar.Repositories
         }
 
         //Permet de mettre à jour un user
-        public async Task<User> UpdateUserAsync(User user)
+        public async Task<int> UpdateUserAsync(UpdateUserViewModel userView)
         {
-            var UserUpdate = await wineContext.Users.FindAsync(user.UserId);
-            if (UserUpdate == null)
-                return null;
-            //Valeur à modifier
-            UserUpdate.Email = user.Email;
-            UserUpdate.FirstName = user.FirstName;
-            UserUpdate.LastName = user.LastName;
-
-            await wineContext.SaveChangesAsync();
-            return UserUpdate;
+            return await wineContext.Users.Where(u => u.UserId == userView.UserId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(u => u.LastName, userView.LastName)
+                .SetProperty(u => u.FirstName, userView.FirstName)
+                .SetProperty(u => u.Email, userView.Email)
+                .SetProperty(u => u.Password, userView.Password));
         }
 
         //Permet de supprimer un user

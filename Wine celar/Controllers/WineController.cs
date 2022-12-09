@@ -185,47 +185,48 @@ namespace Wine_cellar.Controllers
             return Ok($"Le vin {WineId} a été dupliquer {NbrWineCreate} fois");
         }
 
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
+        //{
+        //    var identity = User?.Identity as ClaimsIdentity;
+
+        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+
+        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
+
+        //    if (wineUpdate == null) return NotFound("Bouteille introuvable");
+
+        //    return Ok(wineUpdate);
+        //}
+
         [HttpPut]
-        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
+        public async Task<ActionResult<Wine>> Move(int wineId, int drawerId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
-
-            if (wineUpdate == null) return NotFound("Bouteille introuvable");
-
-            return Ok(wineUpdate);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerIndex, string cellar)
-        {
-            var identity = User?.Identity as ClaimsIdentity;
-
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, userId);
+            var wineMove = await wineRepository.MoveAsync(wineId, drawerId, userId);
 
             switch (wineMove)
             {
                 case 1: return NotFound("Vin introuvable");
                 case 2: return NotFound("Tiroir introuvable");
                 case 3: return BadRequest("Le tiroire est plein");
-                default: return Ok($"Le vin {WineId} a bien été déplacer");
+                default: return Ok($"Le vin {wineId} a bien été déplacer");
             }
         }
+
         [HttpPut]
-        public async Task<IActionResult> UpdateEFbyid([FromForm] UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
             var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (await wineRepository.UpdateEFbyidAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
+            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
             return Ok($"le vin{wineView.WineId} a été modifié ");
 
         }

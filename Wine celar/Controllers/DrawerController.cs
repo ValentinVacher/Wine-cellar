@@ -73,7 +73,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, userId);
 
             if (drawer == null) return NotFound("Le tiroir est introuvable");
