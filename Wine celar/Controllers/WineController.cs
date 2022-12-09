@@ -242,7 +242,10 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-            if (await wineRepository.DeleteEFbyIdAsync(id,identity) == 0) return NotFound("Vin introuvable");
+
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (await wineRepository.DeleteEFbyIdAsync(id,userId) == 0) return NotFound("Vin introuvable");
             return Ok($"le Vin {id} demandé a été supprimé");
            
         }

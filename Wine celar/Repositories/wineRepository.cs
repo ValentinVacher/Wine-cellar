@@ -207,9 +207,8 @@ namespace Wine_cellar.Repositories
             return WinesColor;
         }
 
-        public async Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity)
+        public async Task<int> DeleteEFbyIdAsync(int WineId, int userId)
         {
-            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             //return await wineContext.Wines.Include(w => w.Drawer).ThenInclude(d => d.Cellar).
             //    Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == UserIdentity).ExecuteDeleteAsync();
             return await wineContext.Wines.

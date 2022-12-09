@@ -26,6 +26,6 @@ namespace Wine_cellar.IRepositories
         //Permet de dupliquer un vin
         Task<int> DuplicateAsync(int WineId,int NbrDuplicate, int userId);
         Task<List<Wine>> GetWineByColorAsync(WineColor color, int userId);
-        Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity);
+        Task<int> DeleteEFbyIdAsync(int WineId, int userId);
     }
 }
