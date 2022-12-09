@@ -209,7 +209,7 @@ namespace Wine_cellar.Repositories
 
         public async Task<int> DeleteEFbyIdAsync(int WineId, int userId)
         {
-            
+           
             return await wineContext.Wines.
                Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
         }
