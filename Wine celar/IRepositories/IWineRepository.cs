@@ -24,9 +24,9 @@ namespace Wine_cellar.IRepositories
         //Permet de récuperer tout les vins qui sont à leur apogée
         Task<List<WineViewModel>> GetApogeeAsync(int userId);
         //Permet de dupliquer un vin
-        Task<int> DuplicateAsync(int WineId,int NbrDuplicate, ClaimsIdentity identity);
-        Task<List<Wine>> GetWineByColorAsync(WineColor color, ClaimsIdentity identity);
-        Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity);
+        Task<int> DuplicateAsync(int WineId,int NbrDuplicate, int UserId);
+        Task<List<Wine>> GetWineByColorAsync(WineColor color, int UserId);
+        Task<int> DeleteEFbyIdAsync(int WineId, int UserId);
         Task<int> UpdateEFbyidAsync(UpdateWineViewModel updateWine, int UserId);
     }
 }
