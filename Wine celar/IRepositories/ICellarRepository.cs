@@ -17,6 +17,6 @@ namespace Wine_cellar.IRepositories
         Task<Cellar> UpdateCellarAsync(Cellar cellar);
         //Permet d'ajouter une cave
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
-        Task<List<Cellar>> ImportJson();
+        Task<string> ImportJsonAsync(string form);
     }
 }

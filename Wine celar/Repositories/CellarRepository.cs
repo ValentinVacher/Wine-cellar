@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Wine_cellar.Repositories
 {
 
@@ -36,7 +37,7 @@ namespace Wine_cellar.Repositories
             
             //Serialisation
             string fileName = "UserCellar.json";
-            using FileStream createStream = File.Create(fileName);
+            using FileStream createStream = File.Create("Json\\ " + fileName);
             await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {WriteIndented = true ,ReferenceHandler = ReferenceHandler.IgnoreCycles }
             ) ; 
             await createStream.DisposeAsync();
@@ -94,14 +95,15 @@ namespace Wine_cellar.Repositories
             return CellarUpdate;
         }
 
-        public async Task<List<Cellar>> ImportJson()
+        public async Task<string> ImportJsonAsync(string form)
         {
-            string fileName = "UserCellar.json";
-            using FileStream openStream = File.OpenRead(fileName);
-            List<Cellar?> cellarJson =
-                await JsonSerializer.DeserializeAsync<List<Cellar>>(openStream);
+
+            var deserializ = JsonSerializer.Deserialize<Cellar>(form + ".json");
+            winecontext.Cellars.Add(deserializ);
+            await winecontext.SaveChangesAsync();
+            return form;
             
-            return cellarJson;
+
         }
 
 

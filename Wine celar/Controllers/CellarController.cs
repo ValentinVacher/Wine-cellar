@@ -4,6 +4,9 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using System.Security.Claims;
+using Wine_celar.ViewModel;
+using Wine_cellar.Repositories;
+using System.Text.Json;
 
 namespace Wine_cellar.Controllers
 {
@@ -39,11 +42,11 @@ namespace Wine_cellar.Controllers
             var cellar = await cellarRepository.GetCellarByName(name, identity);
 
             if (cellar == null) return NotFound($"Cave {name} non trouver");
-            return Ok(cellar);       
+            return Ok(cellar);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCellar([FromForm]CreateCellarViewModel cellarViewModel, int Nbr)
+        public async Task<IActionResult> AddCellar([FromForm] CreateCellarViewModel cellarViewModel, int Nbr)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -68,7 +71,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, string actualname)
+        public async Task<IActionResult> UpdateCellar([FromForm] UpdateCellarViewModel UpCellar, string actualname)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -82,8 +85,8 @@ namespace Wine_cellar.Controllers
             {
                 CellarId = cellar.CellarId,
                 Name = UpCellar.Name,
-                UserId= UpCellar.UserId
-                
+                UserId = UpCellar.UserId
+
             };
 
             return Ok(await cellarRepository.UpdateCellarAsync(cellarUpdate));
@@ -108,9 +111,19 @@ namespace Wine_cellar.Controllers
                 return Problem($"Erreur lors de la suppression de la cave");
         }
         [HttpPost]
-        public async Task<IActionResult> ImportJson()
+        public async Task<IActionResult> ImportJson([FromForm]string Jfile)
         {
-            return (IActionResult)await cellarRepository.ImportJson();
+            var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
+            using (FileStream stream = new FileStream(path, FileMode.Open))
+            {
+                
+                await cellarRepository.ImportJsonAsync(Jfile);
+                //Cellar? cellarJson =
+                //await JsonSerializer.DeserializeAsync<Cellar>(Jfile );
+                
+                stream.Close();
+            }
+            return Ok();
         }
     }
 }
