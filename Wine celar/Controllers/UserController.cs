@@ -77,7 +77,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromForm] CreateUserViewModel userView, bool CGU)
+        public async Task<IActionResult> Register([FromForm] CreateUserViewModel userView, bool CGU)
         {
             if (!CGU) return BadRequest("Vous devez accepter les condition generale d'utilisation");
 
