@@ -22,7 +22,6 @@ builder.Services.AddCors(options =>
                           //.AllowAnyHeader()
                           //.AllowAnyMethod();
                       });
-    
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -46,6 +45,8 @@ builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAppelationRepository, AppelationRepository>();
+
+
 
 var app = builder.Build();
 
