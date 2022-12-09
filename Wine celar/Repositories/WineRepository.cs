@@ -109,8 +109,7 @@ namespace Wine_cellar.Repositories
                 Color = WineView.Color,
             };
             //Vérifie les couleurs du vin et de l'appelation
-            var appelation = await wineContext.Appelations.FindAsync(wine.AppelationId);
-            if (wine.Color != appelation.Color) return 3;
+            if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;
 
             //Ajoute le vin 
             wineContext.Wines.Add(wine);
@@ -202,6 +201,9 @@ namespace Wine_cellar.Repositories
 
         public async Task<int> UpdateWineAsync(UpdateWineViewModel updateWine, int UserId)
         {
+            //Vérifie les couleurs du vin et de l'appelation
+            if (updateWine.Color != (await wineContext.Appelations.FindAsync(updateWine.AppelationId)).Color) return 0;
+
             return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).
                 ExecuteUpdateAsync(updates=>updates
                 .SetProperty(w=>w.Color,updateWine.Color)
