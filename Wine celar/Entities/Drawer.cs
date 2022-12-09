@@ -1,4 +1,5 @@
 ﻿using Wine_cellar.Contexts;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Entities
 {
@@ -10,6 +11,17 @@ namespace Wine_cellar.Entities
         public Cellar Cellar { get; set; }
         public int CellarId { get; set; }
         public List<Wine> Wines { get; set; }
+
+
+        public Drawer ConvertorCreate(CreateDrawerViewModel viewModel)
+        {
+            return new Drawer()
+            {
+                Index = viewModel.index,
+                NbBottleMax = viewModel.NbBottleMax,
+                CellarId = viewModel.CellarId,
+            };
+        }
 
         public bool IsFull()
         {

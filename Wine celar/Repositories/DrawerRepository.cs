@@ -40,7 +40,7 @@ namespace Wine_cellar.Repositories
         public async Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, int userId)
         {
             var Cellar = await winecontext.Cellars.Include(d => d.Drawers)
-                .FirstOrDefaultAsync(d => d.Name == createDrawer.CellarName && d.UserId == userId);
+                .FirstOrDefaultAsync(d => d.CellarId == createDrawer.CellarId && d.UserId == userId);
 
             if (Cellar == null) return 3;
 
@@ -58,12 +58,7 @@ namespace Wine_cellar.Repositories
                 }
             }
 
-            Drawer drawer = new()
-            {
-                Index = createDrawer.index,
-                NbBottleMax = createDrawer.NbBottleMax,
-                CellarId = Cellar.CellarId
-            };
+            var drawer = new Drawer().ConvertorCreate(createDrawer);
 
             //Ajoute le tiroir
             winecontext.Drawers.AddAsync(drawer);
