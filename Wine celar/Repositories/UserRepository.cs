@@ -29,11 +29,8 @@ namespace Wine_celar.Repositories
         //Permet de créer un user
         public async Task<User> CreateUserAsync(User user)
         {
-            if(await wineContext.Users.FirstOrDefaultAsync(e => e.Email == user.Email) != null)
-            {
-                return null;
-            }
-
+            if(await wineContext.Users.FirstOrDefaultAsync(e => e.Email == user.Email) != null) return null;
+          
             wineContext.Users.Add(user);
             await wineContext.SaveChangesAsync();
             return user;

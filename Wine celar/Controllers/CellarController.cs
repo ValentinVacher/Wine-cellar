@@ -24,7 +24,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             return Ok(await cellarRepository.GetAllsAsync(identity));
         }
@@ -34,7 +34,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var cellar = await cellarRepository.GetCellarByName(name, identity);
 
@@ -48,11 +48,11 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (idCurrentUser == null) return BadRequest("Vous devez être connecter");
 
             var verif = (await cellarRepository.GetAllsAsync(identity)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
-            if (verif != null) return Problem("Ce nom est déjà pris");
+            if (verif != null) return BadRequest("Ce nom est déjà pris");
 
             Cellar cellar = new()
             {
@@ -61,10 +61,8 @@ namespace Wine_cellar.Controllers
                 UserId = int.Parse(idCurrentUser.Value)
             };
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
-            if (cellarViewModel != null)
-                return Ok(cellarCreated);
-            else
-                return Problem("Cave non créer");
+
+            return Ok(cellarCreated);
         }
 
         [HttpPut]
@@ -72,7 +70,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var cellar = (await cellarRepository.GetCellarByName(actualname, identity)).FirstOrDefault();
 
@@ -94,7 +92,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var cellar = (await cellarRepository.GetCellarByName(name, identity)).FirstOrDefault();
 
@@ -102,10 +100,9 @@ namespace Wine_cellar.Controllers
 
             bool success = await cellarRepository.DeleteCellarAsync(cellar);
 
-            if (success)
-                return Ok($"La cave {name} a été supprimé");
-            else
-                return Problem($"Erreur lors de la suppression de la cave");
+            if (success) return Ok($"La cave {name} a été supprimé");
+
+            return NotFound("Cave introuvable");
         }
     }
 }

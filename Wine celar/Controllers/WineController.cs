@@ -28,10 +28,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
-
-           
-
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             return Ok(await wineRepository.GetAllWinesAsync(identity));
         }
@@ -41,12 +38,12 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wine = await wineRepository.GetWineByIdAsync(id, identity);
 
-            if (wine == null)
-                return NotFound($"Le vin {id} est introuvable");
+            if (wine == null) return NotFound($"Le vin {id} est introuvable");
+
             var WineView = new WineViewModel()
             {
                 WineId = wine.WineId,
@@ -66,7 +63,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wines = await wineRepository.GetApogeeAsync(identity);
 
@@ -80,11 +77,12 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wine = await wineRepository.GetWineByWordAsync(word, identity);
 
             if (wine == null) return NotFound($"Le vin {word} est introuvable");
+
             var WinesView = new List<WineViewModel>();
             foreach (var w in wine)
             {
@@ -106,7 +104,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wines = await wineRepository.GetWineByColorAsync(color, identity);
             if (wines == null) return NotFound($"Vous n'avez aucun vin {color}");
@@ -133,15 +131,15 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idCurrentUser == null) return Problem("Vous devez être connecter");
+            if (idCurrentUser == null) return BadRequest("Vous devez être connecter");
 
             var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, identity);
 
             switch (wineCreated)
             {
                 case 1: return NotFound("Tiroir introuvable");
-                case 2: return Problem("Le tiroir est plein");
-                case 3: return Problem("Le vin et l'appélation ne correspond pas");
+                case 2: return BadRequest("Le tiroir est plein");
+                case 3: return NotFound("Le vin et l'appélation ne correspond pas");
                 default: break;
             }
 
@@ -165,7 +163,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int NbrWineCreate = await wineRepository.DuplicateAsync(WineId, NbrDuplicate, identity);
 
@@ -179,7 +177,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wineUpdate = await wineRepository.UpdateWineAsync(wineView, identity);
 
@@ -193,7 +191,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, identity);
 
@@ -201,7 +199,7 @@ namespace Wine_cellar.Controllers
             {
                 case 1: return NotFound("Vin introuvable");
                 case 2: return NotFound("Tiroir introuvable");
-                case 3: return NotFound("Le tiroire est plein");
+                case 3: return BadRequest("Le tiroire est plein");
                 default: return Ok($"Le vin {WineId} a bien été déplacer");
             }
         }
@@ -211,14 +209,13 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             bool success = await wineRepository.DeleteWineAsync(id, identity);
 
-            if (success)
-                return Ok($"Le vin {id} a été supprimé");
-            else
-                return Problem("Vin introuvable");
+            if (success) return Ok($"Le vin {id} a été supprimé");
+            
+            return NotFound("Vin introuvable");
         }
     }
 }
