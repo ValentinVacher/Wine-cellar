@@ -205,6 +205,17 @@ namespace Wine_cellar.Controllers
                 default: return Ok($"Le vin {WineId} a bien été déplacer");
             }
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateEFbyid([FromForm] UpdateWineViewModel wineView)
+        {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
+            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            if (await wineRepository.UpdateEFbyidAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
+            return Ok($"le vin{wineView.WineId} a été modifié ");
+
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWine(int id)

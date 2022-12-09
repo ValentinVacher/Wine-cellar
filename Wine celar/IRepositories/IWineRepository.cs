@@ -27,5 +27,6 @@ namespace Wine_cellar.IRepositories
         Task<int> DuplicateAsync(int WineId,int NbrDuplicate, ClaimsIdentity identity);
         Task<List<Wine>> GetWineByColorAsync(WineColor color, ClaimsIdentity identity);
         Task<int> DeleteEFbyIdAsync(int WineId, ClaimsIdentity identity);
+        Task<int> UpdateEFbyidAsync(UpdateWineViewModel updateWine, int UserId);
     }
 }
