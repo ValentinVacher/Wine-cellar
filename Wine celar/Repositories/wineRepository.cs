@@ -130,18 +130,18 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de supprimer un vin 
-        public async Task<bool> DeleteWineAsync(int WineId, int userId)
-        {
-            var WineDelete = await GetWineByIdAsync(WineId, userId);
+        //public async Task<bool> DeleteWineAsync(int WineId, int userId)
+        //{
+        //    var WineDelete = await GetWineByIdAsync(WineId, userId);
 
-            if (WineDelete == null) return false;
+        //    if (WineDelete == null) return false;
 
-            wineContext.Wines.Remove(WineDelete);
-            await wineContext.SaveChangesAsync();
+        //    wineContext.Wines.Remove(WineDelete);
+        //    await wineContext.SaveChangesAsync();
 
-            return true;
+        //    return true;
 
-        }
+        //}
 
         //Permet de deplacer un vin
         public async Task<int> MoveAsync(int WineId, int newDrawerIndex, string cellar, int userId)
@@ -207,9 +207,8 @@ namespace Wine_cellar.Repositories
             return WinesColor;
         }
 
-        public async Task<int> DeleteEFbyIdAsync(int WineId, int userId)
+        public async Task<int> DeleteWineAsync(int WineId, int userId)
         {
-           
             return await wineContext.Wines.
                Where(w => w.WineId == WineId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
         }

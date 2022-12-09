@@ -140,20 +140,18 @@ namespace Wine_cellar.Controllers
             return Ok(userUpdate);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value) == userId) return BadRequest("Vous ne pouver pas suprimer votre compte");
 
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var success = await UserRepository.DeleteUserAsync(userId);
 
-            bool success = await UserRepository.DeleteUserAsync(id, userId);
-
-            if (success) return Ok($"L'utilisateur {id} a été supprimé");
+            if (success != 0) return Ok($"L'utilisateur {userId} a été supprimé");
             
             return BadRequest("Utilisateur introuvable");
         }

@@ -238,27 +238,27 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            bool success = await wineRepository.DeleteWineAsync(id, userId);
+            var success = await wineRepository.DeleteWineAsync(id, userId);
 
-            if (success) return Ok($"Le vin {id} a été supprimé");
+            if (success != 0) return Ok($"Le vin {id} a été supprimé");
             
             return NotFound("Vin introuvable");
         }
 
         //Controller méthode ef7 execute delete
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWineEF(int id)
-        {
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteWineEF(int id)
+        //{
 
-            var identity = User?.Identity as ClaimsIdentity;
+        //    var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (await wineRepository.DeleteEFbyIdAsync(id,userId) == 0) return NotFound("Vin introuvable");
-            return Ok($"le Vin {id} demandé a été supprimé");
+        //    if (await wineRepository.DeleteWineAsync(id,userId) == 0) return NotFound("Vin introuvable");
+        //    return Ok($"le Vin {id} demandé a été supprimé");
            
-        }
+        //}
     }
 }

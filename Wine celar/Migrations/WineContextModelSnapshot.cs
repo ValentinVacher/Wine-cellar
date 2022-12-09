@@ -30,10 +30,6 @@ namespace Winecelar.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppelationId"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Color")
                         .HasColumnType("int");
 
@@ -43,6 +39,10 @@ namespace Winecelar.Migrations
                     b.Property<int>("KeepMin")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("AppelationId");
 
                     b.ToTable("Appelations");
@@ -51,218 +51,218 @@ namespace Winecelar.Migrations
                         new
                         {
                             AppelationId = 1,
-                            AppelationName = "Bordeaux",
                             Color = 0,
                             KeepMax = 10,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Bordeaux"
                         },
                         new
                         {
                             AppelationId = 2,
-                            AppelationName = "Loire",
                             Color = 0,
                             KeepMax = 6,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Loire"
                         },
                         new
                         {
                             AppelationId = 3,
-                            AppelationName = "Bordeaux, Grands crus",
                             Color = 0,
                             KeepMax = 20,
-                            KeepMin = 10
+                            KeepMin = 10,
+                            Name = "Bordeaux, Grands crus"
                         },
                         new
                         {
                             AppelationId = 4,
-                            AppelationName = "Sud-Ouest",
                             Color = 0,
                             KeepMax = 10,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Sud-Ouest"
                         },
                         new
                         {
                             AppelationId = 5,
-                            AppelationName = "Languedoc & Provence",
                             Color = 0,
                             KeepMax = 8,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Languedoc & Provence"
                         },
                         new
                         {
                             AppelationId = 6,
-                            AppelationName = "Côtes du Rhône",
                             Color = 0,
                             KeepMax = 6,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Côtes du Rhône"
                         },
                         new
                         {
                             AppelationId = 7,
-                            AppelationName = "Cotes du Rhônes, Grands Crus",
                             Color = 0,
                             KeepMax = 20,
-                            KeepMin = 10
+                            KeepMin = 10,
+                            Name = "Cotes du Rhônes, Grands Crus"
                         },
                         new
                         {
                             AppelationId = 8,
-                            AppelationName = "Beaujolais",
                             Color = 0,
                             KeepMax = 5,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Beaujolais"
                         },
                         new
                         {
                             AppelationId = 9,
-                            AppelationName = "Beaujolais, Crus",
                             Color = 0,
                             KeepMax = 8,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Beaujolais, Crus"
                         },
                         new
                         {
                             AppelationId = 10,
-                            AppelationName = "Bourgogne, Saône-et-Loire",
                             Color = 0,
                             KeepMax = 10,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Bourgogne, Saône-et-Loire"
                         },
                         new
                         {
                             AppelationId = 11,
-                            AppelationName = "Bourgogne, Côte-d'Or",
                             Color = 0,
                             KeepMax = 20,
-                            KeepMin = 10
+                            KeepMin = 10,
+                            Name = "Bourgogne, Côte-d'Or"
                         },
                         new
                         {
                             AppelationId = 12,
-                            AppelationName = "Loire, Sec",
                             Color = 2,
                             KeepMax = 4,
-                            KeepMin = 3
+                            KeepMin = 3,
+                            Name = "Loire, Sec"
                         },
                         new
                         {
                             AppelationId = 13,
-                            AppelationName = "Loire, moelleux et liquoreux",
                             Color = 2,
                             KeepMax = 20,
-                            KeepMin = 10
+                            KeepMin = 10,
+                            Name = "Loire, moelleux et liquoreux"
                         },
                         new
                         {
                             AppelationId = 14,
-                            AppelationName = "Bordeaux, sec",
                             Color = 2,
                             KeepMax = 8,
-                            KeepMin = 5
+                            KeepMin = 5,
+                            Name = "Bordeaux, sec"
                         },
                         new
                         {
                             AppelationId = 15,
-                            AppelationName = "Bordeaux, liquoreux",
                             Color = 2,
                             KeepMax = 20,
-                            KeepMin = 15
+                            KeepMin = 15,
+                            Name = "Bordeaux, liquoreux"
                         },
                         new
                         {
                             AppelationId = 16,
-                            AppelationName = "Sud-Ouest, sec",
                             Color = 2,
                             KeepMax = 5,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Sud-Ouest, sec"
                         },
                         new
                         {
                             AppelationId = 17,
-                            AppelationName = "Sud-Ouest, liquoreux",
                             Color = 2,
                             KeepMax = 15,
-                            KeepMin = 10
+                            KeepMin = 10,
+                            Name = "Sud-Ouest, liquoreux"
                         },
                         new
                         {
                             AppelationId = 18,
-                            AppelationName = "Languedoc & Provence",
                             Color = 2,
                             KeepMax = 3,
-                            KeepMin = 3
+                            KeepMin = 3,
+                            Name = "Languedoc & Provence"
                         },
                         new
                         {
                             AppelationId = 19,
-                            AppelationName = "Côtes du Rhône",
                             Color = 2,
                             KeepMax = 4,
-                            KeepMin = 3
+                            KeepMin = 3,
+                            Name = "Côtes du Rhône"
                         },
                         new
                         {
                             AppelationId = 20,
-                            AppelationName = "Bourgogne, Saône-et-Loire",
                             Color = 2,
                             KeepMax = 4,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Bourgogne, Saône-et-Loire"
                         },
                         new
                         {
                             AppelationId = 21,
-                            AppelationName = "Bourgogne, Côte-d'Or",
                             Color = 2,
                             KeepMax = 10,
-                            KeepMin = 7
+                            KeepMin = 7,
+                            Name = "Bourgogne, Côte-d'Or"
                         },
                         new
                         {
                             AppelationId = 22,
-                            AppelationName = "Jura",
                             Color = 2,
                             KeepMax = 20,
-                            KeepMin = 8
+                            KeepMin = 8,
+                            Name = "Jura"
                         },
                         new
                         {
                             AppelationId = 23,
-                            AppelationName = "Jura",
                             Color = 2,
                             KeepMax = 20,
-                            KeepMin = 8
+                            KeepMin = 8,
+                            Name = "Jura"
                         },
                         new
                         {
                             AppelationId = 24,
-                            AppelationName = "Alsace",
                             Color = 2,
                             KeepMax = 5,
-                            KeepMin = 4
+                            KeepMin = 4,
+                            Name = "Alsace"
                         },
                         new
                         {
                             AppelationId = 25,
-                            AppelationName = "Languedoc",
                             Color = 1,
                             KeepMax = 4,
-                            KeepMin = 3
+                            KeepMin = 3,
+                            Name = "Languedoc"
                         },
                         new
                         {
                             AppelationId = 26,
-                            AppelationName = "Provence",
                             Color = 1,
                             KeepMax = 3,
-                            KeepMin = 3
+                            KeepMin = 3,
+                            Name = "Provence"
                         },
                         new
                         {
                             AppelationId = 27,
-                            AppelationName = "Rhône",
                             Color = 1,
                             KeepMax = 2,
-                            KeepMin = 2
+                            KeepMin = 2,
+                            Name = "Rhône"
                         });
                 });
 

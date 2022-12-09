@@ -10,30 +10,30 @@ namespace Wine_celar.Repositories
 {
     public class AppelationRepository : IAppelationRepository
     {
-        WineContext winecontext;
+        WineContext wineContext;
         ILogger<AppelationRepository> logger;
 
         //Constructeur
         public AppelationRepository(WineContext winecontext, ILogger<AppelationRepository> logger)
         {
-            this.winecontext = winecontext;
+            this.wineContext = winecontext;
             this.logger = logger;
         }
 
         public async Task<List<Appelation>> GetAllAppelationsAsync()
         {
-            return await winecontext.Appelations.ToListAsync();
+            return await wineContext.Appelations.ToListAsync();
         }
         public async Task<Appelation> GetAppelationAsync(string appelationName)
         {
-            return await winecontext.Appelations.FirstOrDefaultAsync(p => p.Name == appelationName);
+            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.Name == appelationName);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
-            if (await winecontext.Appelations.FirstOrDefaultAsync(a => a.Name == appelation.Name) == null) return null;
+            if (await wineContext.Appelations.FirstOrDefaultAsync(a => a.Name == appelation.Name) == null) return null;
 
-            winecontext.Appelations.Add(appelation);
-            await winecontext.SaveChangesAsync();
+            wineContext.Appelations.Add(appelation);
+            await wineContext.SaveChangesAsync();
             return appelation;
         }
 
@@ -44,23 +44,18 @@ namespace Wine_celar.Repositories
             AppelationUpdate.Name = appelation.Name;
             AppelationUpdate.KeepMin = appelation.KeepMin;
             AppelationUpdate.KeepMax = appelation.KeepMax;
-            await winecontext.SaveChangesAsync();
+            await wineContext.SaveChangesAsync();
             return AppelationUpdate;
         }
 
-        public async Task<Appelation> DeleteAppelationAsync(string appelationName)
+        public async Task<int> DeleteAppelationAsync(int appelationId)
         {
-            var AppelationDelete = await GetAppelationAsync(appelationName);
-            if (AppelationDelete == null)
-                return null;
-            winecontext.Appelations.Remove(AppelationDelete);
-            await winecontext.SaveChangesAsync();
-            return AppelationDelete;
+            return await wineContext.Appelations.Where(a => a.AppelationId== appelationId).ExecuteDeleteAsync();
         }
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
-            var AppelationsColor = await winecontext.Appelations.Where(a => a.Color == color).ToListAsync();
+            var AppelationsColor = await wineContext.Appelations.Where(a => a.Color == color).ToListAsync();
             if (AppelationsColor.Count() == 0) return null;
             return AppelationsColor;
         }

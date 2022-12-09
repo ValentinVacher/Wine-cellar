@@ -52,25 +52,13 @@ namespace Wine_celar.Repositories
         }
 
         //Permet de supprimer un user
-        public async Task<bool> DeleteUserAsync(int UserId, int thisUserId)
+        public async Task<int> DeleteUserAsync(int userId)
         {
-            var UserDelete = await wineContext.Users.Include(c => c.Cellars).ThenInclude(d => d.Drawers).ThenInclude(w => w.Wines).FirstOrDefaultAsync(c => c.UserId == UserId);
+            await wineContext.Wines.Where(w => w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Drawers.Where(d => d.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Cellars.Where(c => c.UserId == userId).ExecuteDeleteAsync();
 
-            if (UserDelete.UserId == thisUserId) return false;
-
-            if (UserDelete == null)
-                return false;
-            //Supprime les caves associées
-            foreach (var Cellar in UserDelete.Cellars)
-            {
-                Cellar.DeleteDrawer(wineContext);
-                wineContext.Cellars.Remove(Cellar);
-            }
-            //Supprime user
-            wineContext.Users.Remove(UserDelete);
-            await wineContext.SaveChangesAsync();
-
-            return true;
+            return await wineContext.Users.Where(u => u.UserId == userId).ExecuteDeleteAsync();
         }
 
         //Permet de se connecter

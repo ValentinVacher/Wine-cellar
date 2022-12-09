@@ -22,13 +22,5 @@ namespace Wine_cellar.Entities
                 return false; 
             }
         }
-
-        public void DeleteWines(WineContext wineContext)
-        {
-            foreach(var wine in Wines)
-            {
-                wineContext.Wines.Remove(wine);
-            }
-        }
     }
 }

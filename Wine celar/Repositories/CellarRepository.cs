@@ -13,20 +13,20 @@ namespace Wine_cellar.Repositories
     public class CellarRepository : ICellarRepository
     {
         //Creation du context et du logger
-        WineContext winecontext;
+        WineContext wineContext;
         ILogger<CellarRepository> Logger;
 
         //Constructeur
         public CellarRepository(WineContext winecontext, ILogger<CellarRepository> Logger)
         {
-            this.winecontext = winecontext;
+            this.wineContext = winecontext;
             this.Logger = Logger;
         }
 
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(int userId)
         {
-            var result = await winecontext.Cellars
+            var result = await wineContext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
                 .ThenInclude(d => d.Wines).ThenInclude(a =>a.Appelation).
@@ -38,14 +38,14 @@ namespace Wine_cellar.Repositories
             ) ; 
             await createStream.DisposeAsync();
 
-            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
+            return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.UserId == userId).ToListAsync();
         }
 
         //Permet de recuperer une cave avec tout ses elements
         public async Task<List<Cellar>> GetCellarByName(string name, int userId)
         {
-            return await winecontext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
+            return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.Name.Contains(name) && c.UserId == userId).ToListAsync();
         }
 
@@ -53,41 +53,34 @@ namespace Wine_cellar.Repositories
         public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
         {
             //Ajoute la cave
-            winecontext.Cellars.Add(cellar);
-            await winecontext.SaveChangesAsync();
+            wineContext.Cellars.Add(cellar);
+            await wineContext.SaveChangesAsync();
             //Ajoute les tiroirs
             for (int i = 1; i <= cellar.NbDrawerMax; i++)
             {
-                winecontext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
+                wineContext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
             }
-            await winecontext.SaveChangesAsync();
+            await wineContext.SaveChangesAsync();
             return cellar;
         }
 
         //Permet de supprimer une cave et ses tiroirs
-        public async Task<bool> DeleteCellarAsync(Cellar cellar)
+        public async Task<int> DeleteCellarAsync(int cellarId, int userId)
         {
-            if (cellar == null) return false;
-            //Supprime les tiroirs
-            foreach (var drawer in cellar.Drawers)
-            {
-                drawer.DeleteWines(winecontext);
-                winecontext.Drawers.Remove(drawer);
-            }
-            //Supprime la cave
-            winecontext.Cellars.Remove(cellar);
-            await winecontext.SaveChangesAsync();
-            return true;
+            await wineContext.Wines.Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Drawers.Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
+
+            return await wineContext.Cellars.Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
         }
 
         //Permet de modifier une cave
         public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
         {
-            var CellarUpdate = await winecontext.Cellars.FindAsync(cellar.CellarId);
+            var CellarUpdate = await wineContext.Cellars.FindAsync(cellar.CellarId);
             if (CellarUpdate == null) return null;
             CellarUpdate.Name = cellar.Name;
             CellarUpdate.UserId = cellar.UserId;
-            await winecontext.SaveChangesAsync();
+            await wineContext.SaveChangesAsync();
             return CellarUpdate;
         }
     }

@@ -95,19 +95,18 @@ namespace Wine_celar.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAppelation(string appelationName)
+        public async Task<IActionResult> DeleteAppelation(int appelationId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
-            var success = await AppelationRepository.DeleteAppelationAsync(appelationName);
+            var success = await AppelationRepository.DeleteAppelationAsync(appelationId);
 
-            if (success != null) return Ok(success);
+            if (success != null) NotFound("Appelation introuvable");
 
-            return NotFound("Appelation introuvable");
+            return Ok($"l'appelation {appelationId} a été supprimer");
         }
     }
 }

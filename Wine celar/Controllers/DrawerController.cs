@@ -81,8 +81,8 @@ namespace Wine_cellar.Controllers
             return Ok(drawer);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName, int index)
+        [HttpDelete("{drawerId}")]
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -90,9 +90,9 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            bool success = await drawerRepository.DeleteDrawerAsync(cellarName, index, userId);
+            var success = await drawerRepository.DeleteDrawerAsync(drawerId, userId);
 
-            if (success) return Ok($"Le tiroir {index} de la cave {cellarName} a été supprimé");
+            if (success != 0) return Ok($"Le tiroir {drawerId} a été supprimé");
             
             return NotFound($"Le tiroir est introuvable");
         }
