@@ -39,6 +39,7 @@ namespace Wine_celar.Controllers
 
             return Ok(appel);
         }
+
         [HttpGet]
         public async Task<ActionResult<List<Appelation>>> GetAppelationsByColor(WineColor color)
         {
@@ -94,6 +95,7 @@ namespace Wine_celar.Controllers
 
             return Ok(appelUpdate);
         }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteAppelation(string appelationName)
         {
