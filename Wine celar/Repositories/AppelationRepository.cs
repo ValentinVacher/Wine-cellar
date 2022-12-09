@@ -26,11 +26,11 @@ namespace Wine_celar.Repositories
         }
         public async Task<Appelation> GetAppelationAsync(string appelationName)
         {
-            return await winecontext.Appelations.FirstOrDefaultAsync(p => p.AppelationName == appelationName);
+            return await winecontext.Appelations.FirstOrDefaultAsync(p => p.Name == appelationName);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
-            if (await winecontext.Appelations.FirstOrDefaultAsync(a => a.AppelationName == appelation.AppelationName) == null) return null;
+            if (await winecontext.Appelations.FirstOrDefaultAsync(a => a.Name == appelation.Name) == null) return null;
 
             winecontext.Appelations.Add(appelation);
             await winecontext.SaveChangesAsync();
@@ -39,9 +39,9 @@ namespace Wine_celar.Repositories
 
         public async Task<Appelation> UpdateAppelationAsync(Appelation appelation)
         {
-            var AppelationUpdate = await GetAppelationAsync(appelation.AppelationName);
+            var AppelationUpdate = await GetAppelationAsync(appelation.Name);
             if (AppelationUpdate == null) return null;
-            AppelationUpdate.AppelationName = appelation.AppelationName;
+            AppelationUpdate.Name = appelation.Name;
             AppelationUpdate.KeepMin = appelation.KeepMin;
             AppelationUpdate.KeepMax = appelation.KeepMax;
             await winecontext.SaveChangesAsync();

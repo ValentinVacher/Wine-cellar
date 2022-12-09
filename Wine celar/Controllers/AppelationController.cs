@@ -60,7 +60,7 @@ namespace Wine_celar.Controllers
 
             Appelation appel = new()
             {
-                AppelationName = appelViewModel.AppelationName,
+                Name = appelViewModel.AppelationName,
                 KeepMin = appelViewModel.KeepMin,
                 KeepMax = appelViewModel.KeepMax
             };
@@ -82,7 +82,7 @@ namespace Wine_celar.Controllers
 
             Appelation appel = new()
             {
-                AppelationName = appelViewModel.AppelationName,
+                Name = appelViewModel.AppelationName,
                 KeepMin = appelViewModel.KeepMin,
                 KeepMax = appelViewModel.KeepMax
             };

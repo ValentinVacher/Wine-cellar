@@ -55,7 +55,7 @@ namespace Wine_cellar.Controllers
                 CellarName = wine.Drawer.Cellar.Name,
                 Year = wine.Year,
                 Color = wine.Color,
-                AppelationName = wine.Appelation.AppelationName,
+                AppelationName = wine.Appelation.Name,
                 DrawerIndex = wine.Drawer.Index
             };
 
@@ -99,7 +99,7 @@ namespace Wine_cellar.Controllers
                 WineView.CellarName = w.Drawer.Cellar.Name;
                 WineView.Year = w.Year;
                 WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.AppelationName = w.Appelation.Name;
                 WineView.DrawerIndex = w.Drawer.Index;
                 WinesView.Add(WineView);
             }
@@ -128,7 +128,7 @@ namespace Wine_cellar.Controllers
                 WineView.CellarName = w.Drawer.Cellar.Name;
                 WineView.Year = w.Year;
                 WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.AppelationName = w.Appelation.Name;
                 WineView.DrawerIndex = w.Drawer.Index;
                 WinesView.Add(WineView);
             }

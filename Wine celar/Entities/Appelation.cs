@@ -11,7 +11,7 @@ namespace Wine_cellar.Entities
     {
         [Key]
         public int AppelationId { get; set; }
-        public string AppelationName { get; set; }
+        public string Name { get; set; }
         public int KeepMin { get; set; }
         public int KeepMax { get; set; }
         public WineColor Color { get; set; }

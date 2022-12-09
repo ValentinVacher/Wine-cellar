@@ -37,7 +37,7 @@ namespace Wine_cellar.Repositories
                 Wine.CellarName = w.Drawer.Cellar.Name;
                 Wine.Year = w.Year;
                 Wine.Color = w.Color;
-                Wine.AppelationName = w.Appelation.AppelationName;
+                Wine.AppelationName = w.Appelation.Name;
                 Wine.DrawerIndex = w.Drawer.Index;
                 WinesView.Add(Wine);
             }
@@ -64,7 +64,7 @@ namespace Wine_cellar.Repositories
                     Wine.CellarName = w.Drawer.Cellar.Name;
                     Wine.Year = w.Year;
                     Wine.Color = w.Color;
-                    Wine.AppelationName = w.Appelation.AppelationName;
+                    Wine.AppelationName = w.Appelation.Name;
                     Wine.DrawerIndex = w.Drawer.Index;
                     winess.Add(Wine);
                 }
@@ -84,7 +84,7 @@ namespace Wine_cellar.Repositories
         public async Task<List<Wine>> GetWineByWordAsync(string word, int userId)
         {
             return await wineContext.Wines.Include(a => a.Appelation)
-                .Where(w => (w.Appelation.AppelationName.Contains(word) || w.Name.Contains(word))
+                .Where(w => (w.Appelation.Name.Contains(word) || w.Name.Contains(word))
                 && w.Drawer.Cellar.UserId == userId).OrderBy(w => w.Color).ToListAsync();
         }
 

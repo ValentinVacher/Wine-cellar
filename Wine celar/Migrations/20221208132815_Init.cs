@@ -121,7 +121,7 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Appelations",
-                columns: new[] { "AppelationId", "AppelationName", "Color", "KeepMax", "KeepMin" },
+                columns: new[] { "AppelationId", "Name", "Color", "KeepMax", "KeepMin" },
                 values: new object[,]
                 {
                     { 1, "Bordeaux", 0, 10, 5 },

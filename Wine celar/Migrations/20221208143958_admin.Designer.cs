@@ -33,7 +33,7 @@ namespace Winecelar.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppelationId"));
 
-                    b.Property<string>("AppelationName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
