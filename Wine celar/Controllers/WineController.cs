@@ -220,5 +220,18 @@ namespace Wine_cellar.Controllers
             else
                 return Problem("Vin introuvable");
         }
+
+        //Controller méthode ef7 execute delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWineEF(int id)
+        {
+
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (await wineRepository.DeleteEFbyIdAsync(id,identity) == 0) return NotFound("Vin introuvable");
+            return Ok($"le Vin {id} demandé a été supprimé");
+           
+        }
     }
 }
