@@ -41,9 +41,9 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
+            if (await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
 
-            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId));
+            return Ok(await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId));
         }
 
         [HttpPost]

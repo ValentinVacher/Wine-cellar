@@ -29,7 +29,7 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles
-        public async Task<Drawer> GetDrawerwithWineAsync(string cellarName, int index, int userId)
+        public async Task<Drawer> GetDrawerWithWineAsync(string cellarName, int index, int userId)
         {
             return await wineContext.Drawers.Include(d => d.Wines).Include(d => d.Cellar).
                 FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name.Contains(cellarName)
