@@ -93,21 +93,17 @@ namespace Wine_cellar.Controllers
             return Ok(await cellarRepository.UpdateCellarAsync(cellarUpdate));
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCellar(string name)
+        [HttpDelete("{cellarId}")]
+        public async Task<IActionResult> DeleteCellar(int cellarId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var cellar = (await cellarRepository.GetCellarByName(name, userId)).FirstOrDefault();
+            var success = await cellarRepository.DeleteCellarAsync(cellarId, userId);
 
-            if (cellar == null) return NotFound("Cave introuvable");
-
-            bool success = await cellarRepository.DeleteCellarAsync(cellar);
-
-            if (success) return Ok($"La cave {name} a été supprimé");
+            if (success != 0) return Ok($"La cave {cellarId} a été supprimé");
 
             return NotFound("Cave introuvable");
         }

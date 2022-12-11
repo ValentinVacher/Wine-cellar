@@ -55,7 +55,7 @@ namespace Wine_cellar.Controllers
                 CellarName = wine.Drawer.Cellar.Name,
                 Year = wine.Year,
                 Color = wine.Color,
-                AppelationName = wine.Appelation.AppelationName,
+                AppelationName = wine.Appelation.Name,
                 DrawerIndex = wine.Drawer.Index
             };
 
@@ -99,7 +99,7 @@ namespace Wine_cellar.Controllers
                 WineView.CellarName = w.Drawer.Cellar.Name;
                 WineView.Year = w.Year;
                 WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.AppelationName = w.Appelation.Name;
                 WineView.DrawerIndex = w.Drawer.Index;
                 WinesView.Add(WineView);
             }
@@ -128,7 +128,7 @@ namespace Wine_cellar.Controllers
                 WineView.CellarName = w.Drawer.Cellar.Name;
                 WineView.Year = w.Year;
                 WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.AppelationName;
+                WineView.AppelationName = w.Appelation.Name;
                 WineView.DrawerIndex = w.Drawer.Index;
                 WinesView.Add(WineView);
             }
@@ -185,47 +185,48 @@ namespace Wine_cellar.Controllers
             return Ok($"Le vin {WineId} a été dupliquer {NbrWineCreate} fois");
         }
 
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
+        //{
+        //    var identity = User?.Identity as ClaimsIdentity;
+
+        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+
+        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
+
+        //    if (wineUpdate == null) return NotFound("Bouteille introuvable");
+
+        //    return Ok(wineUpdate);
+        //}
+
         [HttpPut]
-        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
+        public async Task<ActionResult<Wine>> Move(int wineId, int drawerId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
-
-            if (wineUpdate == null) return NotFound("Bouteille introuvable");
-
-            return Ok(wineUpdate);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<Wine>> Move(int WineId, int newDrawerIndex, string cellar)
-        {
-            var identity = User?.Identity as ClaimsIdentity;
-
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineMove = await wineRepository.MoveAsync(WineId, newDrawerIndex, cellar, userId);
+            var wineMove = await wineRepository.MoveAsync(wineId, drawerId, userId);
 
             switch (wineMove)
             {
                 case 1: return NotFound("Vin introuvable");
                 case 2: return NotFound("Tiroir introuvable");
                 case 3: return BadRequest("Le tiroire est plein");
-                default: return Ok($"Le vin {WineId} a bien été déplacer");
+                default: return Ok($"Le vin {wineId} a bien été déplacer");
             }
         }
+
         [HttpPut]
-        public async Task<IActionResult> UpdateEFbyid([FromForm] UpdateWineViewModel wineView)
+        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
             var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (await wineRepository.UpdateEFbyidAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
+            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
             return Ok($"le vin{wineView.WineId} a été modifié ");
 
         }
@@ -238,27 +239,27 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            bool success = await wineRepository.DeleteWineAsync(id, userId);
+            var success = await wineRepository.DeleteWineAsync(id, userId);
 
-            if (success) return Ok($"Le vin {id} a été supprimé");
+            if (success != 0) return Ok($"Le vin {id} a été supprimé");
             
             return NotFound("Vin introuvable");
         }
 
         //Controller méthode ef7 execute delete
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWineEF(int id)
-        {
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteWineEF(int id)
+        //{
 
-            var identity = User?.Identity as ClaimsIdentity;
+        //    var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (await wineRepository.DeleteEFbyIdAsync(id,userId) == 0) return NotFound("Vin introuvable");
-            return Ok($"le Vin {id} demandé a été supprimé");
+        //    if (await wineRepository.DeleteWineAsync(id,userId) == 0) return NotFound("Vin introuvable");
+        //    return Ok($"le Vin {id} demandé a été supprimé");
            
-        }
+        //}
     }
 }

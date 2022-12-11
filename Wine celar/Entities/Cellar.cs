@@ -18,14 +18,5 @@ namespace Wine_cellar.Entities
             if (Drawers.Count() > NbDrawerMax) return true;
             return false;
         }
-
-        public void DeleteDrawer(WineContext wineContext)
-        {
-            foreach(var drawer in Drawers)
-            {
-                drawer.DeleteWines(wineContext);
-                wineContext.Drawers.Remove(drawer);
-            }
-        }
     }
 }

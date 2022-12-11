@@ -19,7 +19,7 @@ namespace Winecelar.Migrations
                 {
                     AppelationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AppelationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KeepMin = table.Column<int>(type: "int", nullable: false),
                     KeepMax = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<int>(type: "int", nullable: false)
@@ -121,36 +121,36 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Appelations",
-                columns: new[] { "AppelationId", "AppelationName", "Color", "KeepMax", "KeepMin" },
+                columns: new[] { "AppelationId", "Color", "KeepMax", "KeepMin", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Bordeaux", 0, 10, 5 },
-                    { 2, "Loire", 0, 6, 4 },
-                    { 3, "Bordeaux, Grands crus", 0, 20, 10 },
-                    { 4, "Sud-Ouest", 0, 10, 5 },
-                    { 5, "Languedoc & Provence", 0, 8, 5 },
-                    { 6, "Côtes du Rhône", 0, 6, 4 },
-                    { 7, "Cotes du Rhônes, Grands Crus", 0, 20, 10 },
-                    { 8, "Beaujolais", 0, 5, 4 },
-                    { 9, "Beaujolais, Crus", 0, 8, 5 },
-                    { 10, "Bourgogne, Saône-et-Loire", 0, 10, 5 },
-                    { 11, "Bourgogne, Côte-d'Or", 0, 20, 10 },
-                    { 12, "Loire, Sec", 2, 4, 3 },
-                    { 13, "Loire, moelleux et liquoreux", 2, 20, 10 },
-                    { 14, "Bordeaux, sec", 2, 8, 5 },
-                    { 15, "Bordeaux, liquoreux", 2, 20, 15 },
-                    { 16, "Sud-Ouest, sec", 2, 5, 4 },
-                    { 17, "Sud-Ouest, liquoreux", 2, 15, 10 },
-                    { 18, "Languedoc & Provence", 2, 3, 3 },
-                    { 19, "Côtes du Rhône", 2, 4, 3 },
-                    { 20, "Bourgogne, Saône-et-Loire", 2, 4, 4 },
-                    { 21, "Bourgogne, Côte-d'Or", 2, 10, 7 },
-                    { 22, "Jura", 2, 20, 8 },
-                    { 23, "Jura", 2, 20, 8 },
-                    { 24, "Alsace", 2, 5, 4 },
-                    { 25, "Languedoc", 1, 4, 3 },
-                    { 26, "Provence", 1, 3, 3 },
-                    { 27, "Rhône", 1, 2, 2 }
+                    { 1, 0, 10, 5, "Bordeaux" },
+                    { 2, 0, 6, 4, "Loire" },
+                    { 3, 0, 20, 10, "Bordeaux, Grands crus" },
+                    { 4, 0, 10, 5, "Sud-Ouest" },
+                    { 5, 0, 8, 5, "Languedoc & Provence" },
+                    { 6, 0, 6, 4, "Côtes du Rhône" },
+                    { 7, 0, 20, 10, "Cotes du Rhônes, Grands Crus" },
+                    { 8, 0, 5, 4, "Beaujolais" },
+                    { 9, 0, 8, 5, "Beaujolais, Crus" },
+                    { 10, 0, 10, 5, "Bourgogne, Saône-et-Loire" },
+                    { 11, 0, 20, 10, "Bourgogne, Côte-d'Or" },
+                    { 12, 2, 4, 3, "Loire, Sec" },
+                    { 13, 2, 20, 10, "Loire, moelleux et liquoreux" },
+                    { 14, 2, 8, 5, "Bordeaux, sec" },
+                    { 15, 2, 20, 15, "Bordeaux, liquoreux" },
+                    { 16, 2, 5, 4, "Sud-Ouest, sec" },
+                    { 17, 2, 15, 10, "Sud-Ouest, liquoreux" },
+                    { 18, 2, 3, 3, "Languedoc & Provence" },
+                    { 19, 2, 4, 3, "Côtes du Rhône" },
+                    { 20, 2, 4, 4, "Bourgogne, Saône-et-Loire" },
+                    { 21, 2, 10, 7, "Bourgogne, Côte-d'Or" },
+                    { 22, 2, 20, 8, "Jura" },
+                    { 23, 2, 20, 8, "Jura" },
+                    { 24, 2, 5, 4, "Alsace" },
+                    { 25, 1, 4, 3, "Languedoc" },
+                    { 26, 1, 3, 3, "Provence" },
+                    { 27, 1, 2, 2, "Rhône" }
                 });
 
             migrationBuilder.InsertData(

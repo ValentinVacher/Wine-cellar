@@ -41,9 +41,9 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
+            if (await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
 
-            return Ok(await drawerRepository.GetDrawerwithWineAsync(cellarName, index, userId));
+            return Ok(await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId));
         }
 
         [HttpPost]
@@ -73,7 +73,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, userId);
 
             if (drawer == null) return NotFound("Le tiroir est introuvable");
@@ -81,8 +80,8 @@ namespace Wine_cellar.Controllers
             return Ok(drawer);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(string cellarName, int index)
+        [HttpDelete("{drawerId}")]
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -90,9 +89,9 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            bool success = await drawerRepository.DeleteDrawerAsync(cellarName, index, userId);
+            var success = await drawerRepository.DeleteDrawerAsync(drawerId, userId);
 
-            if (success) return Ok($"Le tiroir {index} de la cave {cellarName} a été supprimé");
+            if (success != 0) return Ok($"Le tiroir {drawerId} a été supprimé");
             
             return NotFound($"Le tiroir est introuvable");
         }

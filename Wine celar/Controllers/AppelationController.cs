@@ -35,8 +35,7 @@ namespace Wine_celar.Controllers
         {
             var appel = await AppelationRepository.GetAppelationAsync(appelationName);
 
-            if (appel == null)
-                return NotFound($"Le vin {appelationName} est introuvable");
+            if (appel == null) return NotFound($"Le vin {appelationName} est introuvable");
 
             return Ok(appel);
         }
@@ -45,7 +44,9 @@ namespace Wine_celar.Controllers
         public async Task<ActionResult<List<Appelation>>> GetAppelationsByColor(WineColor color)
         {
             var appelations = await AppelationRepository.GetAppelationsByColoAsync(color);
+
             if (appelations == null) return NotFound($"Aucune Appelation pour un vin {color}");
+
             return appelations;
         }
 
@@ -55,12 +56,11 @@ namespace Wine_celar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
             Appelation appel = new()
             {
-                AppelationName = appelViewModel.AppelationName,
+                Name = appelViewModel.AppelationName,
                 KeepMin = appelViewModel.KeepMin,
                 KeepMax = appelViewModel.KeepMax
             };
@@ -77,12 +77,11 @@ namespace Wine_celar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
             
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
             Appelation appel = new()
             {
-                AppelationName = appelViewModel.AppelationName,
+                Name = appelViewModel.AppelationName,
                 KeepMin = appelViewModel.KeepMin,
                 KeepMax = appelViewModel.KeepMax
             };
@@ -95,19 +94,18 @@ namespace Wine_celar.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAppelation(string appelationName)
+        public async Task<IActionResult> DeleteAppelation(int appelationId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
-            var success = await AppelationRepository.DeleteAppelationAsync(appelationName);
+            var success = await AppelationRepository.DeleteAppelationAsync(appelationId);
 
-            if (success != null) return Ok(success);
+            if (success != null) NotFound("Appelation introuvable");
 
-            return NotFound("Appelation introuvable");
+            return Ok($"l'appelation {appelationId} a été supprimer");
         }
     }
 }
