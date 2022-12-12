@@ -25,7 +25,7 @@ namespace Wine_celar.Repositories
 
         public async Task<List<Appelation>> GetAllAppelationsAsync()
         {
-            return await wineContext.Appelations.ToListAsync();
+            return await wineContext.Appelations.AsNoTracking().ToListAsync();
         }
         public async Task<GetAppelationViewModel> GetAppelationAsync(int id, int userid)
         {
