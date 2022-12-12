@@ -169,7 +169,7 @@ namespace Wine_cellar.Controllers
 
         //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    Drawer userId = Drawer.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
         //    var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
 
         //    if (wineUpdate == null) return NotFound("Bouteille introuvable");
@@ -203,7 +203,7 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return Problem("Vous devez être connecter");
             var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin a modifié");
+            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound("Aucun vin n'a été modifié");
             return Ok($"le vin{wineView.WineId} a été modifié ");
 
         }
@@ -225,14 +225,14 @@ namespace Wine_cellar.Controllers
 
         //Controller méthode ef7 execute delete
         //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteWineEF(int id)
+        //public async Task<IActionResult> DeleteWineEF(Drawer id)
         //{
 
         //    var identity = User?.Identity as ClaimsIdentity;
 
         //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //    Drawer userId = Drawer.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
         //    if (await wineRepository.DeleteWineAsync(id,userId) == 0) return NotFound("Vin introuvable");
         //    return Ok($"le Vin {id} demandé a été supprimé");

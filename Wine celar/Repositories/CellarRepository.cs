@@ -89,11 +89,7 @@ namespace Wine_cellar.Repositories
             wineContext.Cellars.Add(deserializ);
             await wineContext.SaveChangesAsync();
             return form;
-            
-
         }
-
-
     }
 }
 

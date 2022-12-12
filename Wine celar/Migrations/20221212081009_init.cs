@@ -17,12 +17,12 @@ namespace Winecelar.Migrations
                 name: "Appelations",
                 columns: table => new
                 {
-                    AppelationId = table.Column<int>(type: "int", nullable: false)
+                    AppelationId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeepMin = table.Column<int>(type: "int", nullable: false),
-                    KeepMax = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<int>(type: "int", nullable: false)
+                    KeepMin = table.Column<int>(type: "Drawer", nullable: false),
+                    KeepMax = table.Column<int>(type: "Drawer", nullable: false),
+                    Color = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace Winecelar.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -51,11 +51,11 @@ namespace Winecelar.Migrations
                 name: "Cellars",
                 columns: table => new
                 {
-                    CellarId = table.Column<int>(type: "int", nullable: false)
+                    CellarId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NbDrawerMax = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    NbDrawerMax = table.Column<int>(type: "Drawer", nullable: false),
+                    UserId = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,11 +72,11 @@ namespace Winecelar.Migrations
                 name: "Drawers",
                 columns: table => new
                 {
-                    DrawerId = table.Column<int>(type: "int", nullable: false)
+                    DrawerId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Index = table.Column<int>(type: "int", nullable: false),
-                    NbBottleMax = table.Column<int>(type: "int", nullable: false),
-                    CellarId = table.Column<int>(type: "int", nullable: false)
+                    Index = table.Column<int>(type: "Drawer", nullable: false),
+                    NbBottleMax = table.Column<int>(type: "Drawer", nullable: false),
+                    CellarId = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,14 +93,14 @@ namespace Winecelar.Migrations
                 name: "Wines",
                 columns: table => new
                 {
-                    WineId = table.Column<int>(type: "int", nullable: false)
+                    WineId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    DrawerId = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "Drawer", nullable: false),
+                    DrawerId = table.Column<int>(type: "Drawer", nullable: false),
                     PictureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Color = table.Column<int>(type: "int", nullable: false),
-                    AppelationId = table.Column<int>(type: "int", nullable: false)
+                    Color = table.Column<int>(type: "Drawer", nullable: false),
+                    AppelationId = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {

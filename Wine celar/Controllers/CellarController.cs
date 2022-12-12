@@ -35,7 +35,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCellarByName(int id)
+        public async Task<IActionResult> GetCellarById(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 

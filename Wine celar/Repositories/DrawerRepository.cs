@@ -22,18 +22,17 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les tiroirs avec leur bouteilles
-        public async Task<List<Drawer>> GetAllWithWineAsync(int userId)
+        public async Task<List<Drawer>> GetAllsAsync(int userId)
         {
             return await wineContext.Drawers.Include(d => d.Wines).
                 Where(c => c.Cellar.UserId == userId).OrderBy(d => d.Index).ToListAsync();
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles
-        public async Task<Drawer> GetDrawerWithWineAsync(string cellarName, int index, int userId)
+        public async Task<Drawer> GetDrawerByIdAsync(int id, int userId)
         {
             return await wineContext.Drawers.Include(d => d.Wines).Include(d => d.Cellar).
-                FirstOrDefaultAsync(d => d.Index == index && d.Cellar.Name.Contains(cellarName)
-                && d.Cellar.UserId == userId);
+                FirstOrDefaultAsync(d => d.DrawerId == id && d.Cellar.UserId == userId);
         }
 
         //Permet de créer un tiroir si la cave n'est pas pleine
@@ -59,20 +58,21 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier un tiroir
-        public async Task<Drawer> UpdateDrawerAsync(UpdateDrawerViewModel drawer, int userId)
+        public async Task<int> UpdateDrawerAsync(UpdateDrawerViewModel drawer, int userId)
         {
-            Drawer DrawerUpdate = await wineContext.Drawers.
-                FirstOrDefaultAsync(d => d.Index == drawer.Index && d.Cellar.Name == drawer.CellarName
-                && d.Cellar.UserId == userId);
+            Drawer drawerToUp = await GetDrawerByIdAsync(drawer.DrawerId, userId);
 
-            if (DrawerUpdate == null) return null;
+            if (drawerToUp.Cellar.NbDrawerMax < drawer.Index) return 1;
 
-            DrawerUpdate.NbBottleMax = drawer.NbBottleMax;
-            DrawerUpdate.Index = drawer.Index;
+            Drawer drawerReplace = drawerToUp.Cellar.Drawers.FirstOrDefault(d => d.Index == drawer.Index);
 
-            await wineContext.SaveChangesAsync();
+            if (drawerReplace != null) 
+                drawerrss.Index = drawer.Index;
 
-            return DrawerUpdate;
+            return await wineContext.Drawers.Where(d => d.DrawerId == drawer.DrawerId && d.Cellar.UserId == userId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(d => d.Index, drawer.Index)
+                .SetProperty(d => d.NbBottleMax, drawer.NbBottleMax));
         }
 
         //Permet de supprimer un tiroir
