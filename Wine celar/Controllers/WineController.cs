@@ -220,7 +220,7 @@ namespace Wine_cellar.Controllers
             var success = await wineRepository.DeleteWineAsync(id, userId);
 
             if (success != 0) return Ok($"Le vin {id} a été supprimé");
-            
+
             return NotFound("Vin introuvable");
         }
 
@@ -237,7 +237,7 @@ namespace Wine_cellar.Controllers
 
         //    if (await wineRepository.DeleteWineAsync(id,userId) == 0) return NotFound("Vin introuvable");
         //    return Ok($"le Vin {id} demandé a été supprimé");
-           
+
         //}
     }
 }

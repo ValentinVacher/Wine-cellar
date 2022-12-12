@@ -46,7 +46,7 @@ namespace Wine_cellar.Controllers
             var cellar = await cellarRepository.GetCellarById(id, userId);
 
             if (cellar == null) return NotFound($"Cave {id} non trouver");
-            return Ok(cellar);       
+            return Ok(cellar);
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace Wine_cellar.Controllers
             if (verif != null) return BadRequest("Ce nom est déjà pris");
 
             var cellar = Convertor.CreateCellar(cellarViewModel);
-            cellar.UserId= userId;
+            cellar.UserId = userId;
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
 
             return Ok(cellarCreated);
@@ -104,16 +104,16 @@ namespace Wine_cellar.Controllers
             return NotFound("Cave introuvable");
         }
         [HttpPost]
-        public async Task<IActionResult> ImportJson([FromForm]string Jfile)
+        public async Task<IActionResult> ImportJson([FromForm] string Jfile)
         {
             var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
             using (FileStream stream = new FileStream(path, FileMode.Open))
             {
-                
+
                 await cellarRepository.ImportJsonAsync(Jfile);
                 //Cellar? cellarJson =
                 //await JsonSerializer.DeserializeAsync<Cellar>(Jfile );
-                
+
                 stream.Close();
             }
             return Ok();
