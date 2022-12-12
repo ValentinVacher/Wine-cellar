@@ -11,7 +11,7 @@ namespace Wine_cellar.IRepositories
         //Permet de recuperer toute les caves
         Task<List<GetCellarViewModel>> GetAllsAsync(int userId);
         //Permet ded recuperer toutes les caves avec tout ses elements
-        Task<Cellar> GetCellarById(int id, int userId);
+        Task<GetCellarViewModel> GetCellarById(int id, int userId);
         //Permet de supprimer une cave
         Task<int> DeleteCellarAsync(int cellarId, int userId);
         //Permet de mettre a jour/modifier une cave

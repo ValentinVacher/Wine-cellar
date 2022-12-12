@@ -28,7 +28,7 @@ namespace Wine_celar.Repositories
         }
         public async Task<Appelation> GetAppelationAsync(int id)
         {
-            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.AppelationId == id);
+            return await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(p => p.AppelationId == id);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
