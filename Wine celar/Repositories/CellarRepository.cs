@@ -78,7 +78,8 @@ namespace Wine_cellar.Repositories
         {
             return await wineContext.Cellars.Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
                 ExecuteUpdateAsync(updates => updates
-                .SetProperty(c => c.UserId, updateCellar.UserId));
+                .SetProperty(c => c.UserId, updateCellar.UserId)
+                .SetProperty(c => c.Name, updateCellar.Name));
         }
 
         public async Task<string> ImportJsonAsync(string form)
