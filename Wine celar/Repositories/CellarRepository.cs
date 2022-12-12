@@ -42,10 +42,10 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer une cave avec tout ses elements
-        public async Task<List<Cellar>> GetCellarByName(string name, int userId)
+        public async Task<List<Cellar>> GetCellarByName(int id, int userId)
         {
             return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
-                Where(c => c.Name.Contains(name) && c.UserId == userId).ToListAsync();
+                FirstOrDefaultAsync(c => c.CellarId == id && c.UserId == userId);
         }
 
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
