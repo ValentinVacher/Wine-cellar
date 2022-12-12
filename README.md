@@ -1,6 +1,6 @@
 # Wine-cellar ReadMe
 
-Wine-Cellar project it's use to manage some cave.
+Wine-Cellar project is use to manage some cave.
 
 The Cave is constitute of drawers who contains some wine bottle.
 
