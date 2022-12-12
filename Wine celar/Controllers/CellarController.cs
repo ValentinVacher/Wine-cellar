@@ -30,7 +30,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -42,12 +42,12 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var cellar = await cellarRepository.GetCellarById(id, userId);
 
-            if (cellar == null) return NotFound($"Cave {id} non trouver");
+            if (cellar == null) return NotFound(ErrorCode.CellarNotFound);
             return Ok(cellar);
         }
 
@@ -56,12 +56,12 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var verif = (await cellarRepository.GetAllsAsync(userId)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
-            if (verif != null) return BadRequest("Ce nom est déjà pris");
+            if (verif != null) return BadRequest(ErrorCode.CellarAlreadyExists);
 
             var cellar = Convertor.CreateCellar(cellarViewModel);
             cellar.UserId = userId;
@@ -71,19 +71,19 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCellar([FromForm] UpdateCellarViewModel UpCellar)
+        public async Task<IActionResult> UpdateCellar([FromForm] UpdateCellarViewModel upCellar)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var update = await cellarRepository.UpdateCellarAsync(UpCellar, userId);
+            var update = await cellarRepository.UpdateCellarAsync(upCellar, userId);
 
-            if (update != 0) return Ok("La cave a été modifié");
+            if (update != 0) return Ok(upCellar);
 
-            return NotFound("La cave n'a pas été modifié");
+            return NotFound(ErrorCode.CellarNotFound);
         }
 
         [HttpDelete("{cellarId}")]
@@ -91,14 +91,14 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var success = await cellarRepository.DeleteCellarAsync(cellarId, userId);
 
-            if (success != 0) return Ok($"La cave {cellarId} a été supprimé");
+            if (success != 0) return Ok(cellarId);
 
-            return NotFound("Cave introuvable");
+            return NotFound(ErrorCode.CellarNotFound);
         }
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string Jfile)
@@ -125,12 +125,11 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-            
             await cellarRepository.ExportJsonAsync();
-            return Ok("la serialisation à marcher.");
 
+            return Ok();
         }
         
     }
