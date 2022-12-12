@@ -4,6 +4,9 @@ using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using System.Security.Claims;
+using Wine_celar.ViewModel;
+using Wine_cellar.Repositories;
+using System.Text.Json;
 
 namespace Wine_cellar.Controllers
 {
@@ -46,7 +49,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCellar([FromForm]CreateCellarViewModel cellarViewModel, int Nbr)
+        public async Task<IActionResult> AddCellar([FromForm] CreateCellarViewModel cellarViewModel, int Nbr)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -102,6 +105,21 @@ namespace Wine_cellar.Controllers
             if (success != 0) return Ok($"La cave {cellarId} a été supprimé");
 
             return NotFound("Cave introuvable");
+        }
+        [HttpPost]
+        public async Task<IActionResult> ImportJson([FromForm]string Jfile)
+        {
+            var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
+            using (FileStream stream = new FileStream(path, FileMode.Open))
+            {
+                
+                await cellarRepository.ImportJsonAsync(Jfile);
+                //Cellar? cellarJson =
+                //await JsonSerializer.DeserializeAsync<Cellar>(Jfile );
+                
+                stream.Close();
+            }
+            return Ok();
         }
     }
 }

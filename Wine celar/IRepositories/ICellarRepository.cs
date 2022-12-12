@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Wine_cellar.Entities;
 using Wine_cellar.ViewModel;
 
@@ -16,5 +17,6 @@ namespace Wine_cellar.IRepositories
         Task<Cellar> UpdateCellarAsync(Cellar cellar);
         //Permet d'ajouter une cave
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
+        Task<string> ImportJsonAsync(string form);
     }
 }
