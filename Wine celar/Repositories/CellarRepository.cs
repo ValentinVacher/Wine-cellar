@@ -31,7 +31,7 @@ namespace Wine_cellar.Repositories
         public async Task<List<GetCellarViewModel>> GetAllsAsync(int userId)
         {
             var cellars = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
-                .Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
+                .AsNoTracking().Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
             var cellarsView = new List<GetCellarViewModel>();
             
             foreach (Cellar celar in cellars)
@@ -100,16 +100,16 @@ namespace Wine_cellar.Repositories
         //Permet de supprimer une cave et ses tiroirs
         public async Task<int> DeleteCellarAsync(int cellarId, int userId)
         {
-            await wineContext.Wines.Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
-            await wineContext.Drawers.Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Drawers.AsNoTracking().Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
 
-            return await wineContext.Cellars.Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
+            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
         }
 
         //Permet de modifier une cave
         public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
         {
-            return await wineContext.Cellars.Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
+            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
                 ExecuteUpdateAsync(updates => updates
                 .SetProperty(c => c.UserId, updateCellar.UserId)
                 .SetProperty(c => c.Name, updateCellar.Name)
@@ -149,7 +149,7 @@ namespace Wine_cellar.Repositories
             var result = await wineContext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
-                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).ToListAsync();
+                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).AsNoTracking().ToListAsync();
 
             string fileName = $"{name}.json";
             using FileStream createStream = File.Create("Json\\" + fileName);
