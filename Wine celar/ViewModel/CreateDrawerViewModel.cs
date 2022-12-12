@@ -4,8 +4,6 @@
     {
         public int index { get; set; }
         public int NbBottleMax { get; set; }
-        public int CellarId { get; set; }
-
-        
+        public int CellarId { get; set; } 
     }
 }

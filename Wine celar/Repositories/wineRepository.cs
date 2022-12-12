@@ -25,26 +25,29 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins dans une liste
-        public async Task<List<WineViewModel>> GetAllWinesAsync(int userId)
+        public async Task<List<GetWineViewModel>> GetAllWinesAsync(int userId)
         {
-            var Wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
+            var wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar).AsNoTracking()
                 .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
-            var WinesView = new List<WineViewModel>();
-            foreach (var w in Wines)
+            var winesView = new List<GetWineViewModel>();
+
+            foreach (var w in wines)
             {
-                var Wine = Convertor.ViewWine(w);
-                WinesView.Add(Wine);
+                var Wine = Convertor.GetViewWine(w);
+                winesView.Add(Wine);
             }
-            return WinesView.ToList();
+
+            return winesView.ToList();
 
         }
 
         //Permet de recuperer tout les vins à leur apogée dans une liste
-        public async Task<List<WineViewModel>> GetApogeeAsync(int userId)
+        public async Task<List<GetWineViewModel>> GetApogeeAsync(int userId)
         {
-            var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+            var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar).AsNoTracking()
                 .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
-            var winess = new List<WineViewModel>();
+            var winess = new List<GetWineViewModel>();
+
             foreach (var w in wines)
             {
                 var ToDay = DateTime.Now.Year;
@@ -52,7 +55,7 @@ namespace Wine_cellar.Repositories
                 var min = w.Year + w.Appelation.KeepMin;
                 if (ToDay >= min && ToDay <= max)
                 {
-                    var Wine = Convertor.ViewWine(w);
+                    var Wine = Convertor.GetViewWine(w);
                     winess.Add(Wine);
                 }
             }
@@ -63,14 +66,14 @@ namespace Wine_cellar.Repositories
         //Permet de recuperer un vin par son id 
         public async Task<Wine> GetWineByIdAsync(int wineId, int userId)
         {
-            return await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
+            return await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
         }
 
         //Permet de recuperer une liste de vin selon un terme choisi
         public async Task<List<Wine>> GetWineByWordAsync(string word, int userId)
         {
-            return await wineContext.Wines.Include(a => a.Appelation)
+            return await wineContext.Wines.Include(a => a.Appelation).AsNoTracking()
                 .Where(w => (w.Appelation.Name.Contains(word) || w.Name.Contains(word))
                 && w.Drawer.Cellar.UserId == userId).OrderBy(w => w.Color).ToListAsync();
         }
@@ -78,7 +81,7 @@ namespace Wine_cellar.Repositories
         //Permet de créer/Ajouter un vin si le tiroir n'est pas plein
         public async Task<int> CreateWineAsync(CreateWineViewModel WineView, int userId)
         {
-            var Drawer = await wineContext.Drawers.Include(d => d.Wines)
+            var Drawer = await wineContext.Drawers.Include(d => d.Wines).AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Index == WineView.DrawerId && d.Cellar.UserId == userId);
 
             if (Drawer == null) return 1;
@@ -115,7 +118,7 @@ namespace Wine_cellar.Repositories
 
         //    if (WineDelete == null) return false;
 
-        //    wineContext.Wines.Remove(WineDelete);
+        //    wineContext.wines.Remove(WineDelete);
         //    await wineContext.SaveChangesAsync();
 
         //    return true;
@@ -125,14 +128,14 @@ namespace Wine_cellar.Repositories
         //Permet de deplacer un vin
         public async Task<int> MoveAsync(int wineId, int drawerId, int userId)
         {
-            return await wineContext.Wines.Where(w => w.WineId == wineId && w.Drawer.Cellar.UserId == userId)
+            return await wineContext.Wines.Where(w => w.WineId == wineId && w.Drawer.Cellar.UserId == userId).AsNoTracking()
                 .ExecuteUpdateAsync(updates => updates.SetProperty(w => w.DrawerId, drawerId));
         }
 
         //Permet de dupliquer un vin si le tiroir n'est pas plein
         public async Task<int> DuplicateAsync(int wineId, int nbrDuplicate, int userId)
         {
-            var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer)
+            var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
             var nbWine = 0;
             var nbWinInDrawer = WineDuplicate.Drawer.Wines.Count();
@@ -166,7 +169,7 @@ namespace Wine_cellar.Repositories
 
         public async Task<List<Wine>> GetWineByColorAsync(WineColor color, int userId)
         {
-            var WinesColor = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+            var WinesColor = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar).AsNoTracking()
                 .Where(w => w.Color == color && w.Drawer.Cellar.UserId == userId).ToListAsync();
 
             if (WinesColor.Count == 0) return null;
@@ -184,8 +187,8 @@ namespace Wine_cellar.Repositories
             //Vérifie les couleurs du vin et de l'appelation
             if (updateWine.Color != (await wineContext.Appelations.FindAsync(updateWine.AppelationId)).Color) return 0;
 
-            return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).
-                ExecuteUpdateAsync(updates => updates
+            return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).AsNoTracking()
+                .ExecuteUpdateAsync(updates => updates
                 .SetProperty(w => w.Color, updateWine.Color)
                 .SetProperty(w => w.Name, updateWine.Name)
                 .SetProperty(w => w.AppelationId, updateWine.AppelationId));

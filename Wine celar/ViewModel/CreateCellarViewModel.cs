@@ -11,6 +11,5 @@ namespace Wine_cellar.ViewModel
         public CellarBrand Brand { get; set; }
         public string? BrandOther { get; set; }
         public int Temperature { get; set; }
-
     }
 }
