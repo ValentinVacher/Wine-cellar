@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wine-cellar", "Wine celar\Wine-cellar.csproj", "{D294ECC6-BC85-4AB5-95FB-C197F49F3145}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wine-cellarTests", "Wine-cellarTests\Wine-cellarTests.csproj", "{29359E07-51F7-4C1B-92D3-FCA95648322B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D294ECC6-BC85-4AB5-95FB-C197F49F3145}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D294ECC6-BC85-4AB5-95FB-C197F49F3145}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D294ECC6-BC85-4AB5-95FB-C197F49F3145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29359E07-51F7-4C1B-92D3-FCA95648322B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29359E07-51F7-4C1B-92D3-FCA95648322B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29359E07-51F7-4C1B-92D3-FCA95648322B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29359E07-51F7-4C1B-92D3-FCA95648322B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
