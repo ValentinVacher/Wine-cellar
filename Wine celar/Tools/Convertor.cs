@@ -1,4 +1,5 @@
-﻿using Wine_celar.ViewModel;
+﻿using Wine_celar.Entities;
+using Wine_celar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.ViewModel;
 
@@ -11,9 +12,16 @@ namespace Wine_cellar.Tools
             return new Cellar()
             {
                 Name = viewModel.Name,
-                NbDrawerMax = viewModel.NbDrawerMax
+                NbDrawerMax = viewModel.NbDrawerMax,
+                CellarType = viewModel.CellarType,
+                Brand = viewModel.Brand,
+                BrandOther = viewModel.BrandOther,
+                Temperature = viewModel.Temperature
             };
+
+
         }
+
         public static Drawer CreateDrawer(CreateDrawerViewModel viewModel)
         {
             return new Drawer()
@@ -27,7 +35,7 @@ namespace Wine_cellar.Tools
         {
             return new Appelation()
             {
-                Name = viewModel.AppelationName,
+                Name = viewModel.Name,
                 KeepMin = viewModel.KeepMin,
                 KeepMax = viewModel.KeepMax,
                 Color = viewModel.Color,

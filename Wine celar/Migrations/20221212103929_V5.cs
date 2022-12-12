@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Winecelar.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class V5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,12 +17,12 @@ namespace Winecelar.Migrations
                 name: "Appelations",
                 columns: table => new
                 {
-                    AppelationId = table.Column<int>(type: "int", nullable: false)
+                    AppelationId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeepMin = table.Column<int>(type: "int", nullable: false),
-                    KeepMax = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<int>(type: "int", nullable: false)
+                    KeepMin = table.Column<int>(type: "Drawer", nullable: false),
+                    KeepMax = table.Column<int>(type: "Drawer", nullable: false),
+                    Color = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace Winecelar.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -51,11 +51,15 @@ namespace Winecelar.Migrations
                 name: "Cellars",
                 columns: table => new
                 {
-                    CellarId = table.Column<int>(type: "int", nullable: false)
+                    CellarId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NbDrawerMax = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CellarType = table.Column<int>(type: "int", nullable: false),
+                    Brand = table.Column<int>(type: "int", nullable: false),
+                    BrandOther = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Temperature = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,11 +76,11 @@ namespace Winecelar.Migrations
                 name: "Drawers",
                 columns: table => new
                 {
-                    DrawerId = table.Column<int>(type: "int", nullable: false)
+                    DrawerId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Index = table.Column<int>(type: "int", nullable: false),
-                    NbBottleMax = table.Column<int>(type: "int", nullable: false),
-                    CellarId = table.Column<int>(type: "int", nullable: false)
+                    Index = table.Column<int>(type: "Drawer", nullable: false),
+                    NbBottleMax = table.Column<int>(type: "Drawer", nullable: false),
+                    CellarId = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,14 +97,14 @@ namespace Winecelar.Migrations
                 name: "Wines",
                 columns: table => new
                 {
-                    WineId = table.Column<int>(type: "int", nullable: false)
+                    WineId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    DrawerId = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "Drawer", nullable: false),
+                    DrawerId = table.Column<int>(type: "Drawer", nullable: false),
                     PictureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Color = table.Column<int>(type: "int", nullable: false),
-                    AppelationId = table.Column<int>(type: "int", nullable: false)
+                    Color = table.Column<int>(type: "Drawer", nullable: false),
+                    AppelationId = table.Column<int>(type: "Drawer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,12 +169,12 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cellars",
-                columns: new[] { "CellarId", "Name", "NbDrawerMax", "UserId" },
+                columns: new[] { "CellarId", "Brand", "BrandOther", "CellarType", "Name", "NbDrawerMax", "Temperature", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Cellar 1", 5, 2 },
-                    { 2, "Cellar 2", 10, 2 },
-                    { 3, "Cellar 3", 20, 3 }
+                    { 1, 1, null, 2, "Cellar 1", 5, 15, 2 },
+                    { 2, 10, "ChineseBrand", 0, "Cellar 2", 10, 14, 2 },
+                    { 3, 9, null, 4, "Cellar 3", 20, 13, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -200,7 +204,9 @@ namespace Winecelar.Migrations
                     { 7, 12, 2, 4, "20-7", "", 1960 },
                     { 8, 13, 2, 4, "20-8", "", 1960 },
                     { 9, 14, 2, 5, "20-9", "", 1960 },
-                    { 10, 12, 2, 5, "20-10", "", 1960 }
+                    { 10, 12, 2, 5, "20-10", "", 1960 },
+                    { 11, 26, 1, 5, "20-11", "", 1960 },
+                    { 12, 27, 1, 5, "20-12", "", 1960 }
                 });
 
             migrationBuilder.CreateIndex(

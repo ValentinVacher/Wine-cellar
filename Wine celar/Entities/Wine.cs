@@ -13,8 +13,8 @@ namespace Wine_cellar.Entities
         //public string Appelation { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
-        //public int KeepMin { get; set; }
-        //public int KeepMax { get; set;}
+        //public Drawer KeepMin { get; set; }
+        //public Drawer KeepMax { get; set;}
         public Drawer Drawer { get; set; }
         public int DrawerId { get; set; }
         public string? PictureName { get; set; }
@@ -24,6 +24,6 @@ namespace Wine_cellar.Entities
         public Appelation Appelation { get; set; }
 
 
-      
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Drawing;
+using Wine_celar.Entities;
 using Wine_cellar.Entities;
 
 namespace Wine_cellar.Contexts
@@ -17,7 +18,7 @@ namespace Wine_cellar.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Wine> Wines { get; set; }
         public DbSet<Appelation> Appelations { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -25,9 +26,10 @@ namespace Wine_cellar.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var c1 = new Cellar { CellarId = 1, Name = "Cellar 1", NbDrawerMax = 5, UserId = 2 };
-            var c2 = new Cellar { CellarId = 2, Name = "Cellar 2", NbDrawerMax = 10, UserId = 2 };
-            var c3 = new Cellar { CellarId = 3, Name = "Cellar 3", NbDrawerMax = 20, UserId = 3 };
+            var c1 = new Cellar { CellarId = 1, Name = "Cellar 1", NbDrawerMax = 5, UserId = 2,Temperature=15,CellarType=CellarType.Service,Brand=CellarBrand.Liebherr,BrandOther=null };
+            var c2 = new Cellar { CellarId = 2, Name = "Cellar 2", NbDrawerMax = 10, UserId = 2, Temperature = 14, CellarType = CellarType.Vieillissement, Brand = CellarBrand.Autre, BrandOther = "ChineseBrand" };
+            var c3 = new Cellar { CellarId = 3, Name = "Cellar 3", NbDrawerMax = 20, UserId = 3, Temperature = 13, CellarType = CellarType.Professionnelle, Brand = CellarBrand.Vinosphere, BrandOther = null };
+
 
             var d1 = new Drawer { DrawerId = 1, Index = 1, CellarId = 1, NbBottleMax = 5 };
             var d2 = new Drawer { DrawerId = 2, Index = 2, CellarId = 1, NbBottleMax = 5 };
@@ -86,11 +88,11 @@ namespace Wine_cellar.Contexts
 
             modelBuilder.Entity<Cellar>().HasData(new List<Cellar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
-            modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 });
+            modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 });
             modelBuilder.Entity<User>().HasData(new List<User> { u1, u2, u3 });
-            modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, 
+            modelBuilder.Entity<Appelation>().HasData(new List<Appelation> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12,
             a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27});
-          
+
 
             base.OnModelCreating(modelBuilder);
         }

@@ -29,11 +29,11 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return Ok(await drawerRepository.GetAllWithWineAsync(userId));
+            return Ok(await drawerRepository.GetAllsAsync(userId));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Drawer>> GetDrawerByIndex(string cellarName, int index)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Drawer>> GetDrawerByIndex(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -41,9 +41,11 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId) == null) return NotFound("Le tiroir est introuvable");
+            Drawer drawer = await drawerRepository.GetDrawerByIdAsync(id, userId);
 
-            return Ok(await drawerRepository.GetDrawerWithWineAsync(cellarName, index, userId));
+            if (drawer == null) return NotFound("Le tiroir est introuvable");
+
+            return Ok(drawer);
         }
 
         [HttpPost]
@@ -75,13 +77,13 @@ namespace Wine_cellar.Controllers
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var drawer = await drawerRepository.UpdateDrawerAsync(updatedrawer, userId);
 
-            if (drawer == null) return NotFound("Le tiroir est introuvable");
+            if (drawer == 0) return NotFound("Aucun tiroir n'a été modifié");
 
-            return Ok(drawer);
+            return Ok("Le tiroir a été modifié");
         }
 
-        [HttpDelete("{drawerId}")]
-        public async Task<ActionResult<Drawer>> DeleteDrawer(int drawerId)
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<Drawer>> DeleteDrawer(int Id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -89,10 +91,10 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var success = await drawerRepository.DeleteDrawerAsync(drawerId, userId);
+            var success = await drawerRepository.DeleteDrawerAsync(Id, userId);
 
-            if (success != 0) return Ok($"Le tiroir {drawerId} a été supprimé");
-
+            if (success != 0) return Ok($"Le tiroir {Id} a été supprimé");
+            
             return NotFound($"Le tiroir est introuvable");
         }
 

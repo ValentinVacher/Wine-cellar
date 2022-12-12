@@ -17,8 +17,5 @@ namespace Wine_cellar.Entities
         public int KeepMax { get; set; }
         public WineColor Color { get; set; }
         public List<Wine> Wines { get; set; }
-
-      
-
     }
 }

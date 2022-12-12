@@ -38,7 +38,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCellarByName(int id)
+        public async Task<IActionResult> GetCellarById(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -79,7 +79,11 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return Ok(await cellarRepository.UpdateCellarAsync(UpCellar, userId));
+            var update = await cellarRepository.UpdateCellarAsync(UpCellar, userId);
+
+            if (update != 0) return Ok("La cave a été modifié");
+
+            return NotFound("La cave n'a pas été modifié");
         }
 
         [HttpDelete("{cellarId}")]
