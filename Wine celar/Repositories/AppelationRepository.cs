@@ -26,9 +26,9 @@ namespace Wine_celar.Repositories
         {
             return await wineContext.Appelations.ToListAsync();
         }
-        public async Task<Appelation> GetAppelationAsync(int id)
+        public async Task<Appelation> GetAppelationAsync(int id, int userid)
         {
-            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.AppelationId == id);
+            return await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).FirstOrDefaultAsync(a => a.AppelationId == id);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
@@ -51,7 +51,7 @@ namespace Wine_celar.Repositories
 
         public async Task<int> DeleteAppelationAsync(int appelationId)
         {
-            return await wineContext.Appelations.Where(a => a.AppelationId== appelationId).ExecuteDeleteAsync();
+            return await wineContext.Appelations.Where(a => a.AppelationId == appelationId).ExecuteDeleteAsync();
         }
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)

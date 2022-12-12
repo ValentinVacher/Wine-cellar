@@ -35,7 +35,13 @@ namespace Wine_celar.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAppelation(int id)
         {
-            var appel = await AppelationRepository.GetAppelationAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var appel = await AppelationRepository.GetAppelationAsync(id, userId);
 
             if (appel == null) return NotFound(ErrorCode.AppelationNotFound);
 
