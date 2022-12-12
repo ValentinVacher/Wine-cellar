@@ -7,9 +7,9 @@ namespace Wine_cellar.IRepositories
     public interface IDrawerRepository
     {
         //Permet de recuperer tout les tiroirs avec les vins 
-        Task<List<Drawer>> GetAllsAsync(int userId);
+        Task<List<GetDrawerViewModel>> GetAllsAsync(int userId);
         //Permet de recuperer un tiroir avec ses vins 
-        Task<Drawer> GetDrawerByIdAsync(int id, int userId);
+        Task<GetDrawerViewModel> GetDrawerByIdAsync(int id, int userId);
         //Task<Drawer> GetDrawerAsync(string cellarName, Drawer index, ClaimsIdentity identity);
         //Permet d'ajouter un tiroir 
         Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, int userId);

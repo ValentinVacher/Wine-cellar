@@ -1,9 +1,9 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Wine_cellar.Entities;
 
-namespace Wine_celar.ViewModel
+namespace Wine_cellar.ViewModel
 {
-    public class WineViewModel
+    public class GetWineViewModel
     {
         public int WineId { get; set; }
         public string WineName { get; set; }

@@ -12,19 +12,10 @@ namespace Wine_cellar.Entities
         public int CellarId { get; set; }
         public List<Wine> Wines { get; set; }
 
-
-       
-
         public bool IsFull()
         {
-            if (Wines.Count() >= NbBottleMax)
-            {
-                return true;
-            }
-            else
-            {
-                return false; 
-            }
+            if (Wines.Count() >= NbBottleMax) return true;
+            else return false; 
         }
     }
 }

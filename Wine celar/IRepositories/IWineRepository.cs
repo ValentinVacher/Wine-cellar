@@ -8,7 +8,7 @@ namespace Wine_cellar.IRepositories
     public interface IWineRepository
     {
         //Permet de recuperer tout les vins 
-        Task<List<WineViewModel>> GetAllWinesAsync(int userId);
+        Task<List<GetWineViewModel>> GetAllWinesAsync(int userId);
         //Permet de recuperer un vin par son id
         Task<Wine> GetWineByIdAsync(int Wineid, int userId);
         //Permet de recuperer un vin contenant le mot saisi
@@ -22,7 +22,7 @@ namespace Wine_cellar.IRepositories
         //Permet de deplacer un vin dans un autre tiroir
         Task<int> MoveAsync(int wineId,int drawerId, int userId);
         //Permet de récuperer tout les vins qui sont à leur apogée
-        Task<List<WineViewModel>> GetApogeeAsync(int userId);
+        Task<List<GetWineViewModel>> GetApogeeAsync(int userId);
         //Permet de dupliquer un vin
         Task<int> DuplicateAsync(int WineId,int NbrDuplicate, int UserId);
         Task<List<Wine>> GetWineByColorAsync(WineColor color, int UserId);

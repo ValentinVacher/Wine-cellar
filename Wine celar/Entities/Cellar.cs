@@ -18,8 +18,6 @@ namespace Wine_cellar.Entities
         public int Temperature { get; set; }
         public List<Drawer> Drawers { get; set; }
 
-
-
         public bool IsFull()
         {
             if (Drawers.Count() > NbDrawerMax) return true;

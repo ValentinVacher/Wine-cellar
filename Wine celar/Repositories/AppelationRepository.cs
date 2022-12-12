@@ -28,11 +28,11 @@ namespace Wine_celar.Repositories
         }
         public async Task<Appelation> GetAppelationAsync(int id)
         {
-            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.AppelationId == id);
+            return await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(p => p.AppelationId == id);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
-            if (await wineContext.Appelations.FirstOrDefaultAsync(a => a.AppelationId == appelation.AppelationId) == null) return null;
+            if (await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == appelation.AppelationId) == null) return null;
 
             wineContext.Appelations.Add(appelation);
             await wineContext.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace Wine_celar.Repositories
 
         public async Task<int> UpdateAppelationAsync(UpdateAppelationViewModel appelation)
         {
-            return await wineContext.Appelations.Where(a => a.AppelationId == appelation.AppelationId).
+            return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == appelation.AppelationId).
                 ExecuteUpdateAsync(updates => updates
                 .SetProperty(a => a.Name, appelation.Name)
                 .SetProperty(a => a.KeepMin, appelation.KeepMin)
@@ -51,12 +51,12 @@ namespace Wine_celar.Repositories
 
         public async Task<int> DeleteAppelationAsync(int appelationId)
         {
-            return await wineContext.Appelations.Where(a => a.AppelationId== appelationId).ExecuteDeleteAsync();
+            return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId== appelationId).ExecuteDeleteAsync();
         }
 
         public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
-            var AppelationsColor = await wineContext.Appelations.Where(a => a.Color == color).ToListAsync();
+            var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
             if (AppelationsColor.Count() == 0) return null;
             return AppelationsColor;
         }
