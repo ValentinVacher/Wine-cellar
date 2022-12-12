@@ -18,16 +18,7 @@ namespace Wine_cellar.Entities
         public WineColor Color { get; set; }
         public List<Wine> Wines { get; set; }
 
-        public Appelation ConvertorCreate(CreateAppelationViewModel viewModel)
-        {
-            return new Appelation()
-            {
-                Name = viewModel.AppelationName,
-                KeepMin = viewModel.KeepMin,
-                KeepMax = viewModel.KeepMax,
-                Color = viewModel.Color,
-            };
-        }
+      
 
     }
 }

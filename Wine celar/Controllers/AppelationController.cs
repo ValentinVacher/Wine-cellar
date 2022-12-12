@@ -8,6 +8,7 @@ using Wine_celar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Wine_cellar.Tools;
 
 namespace Wine_celar.Controllers
 {
@@ -58,7 +59,7 @@ namespace Wine_celar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
-            var appel = new Appelation().ConvertorCreate(appelViewModel);
+            var appel = Convertor.CreateAppelation(appelViewModel);
             var AppelationCreated = await AppelationRepository.CreateAppelationAsync(appel);
 
             if (AppelationCreated == null) return BadRequest("L'appelation existe deja");

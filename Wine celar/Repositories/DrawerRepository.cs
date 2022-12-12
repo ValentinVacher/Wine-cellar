@@ -4,6 +4,7 @@ using System.Security.Principal;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
+using Wine_cellar.Tools;
 using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Repositories
@@ -49,7 +50,7 @@ namespace Wine_cellar.Repositories
 
             foreach (Drawer e in Cellar.Drawers) if (e.Index >= createDrawer.index) e.Index++;
 
-            var drawer = new Drawer().ConvertorCreate(createDrawer);
+            var drawer = Convertor.CreateDrawer(createDrawer);
 
             //Ajoute le tiroir
             wineContext.Drawers.AddAsync(drawer);

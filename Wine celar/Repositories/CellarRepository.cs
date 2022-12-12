@@ -46,7 +46,7 @@ namespace Wine_cellar.Repositories
             wineContext.Cellars.Add(cellar);
             await wineContext.SaveChangesAsync();
             //Ajoute les tiroirs
-            for (int i = 1; i <= cellar.NbDrawerMax; i++) 
+            for (int i = 1; i <= cellar.NbDrawerMax; i++)
                 wineContext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
 
             await wineContext.SaveChangesAsync();

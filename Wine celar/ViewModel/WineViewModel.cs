@@ -13,19 +13,6 @@ namespace Wine_celar.ViewModel
         public string CellarName { get; set; }
         public int DrawerIndex { get; set; }
 
-        public WineViewModel Convertor(Wine wine)
-        {
-           return new WineViewModel()
-           {
-               WineId = wine.WineId,
-               WineName = wine.Name,
-               CellarName = wine.Drawer.Cellar.Name,
-               Year = wine.Year,
-               Color = wine.Color,
-               AppelationName = wine.Appelation.Name,
-               DrawerIndex = wine.Drawer.Index
-           };
-               
-        }
+       
     }
 }
