@@ -7,7 +7,8 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
+using System.Text.Json.Nodes;
 
 namespace Wine_cellar.Repositories
 {
@@ -74,14 +75,41 @@ namespace Wine_cellar.Repositories
         public async Task<string> ImportJsonAsync(string form)
         {
 
-            var deserializ = JsonSerializer.Deserialize<Cellar>(form + ".json");
-            wineContext.Cellars.Add(deserializ);
+            //var deserial = JsonConvert.DeserializeObject<JsonObject>(form);
+            var deserializ = System.Text.Json.JsonSerializer.Deserialize<List<Cellar>>(form);
+            foreach (var item in deserializ)
+            {
+
+                item.CellarId = 0;
+
+
+
+                foreach (var val in item.Drawers)
+                {
+                    val.DrawerId = 0;
+                    val.CellarId = 0;
+
+                    foreach (var value in val.Wines)
+                    {
+                        value.WineId = 0;
+                        value.DrawerId = 0;
+                        wineContext.Wines.Add(value);
+                        await wineContext.SaveChangesAsync();
+
+                    }
+                    wineContext.Drawers.Add(val);
+                    await wineContext.SaveChangesAsync();
+                }
+                wineContext.Cellars.Add(item);
+                await wineContext.SaveChangesAsync();
+            }
+            wineContext.Cellars.AddRange(deserializ);
             await wineContext.SaveChangesAsync();
             return form;
-            
+
 
         }
-        
+
         public async Task<List<Cellar>> ExportJsonAsync()
         {
             var result = await wineContext.Cellars
@@ -91,11 +119,11 @@ namespace Wine_cellar.Repositories
 
             string fileName = "UserCellars.json";
             using FileStream createStream = File.Create("Json\\" + fileName);
-            await JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
+            await System.Text.Json.JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
             await createStream.DisposeAsync();
             return result;
         }
-        
+
 
 
     }

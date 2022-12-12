@@ -8,6 +8,8 @@ using Wine_celar.ViewModel;
 using Wine_cellar.Repositories;
 using System.Text.Json;
 using Wine_cellar.Tools;
+using Newtonsoft.Json;
+using System.Text.Json.Nodes;
 
 namespace Wine_cellar.Controllers
 {
@@ -100,8 +102,12 @@ namespace Wine_cellar.Controllers
             var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
             using (FileStream stream = new FileStream(path, FileMode.Open))
             {
+                StreamReader reader = new StreamReader(stream);
+                var file = reader.ReadToEnd();
+                
+                //var deserial = JsonConvert.DeserializeObject<string>(file);
 
-                await cellarRepository.ImportJsonAsync(Jfile);
+                await cellarRepository.ImportJsonAsync(file);
                 //Cellar? cellarJson =
                 //await JsonSerializer.DeserializeAsync<Cellar>(Jfile );
 
