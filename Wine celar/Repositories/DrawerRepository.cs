@@ -39,7 +39,7 @@ namespace Wine_cellar.Repositories
         //Permet de créer un tiroir si la cave n'est pas pleine
         public async Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, int userId)
         {
-            var Cellar = await winecontext.Cellars.Include(d => d.Drawers)
+            var Cellar = await wineContext.Cellars.Include(d => d.Drawers)
                 .FirstOrDefaultAsync(d => d.CellarId == createDrawer.CellarId && d.UserId == userId);
 
             if (Cellar == null) return 3;

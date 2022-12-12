@@ -22,7 +22,7 @@ namespace Wine_cellar.Entities
         {
             return new Appelation()
             {
-                AppelationName = viewModel.AppelationName,
+                Name = viewModel.AppelationName,
                 KeepMin = viewModel.KeepMin,
                 KeepMax = viewModel.KeepMax,
                 Color = viewModel.Color,

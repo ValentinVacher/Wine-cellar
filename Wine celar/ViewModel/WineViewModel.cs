@@ -22,7 +22,7 @@ namespace Wine_celar.ViewModel
                CellarName = wine.Drawer.Cellar.Name,
                Year = wine.Year,
                Color = wine.Color,
-               AppelationName = wine.Appelation.AppelationName,
+               AppelationName = wine.Appelation.Name,
                DrawerIndex = wine.Drawer.Index
            };
                
