@@ -81,6 +81,7 @@ namespace Wine_cellar.Repositories
             
 
         }
+        
         public async Task<List<Cellar>> ExportJsonAsync()
         {
             var result = await wineContext.Cellars
@@ -88,12 +89,13 @@ namespace Wine_cellar.Repositories
                 .OrderBy(d => d.Index))
                 .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).ToListAsync();
 
-            string fileName = "UserCellar.json";
-            using FileStream createStream = File.Create(fileName);
+            string fileName = "UserCellars.json";
+            using FileStream createStream = File.Create("Json\\" + fileName);
             await JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
             await createStream.DisposeAsync();
             return result;
         }
+        
 
 
     }

@@ -108,11 +108,19 @@ namespace Wine_cellar.Controllers
             }
             return Ok();
         }
+
+        [HttpGet]
         public async Task<IActionResult> ExportJson()
         {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+
+            
             await cellarRepository.ExportJsonAsync();
             return Ok("la serialisation à marcher.");
 
         }
+        
     }
 }
