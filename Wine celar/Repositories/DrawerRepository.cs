@@ -67,8 +67,8 @@ namespace Wine_cellar.Repositories
 
             Drawer drawerReplace = drawerToUp.Cellar.Drawers.FirstOrDefault(d => d.Index == drawer.Index);
 
-            if (drawerReplace != null) 
-                drawerrss.Index = drawer.Index;
+            if (drawerReplace != null)
+                drawerReplace.Index = drawer.Index;
 
             return await wineContext.Drawers.Where(d => d.DrawerId == drawer.DrawerId && d.Cellar.UserId == userId).
                 ExecuteUpdateAsync(updates => updates
