@@ -63,14 +63,12 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier une cave
-        public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
+        public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
         {
-            var CellarUpdate = await wineContext.Cellars.FindAsync(cellar.CellarId);
-            if (CellarUpdate == null) return null;
-            CellarUpdate.Name = cellar.Name;
-            CellarUpdate.UserId = cellar.UserId;
-            await wineContext.SaveChangesAsync();
-            return CellarUpdate;
+            return await wineContext.Cellars.Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(c => c.UserId, updateCellar.UserId)
+                .SetProperty(c => c.Name, updateCellar.Name));
         }
 
         public async Task<string> ImportJsonAsync(string form)
