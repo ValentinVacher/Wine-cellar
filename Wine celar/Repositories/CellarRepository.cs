@@ -97,15 +97,13 @@ namespace Wine_cellar.Repositories
                     {
                         value.WineId = 0;
                         value.DrawerId = 0;
-                        wineContext.Wines.Add(value);
-                        await wineContext.SaveChangesAsync();
+                        value.Appelation = null;
+                     
 
                     }
-                    wineContext.Drawers.Add(val);
-                    await wineContext.SaveChangesAsync();
+                   
                 }
-                wineContext.Cellars.Add(item);
-                await wineContext.SaveChangesAsync();
+             
             }
             wineContext.Cellars.AddRange(deserializ);
             await wineContext.SaveChangesAsync();
