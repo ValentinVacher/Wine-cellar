@@ -5,6 +5,10 @@
     "NbDrawerMax": 5,
     "UserId": 2,
     "User": null,
+    "CellarType": "Service",
+    "Brand": "Liebherr",
+    "BrandOther": null,
+    "Temperature": 15,
     "Drawers": [
       {
         "DrawerId": 1,
@@ -161,6 +165,10 @@
     "NbDrawerMax": 10,
     "UserId": 2,
     "User": null,
+    "CellarType": "Vieillissement",
+    "Brand": "Autre",
+    "BrandOther": "ChineseBrand",
+    "Temperature": 14,
     "Drawers": [
       {
         "DrawerId": 4,
@@ -217,7 +225,47 @@
                           ]
                         }
                       },
-                      null
+                      null,
+                      {
+                        "WineId": 11,
+                        "Name": "20-11",
+                        "Year": 1960,
+                        "Drawer": null,
+                        "DrawerId": 5,
+                        "PictureName": "",
+                        "Color": "Ros\u00E9",
+                        "AppelationId": 26,
+                        "Appelation": {
+                          "AppelationId": 26,
+                          "Name": "Provence",
+                          "KeepMin": 3,
+                          "KeepMax": 3,
+                          "Color": "Ros\u00E9",
+                          "Wines": [
+                            null
+                          ]
+                        }
+                      },
+                      {
+                        "WineId": 12,
+                        "Name": "20-12",
+                        "Year": 1960,
+                        "Drawer": null,
+                        "DrawerId": 5,
+                        "PictureName": "",
+                        "Color": "Ros\u00E9",
+                        "AppelationId": 27,
+                        "Appelation": {
+                          "AppelationId": 27,
+                          "Name": "Rh\u00F4ne",
+                          "KeepMin": 2,
+                          "KeepMax": 2,
+                          "Color": "Ros\u00E9",
+                          "Wines": [
+                            null
+                          ]
+                        }
+                      }
                     ]
                   },
                   "DrawerId": 5,
@@ -337,6 +385,46 @@
                 null
               ]
             }
+          },
+          {
+            "WineId": 11,
+            "Name": "20-11",
+            "Year": 1960,
+            "Drawer": null,
+            "DrawerId": 5,
+            "PictureName": "",
+            "Color": "Ros\u00E9",
+            "AppelationId": 26,
+            "Appelation": {
+              "AppelationId": 26,
+              "Name": "Provence",
+              "KeepMin": 3,
+              "KeepMax": 3,
+              "Color": "Ros\u00E9",
+              "Wines": [
+                null
+              ]
+            }
+          },
+          {
+            "WineId": 12,
+            "Name": "20-12",
+            "Year": 1960,
+            "Drawer": null,
+            "DrawerId": 5,
+            "PictureName": "",
+            "Color": "Ros\u00E9",
+            "AppelationId": 27,
+            "Appelation": {
+              "AppelationId": 27,
+              "Name": "Rh\u00F4ne",
+              "KeepMin": 2,
+              "KeepMax": 2,
+              "Color": "Ros\u00E9",
+              "Wines": [
+                null
+              ]
+            }
           }
         ]
       },
@@ -356,6 +444,10 @@
     "NbDrawerMax": 20,
     "UserId": 3,
     "User": null,
+    "CellarType": "Professionnelle",
+    "Brand": "Vinosphere",
+    "BrandOther": null,
+    "Temperature": 13,
     "Drawers": []
   }
 ]

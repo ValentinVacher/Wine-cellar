@@ -12,8 +12,8 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    [Migration("20221212103929_V5")]
-    partial class V5
+    [Migration("20221212113903_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,18 +29,18 @@ namespace Winecelar.Migrations
                 {
                     b.Property<int>("AppelationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppelationId"));
 
                     b.Property<int>("Color")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("KeepMax")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("KeepMin")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -273,7 +273,7 @@ namespace Winecelar.Migrations
                 {
                     b.Property<int>("CellarId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CellarId"));
 
@@ -291,13 +291,13 @@ namespace Winecelar.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NbDrawerMax")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("Temperature")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.HasKey("CellarId");
 
@@ -343,18 +343,18 @@ namespace Winecelar.Migrations
                 {
                     b.Property<int>("DrawerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DrawerId"));
 
                     b.Property<int>("CellarId")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("Index")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("NbBottleMax")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.HasKey("DrawerId");
 
@@ -411,7 +411,7 @@ namespace Winecelar.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
@@ -478,18 +478,18 @@ namespace Winecelar.Migrations
                 {
                     b.Property<int>("WineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WineId"));
 
                     b.Property<int>("AppelationId")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("Color")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<int>("DrawerId")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -499,7 +499,7 @@ namespace Winecelar.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
-                        .HasColumnType("Drawer");
+                        .HasColumnType("int");
 
                     b.HasKey("WineId");
 
