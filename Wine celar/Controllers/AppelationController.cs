@@ -9,6 +9,7 @@ using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
 using Wine_cellar.Tools;
+using Wine_cellar.ViewModel;
 
 namespace Wine_celar.Controllers
 {
@@ -31,12 +32,12 @@ namespace Wine_celar.Controllers
             return Ok(await AppelationRepository.GetAllAppelationsAsync());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAppelation(string appelationName)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAppelation(int id)
         {
-            var appel = await AppelationRepository.GetAppelationAsync(appelationName);
+            var appel = await AppelationRepository.GetAppelationAsync(id);
 
-            if (appel == null) return NotFound($"Le vin {appelationName} est introuvable");
+            if (appel == null) return NotFound(ErrorCode.AppelationNotFound);
 
             return Ok(appel);
         }
@@ -46,9 +47,9 @@ namespace Wine_celar.Controllers
         {
             var appelations = await AppelationRepository.GetAppelationsByColoAsync(color);
 
-            if (appelations == null) return NotFound($"Aucune Appelation pour un vin {color}");
+            if (appelations == null) return NotFound(ErrorCode.AppelationNotFound);
 
-            return appelations;
+            return Ok(appelations);
         }
 
         [HttpPost]
@@ -56,35 +57,28 @@ namespace Wine_celar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             var appel = Convertor.CreateAppelation(appelViewModel);
             var AppelationCreated = await AppelationRepository.CreateAppelationAsync(appel);
 
-            if (AppelationCreated == null) return BadRequest("L'appelation existe deja");
+            if (AppelationCreated == null) return BadRequest(ErrorCode.AppelationAlreadyExists);
 
             return Ok(AppelationCreated);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
+        public async Task<IActionResult> UpdateAppelation([FromForm] UpdateAppelationViewModel appelation)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
-            Appelation appel = new()
-            {
-                Name = appelViewModel.Name,
-                KeepMin = appelViewModel.KeepMin,
-                KeepMax = appelViewModel.KeepMax
-            };
+            var appelUpdate = await AppelationRepository.UpdateAppelationAsync(appelation);
 
-            var appelUpdate = await AppelationRepository.UpdateAppelationAsync(appel);
-
-            if (appelUpdate == null) return NotFound("Appelation introuvable");
+            if (appelUpdate == 0) return NotFound(ErrorCode.AppelationNotFound);
 
             return Ok(appelUpdate);
         }
@@ -94,14 +88,14 @@ namespace Wine_celar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             var success = await AppelationRepository.DeleteAppelationAsync(appelationId);
 
-            if (success != null) NotFound("Appelation introuvable");
+            if (success == 0) NotFound(ErrorCode.AppelationNotFound);
 
-            return Ok($"l'appelation {appelationId} a été supprimer");
+            return Ok(appelationId);
         }
     }
 }

@@ -31,9 +31,9 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             return Ok(await UserRepository.GetAllUserAsync());
         }
@@ -43,7 +43,7 @@ namespace Wine_cellar.Controllers
         {
             var userConnected = await UserRepository.LoginUser(login, pwd);
 
-            if (userConnected == null) return BadRequest($"Erreur lors du login, vérifiez le login ou mot de passe");
+            if (userConnected == null) return BadRequest(ErrorCode.LoginError);
 
             List<Claim> claims = new List<Claim>();
 
@@ -65,7 +65,7 @@ namespace Wine_cellar.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-            return Ok($"{userConnected.LastName} logged");
+            return Ok(login);
         }
 
         [HttpGet]
@@ -73,27 +73,27 @@ namespace Wine_cellar.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            return Ok("Logout");
+            return Ok();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromForm] CreateUserViewModel userView, bool CGU)
         {
-            if (!CGU) return BadRequest("Vous devez accepter les condition generale d'utilisation");
+            if (!CGU) return BadRequest(ErrorCode.CGUError);
 
             Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
-            if(!regexPsw.Match(userView.Password).Success) return BadRequest("Mot de passe incorrect");
+            if(!regexPsw.Match(userView.Password).Success) return BadRequest(ErrorCode.InvalidPassword);
 
             Regex regexMail = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-            if (!regexMail.Match(userView.Email).Success) return BadRequest("Email invalide");
+            if (!regexMail.Match(userView.Email).Success) return BadRequest(ErrorCode.InvalidEmail);
 
             if(userView.IsAdmin)
             {
                 var identity = User?.Identity as ClaimsIdentity;
 
-                if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+                if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-                if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+                if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
             }
 
             User user = new()
@@ -106,11 +106,11 @@ namespace Wine_cellar.Controllers
                 IsAdmin= userView.IsAdmin
             };
 
-            if(!user.IsOlder()) return BadRequest("L'alcool est interdit au moins de 18 ans");
+            if(!user.IsOlder()) return BadRequest(ErrorCode.MinorError);
 
             var userCreated = await UserRepository.CreateUserAsync(user);
 
-            if (userCreated == null) return BadRequest("Cette adresse email est déja associé a un compte");
+            if (userCreated == null) return BadRequest(ErrorCode.EmaiAlreadyExists);
             
             return Ok(userCreated);
         }
@@ -120,13 +120,13 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             var userUpdate = await UserRepository.UpdateUserAsync(userView);
 
-            if (userUpdate == null) return NotFound("Utilisateur introuvable");
+            if (userUpdate == null) return NotFound(ErrorCode.UserNotFound);
             
             return Ok(userUpdate);
         }
@@ -136,15 +136,15 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
-            if (int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value) == userId) return BadRequest("Vous ne pouver pas suprimer votre compte");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+            if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
+            if (int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value) == userId) return BadRequest(ErrorCode.DeleteUserError);
 
             var success = await UserRepository.DeleteUserAsync(userId);
 
-            if (success != 0) return Ok($"L'utilisateur {userId} a été supprimé");
+            if (success != 0) return Ok(userId);
             
-            return BadRequest("Utilisateur introuvable");
+            return BadRequest(ErrorCode.UserNotFound);
         }
     }
 }

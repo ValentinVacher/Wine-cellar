@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Wine_celar.ViewModel;
 using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Wine_cellar.ViewModel;
 
 namespace Wine_celar.Repositories
 {
@@ -24,28 +26,27 @@ namespace Wine_celar.Repositories
         {
             return await wineContext.Appelations.ToListAsync();
         }
-        public async Task<Appelation> GetAppelationAsync(string appelationName)
+        public async Task<Appelation> GetAppelationAsync(int id)
         {
-            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.Name == appelationName);
+            return await wineContext.Appelations.FirstOrDefaultAsync(p => p.AppelationId == id);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
-            if (await wineContext.Appelations.FirstOrDefaultAsync(a => a.Name == appelation.Name) == null) return null;
+            if (await wineContext.Appelations.FirstOrDefaultAsync(a => a.AppelationId == appelation.AppelationId) == null) return null;
 
             wineContext.Appelations.Add(appelation);
             await wineContext.SaveChangesAsync();
             return appelation;
         }
 
-        public async Task<Appelation> UpdateAppelationAsync(Appelation appelation)
+        public async Task<int> UpdateAppelationAsync(UpdateAppelationViewModel appelation)
         {
-            var AppelationUpdate = await GetAppelationAsync(appelation.Name);
-            if (AppelationUpdate == null) return null;
-            AppelationUpdate.Name = appelation.Name;
-            AppelationUpdate.KeepMin = appelation.KeepMin;
-            AppelationUpdate.KeepMax = appelation.KeepMax;
-            await wineContext.SaveChangesAsync();
-            return AppelationUpdate;
+            return await wineContext.Appelations.Where(a => a.AppelationId == appelation.AppelationId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(a => a.Name, appelation.Name)
+                .SetProperty(a => a.KeepMin, appelation.KeepMin)
+                .SetProperty(a => a.KeepMax, appelation.KeepMax)
+                .SetProperty(a => a.Color, appelation.Color));
         }
 
         public async Task<int> DeleteAppelationAsync(int appelationId)

@@ -57,7 +57,6 @@ namespace Wine_cellar.Tools
                 AppelationName = wine.Appelation.Name,
                 DrawerIndex = wine.Drawer.Index
             };
-
         }
     }
 }
