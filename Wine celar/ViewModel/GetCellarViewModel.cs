@@ -2,16 +2,8 @@
 
 namespace Wine_cellar.ViewModel
 {
-    public class GetCellarViewModel
+    public class GetCellarViewModel : UpdateCellarViewModel
     {
-        public int CellarId { get; set; }
-        public string Name { get; set; }
-        public int NbDrawerMax { get; set; }
-        public int UserId { get; set; }
-        public CellarType CellarType { get; set; }
-        public CellarBrand Brand { get; set; }
-        public string? BrandOther { get; set; }
-        public int Temperature { get; set; }
         public List<GetDrawerViewModel> Drawers { get; set; }
     }
 }

@@ -1,13 +1,10 @@
-﻿using Wine_cellar.Entities;
+﻿using Wine_celar.ViewModel;
+using Wine_cellar.Entities;
 
 namespace Wine_cellar.ViewModel
 {
-    public class UpdateAppelationViewModel
+    public class UpdateAppelationViewModel :CreateAppelationViewModel
     {
         public int AppelationId { get; set; }
-        public string Name { get; set; }
-        public int KeepMax { get; set; }
-        public int KeepMin { get; set; }
-        public WineColor Color { get; set; }
     }
 }
