@@ -12,8 +12,8 @@ using Wine_cellar.Contexts;
 namespace Winecelar.Migrations
 {
     [DbContext(typeof(WineContext))]
-    [Migration("20221209141650_Init")]
-    partial class Init
+    [Migration("20221212081009_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
