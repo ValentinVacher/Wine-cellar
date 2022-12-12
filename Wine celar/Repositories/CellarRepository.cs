@@ -75,45 +75,30 @@ namespace Wine_cellar.Repositories
                 .SetProperty(c => c.Brand, updateCellar.Brand)
                 .SetProperty(c => c.BrandOther, updateCellar.BrandOther));
         }
-
+        //Importe un fichier Json
         public async Task<string> ImportJsonAsync(string form)
         {
-
-            //var deserial = JsonConvert.DeserializeObject<JsonObject>(form);
             var deserializ = System.Text.Json.JsonSerializer.Deserialize<List<Cellar>>(form);
             foreach (var item in deserializ)
             {
-
                 item.CellarId = 0;
-
-
-
                 foreach (var val in item.Drawers)
                 {
                     val.DrawerId = 0;
                     val.CellarId = 0;
-
                     foreach (var value in val.Wines)
                     {
                         value.WineId = 0;
                         value.DrawerId = 0;
-                        wineContext.Wines.Add(value);
-                        await wineContext.SaveChangesAsync();
-
-                    }
-                    wineContext.Drawers.Add(val);
-                    await wineContext.SaveChangesAsync();
-                }
-                wineContext.Cellars.Add(item);
-                await wineContext.SaveChangesAsync();
+                        value.Appelation = null;
+                    }                  
+                }      
             }
             wineContext.Cellars.AddRange(deserializ);
             await wineContext.SaveChangesAsync();
             return form;
-
-
         }
-
+        //Recupere un fichier Json avec les données presentes
         public async Task<List<Cellar>> ExportJsonAsync()
         {
             var result = await wineContext.Cellars
@@ -127,9 +112,6 @@ namespace Wine_cellar.Repositories
             await createStream.DisposeAsync();
             return result;
         }
-
-
-
     }
 }
 
