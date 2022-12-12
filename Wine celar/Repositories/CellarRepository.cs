@@ -81,13 +81,12 @@ namespace Wine_cellar.Repositories
             
 
         }
-        public async Task<Cellar> ExportJsonAsync()
+        public async Task<List<Cellar>> ExportJsonAsync()
         {
             var result = await wineContext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
-                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).
-                Where(c => c.UserId == userId).ToListAsync();
+                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).ToListAsync();
 
             string fileName = "UserCellar.json";
             using FileStream createStream = File.Create(fileName);

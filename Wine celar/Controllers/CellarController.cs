@@ -108,5 +108,11 @@ namespace Wine_cellar.Controllers
             }
             return Ok();
         }
+        public async Task<IActionResult> ExportJson()
+        {
+            await cellarRepository.ExportJsonAsync();
+            return Ok("la serialisation à marcher.");
+
+        }
     }
 }
