@@ -25,26 +25,29 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les vins dans une liste
-        public async Task<List<WineViewModel>> GetAllWinesAsync(int userId)
+        public async Task<List<GetWineViewModel>> GetAllWinesAsync(int userId)
         {
-            var Wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
+            var wines = await wineContext.Wines.Include(w => w.Appelation).Include(w => w.Drawer).ThenInclude(d => d.Cellar)
                 .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
-            var WinesView = new List<WineViewModel>();
-            foreach (var w in Wines)
+            var winesView = new List<GetWineViewModel>();
+
+            foreach (var w in wines)
             {
-                var Wine = Convertor.ViewWine(w);
-                WinesView.Add(Wine);
+                var Wine = Convertor.GetViewWine(w);
+                winesView.Add(Wine);
             }
-            return WinesView.ToList();
+
+            return winesView.ToList();
 
         }
 
         //Permet de recuperer tout les vins à leur apogée dans une liste
-        public async Task<List<WineViewModel>> GetApogeeAsync(int userId)
+        public async Task<List<GetWineViewModel>> GetApogeeAsync(int userId)
         {
             var wines = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
                 .Where(w => w.Drawer.Cellar.UserId == userId).ToListAsync();
-            var winess = new List<WineViewModel>();
+            var winess = new List<GetWineViewModel>();
+
             foreach (var w in wines)
             {
                 var ToDay = DateTime.Now.Year;
@@ -52,7 +55,7 @@ namespace Wine_cellar.Repositories
                 var min = w.Year + w.Appelation.KeepMin;
                 if (ToDay >= min && ToDay <= max)
                 {
-                    var Wine = Convertor.ViewWine(w);
+                    var Wine = Convertor.GetViewWine(w);
                     winess.Add(Wine);
                 }
             }
@@ -115,7 +118,7 @@ namespace Wine_cellar.Repositories
 
         //    if (WineDelete == null) return false;
 
-        //    wineContext.Wines.Remove(WineDelete);
+        //    wineContext.wines.Remove(WineDelete);
         //    await wineContext.SaveChangesAsync();
 
         //    return true;
