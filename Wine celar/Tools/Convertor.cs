@@ -35,7 +35,7 @@ namespace Wine_cellar.Tools
         {
             return new Appelation()
             {
-                Name = viewModel.AppelationName,
+                Name = viewModel.Name,
                 KeepMin = viewModel.KeepMin,
                 KeepMax = viewModel.KeepMax,
                 Color = viewModel.Color,

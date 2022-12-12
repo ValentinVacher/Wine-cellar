@@ -16,9 +16,9 @@ namespace Wine_cellar.IRepositories
         //Permet de rajouter un vin 
         Task<int> CreateWineAsync(CreateWineViewModel wine, int userId);
         //Permet de mettre à jour un vin
-        //Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, int userId);
+        //Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, Drawer userId);
         //Permet de supprimer un vin
-        //Task<bool> DeleteWineAsync(int WineId, int userId);
+        //Task<bool> DeleteWineAsync(Drawer WineId, Drawer userId);
         //Permet de deplacer un vin dans un autre tiroir
         Task<int> MoveAsync(int wineId,int drawerId, int userId);
         //Permet de récuperer tout les vins qui sont à leur apogée
