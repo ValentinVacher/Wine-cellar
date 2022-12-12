@@ -13,15 +13,7 @@ namespace Wine_cellar.Entities
         public List<Wine> Wines { get; set; }
 
 
-        public Drawer ConvertorCreate(CreateDrawerViewModel viewModel)
-        {
-            return new Drawer()
-            {
-                Index = viewModel.index,
-                NbBottleMax = viewModel.NbBottleMax,
-                CellarId = viewModel.CellarId,
-            };
-        }
+       
 
         public bool IsFull()
         {

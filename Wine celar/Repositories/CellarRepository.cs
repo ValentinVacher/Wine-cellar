@@ -28,17 +28,6 @@ namespace Wine_cellar.Repositories
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(int userId)
         {
-            var result = await wineContext.Cellars
-                .Include(c => c.Drawers
-                .OrderBy(d => d.Index))
-                .ThenInclude(d => d.Wines).ThenInclude(a =>a.Appelation).
-                Where(c => c.UserId == userId).ToListAsync();
-
-            string fileName = "UserCellar.json";
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, result,  new JsonSerializerOptions {WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles }); 
-            await createStream.DisposeAsync();
-
             return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.UserId == userId).ToListAsync();
         }
@@ -57,7 +46,7 @@ namespace Wine_cellar.Repositories
             wineContext.Cellars.Add(cellar);
             await wineContext.SaveChangesAsync();
             //Ajoute les tiroirs
-            for (int i = 1; i <= cellar.NbDrawerMax; i++) 
+            for (int i = 1; i <= cellar.NbDrawerMax; i++)
                 wineContext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
 
             await wineContext.SaveChangesAsync();
@@ -89,6 +78,22 @@ namespace Wine_cellar.Repositories
             wineContext.Cellars.Add(deserializ);
             await wineContext.SaveChangesAsync();
             return form;
+            
+
+        }
+        
+        public async Task<List<Cellar>> ExportJsonAsync()
+        {
+            var result = await wineContext.Cellars
+                .Include(c => c.Drawers
+                .OrderBy(d => d.Index))
+                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).ToListAsync();
+
+            string fileName = "UserCellars.json";
+            using FileStream createStream = File.Create("Json\\" + fileName);
+            await JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
+            await createStream.DisposeAsync();
+            return result;
         }
     }
 }

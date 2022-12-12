@@ -24,17 +24,6 @@ namespace Wine_cellar.Entities
         public Appelation Appelation { get; set; }
 
 
-        public Wine ConvertorCreate(CreateWineViewModel wineViewModel)
-        {
-            return new Wine()
-            {
-                Name = wineViewModel.Name,
-                Year = wineViewModel.Year,
-                PictureName = wineViewModel.Picture?.FileName ?? "",
-                Color = wineViewModel.Color,
-                AppelationId = wineViewModel.AppelationId,
-                DrawerId = wineViewModel.DrawerId,
-            };
-        }
+      
     }
 }
