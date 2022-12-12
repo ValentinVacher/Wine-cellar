@@ -120,7 +120,6 @@ namespace Wine_cellar.Controllers
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             var userUpdate = await UserRepository.UpdateUserAsync(userView);

@@ -11,8 +11,6 @@ namespace Wine_celar.ViewModel
         public WineColor Color { get; set; }
         public string AppelationName { get; set; }
         public string CellarName { get; set; }
-        public int DrawerIndex { get; set; }
-
-       
+        public int DrawerIndex { get; set; }       
     }
 }
