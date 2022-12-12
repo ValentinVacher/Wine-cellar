@@ -61,7 +61,8 @@ namespace Wine_cellar.Tools
                 Year = wine.Year,
                 Color = wine.Color,
                 AppelationName = wine.Appelation.Name,
-                DrawerIndex = wine.Drawer.Index
+                DrawerIndex = wine.Drawer.Index,
+                PictureName = wine.PictureName,
             };
         }
         public static GetDrawerViewModel GetViewDrawer(Drawer drawer, List<GetWineViewModel> wines)
@@ -86,7 +87,7 @@ namespace Wine_cellar.Tools
                 Brand = cellar.Brand,
                 BrandOther = cellar.BrandOther,
                 Temperature = cellar.Temperature,
-                Drawers = drawers
+                Drawers = drawers,
             };
         }
     }
