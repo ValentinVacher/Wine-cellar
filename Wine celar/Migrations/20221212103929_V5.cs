@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Winecelar.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class V5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,8 +54,12 @@ namespace Winecelar.Migrations
                     CellarId = table.Column<int>(type: "Drawer", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NbDrawerMax = table.Column<int>(type: "Drawer", nullable: false),
-                    UserId = table.Column<int>(type: "Drawer", nullable: false)
+                    NbDrawerMax = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CellarType = table.Column<int>(type: "int", nullable: false),
+                    Brand = table.Column<int>(type: "int", nullable: false),
+                    BrandOther = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Temperature = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,12 +169,12 @@ namespace Winecelar.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cellars",
-                columns: new[] { "CellarId", "Name", "NbDrawerMax", "UserId" },
+                columns: new[] { "CellarId", "Brand", "BrandOther", "CellarType", "Name", "NbDrawerMax", "Temperature", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Cellar 1", 5, 2 },
-                    { 2, "Cellar 2", 10, 2 },
-                    { 3, "Cellar 3", 20, 3 }
+                    { 1, 1, null, 2, "Cellar 1", 5, 15, 2 },
+                    { 2, 10, "ChineseBrand", 0, "Cellar 2", 10, 14, 2 },
+                    { 3, 9, null, 4, "Cellar 3", 20, 13, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -200,7 +204,9 @@ namespace Winecelar.Migrations
                     { 7, 12, 2, 4, "20-7", "", 1960 },
                     { 8, 13, 2, 4, "20-8", "", 1960 },
                     { 9, 14, 2, 5, "20-9", "", 1960 },
-                    { 10, 12, 2, 5, "20-10", "", 1960 }
+                    { 10, 12, 2, 5, "20-10", "", 1960 },
+                    { 11, 26, 1, 5, "20-11", "", 1960 },
+                    { 12, 27, 1, 5, "20-12", "", 1960 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -24,6 +24,6 @@ namespace Wine_cellar.Entities
         public Appelation Appelation { get; set; }
 
 
-      
+
     }
 }
