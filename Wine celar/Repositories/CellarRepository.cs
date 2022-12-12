@@ -60,7 +60,7 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer une cave avec tout ses elements
-        public async Task<Cellar> GetCellarById(int id, int userId)
+        public async Task<GetCellarViewModel> GetCellarById(int id, int userId)
         {
             var cellar = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
                 .AsNoTracking().FirstOrDefaultAsync(c => c.CellarId == id && c.UserId == userId);
