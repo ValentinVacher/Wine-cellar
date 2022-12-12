@@ -9,5 +9,6 @@ namespace Wine_cellar.ViewModel
         public string Name { get; set; }
         public int AppelationId { get; set; }
         
+
     }
 }

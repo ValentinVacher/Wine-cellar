@@ -58,24 +58,19 @@ namespace Wine_celar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 
-            Appelation appel = new()
-            {
-                Name = appelViewModel.AppelationName,
-                KeepMin = appelViewModel.KeepMin,
-                KeepMax = appelViewModel.KeepMax
-            };
+            var appel = new Appelation().ConvertorCreate(appelViewModel);
             var AppelationCreated = await AppelationRepository.CreateAppelationAsync(appel);
 
-            if (AppelationCreated == null) return BadRequest("L'appelation existe deja");             
-          
+            if (AppelationCreated == null) return BadRequest("L'appelation existe deja");
+
             return Ok(AppelationCreated);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAppelation([FromForm]CreateAppelationViewModel appelViewModel)
+        public async Task<IActionResult> UpdateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
         {
             var identity = User?.Identity as ClaimsIdentity;
-            
+
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest("Vous devez être admin");
 

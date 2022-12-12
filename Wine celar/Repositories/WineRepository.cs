@@ -31,14 +31,7 @@ namespace Wine_cellar.Repositories
             var WinesView = new List<WineViewModel>();
             foreach (var w in Wines)
             {
-                var Wine = new WineViewModel();
-                Wine.WineId = w.WineId;
-                Wine.WineName = w.Name;
-                Wine.CellarName = w.Drawer.Cellar.Name;
-                Wine.Year = w.Year;
-                Wine.Color = w.Color;
-                Wine.AppelationName = w.Appelation.Name;
-                Wine.DrawerIndex = w.Drawer.Index;
+                var Wine = new WineViewModel().Convertor(w);
                 WinesView.Add(Wine);
             }
             return WinesView.ToList();
@@ -58,14 +51,7 @@ namespace Wine_cellar.Repositories
                 var min = w.Year + w.Appelation.KeepMin;
                 if (ToDay >= min && ToDay <= max)
                 {
-                    var Wine = new WineViewModel();
-                    Wine.WineId = w.WineId;
-                    Wine.WineName = w.Name;
-                    Wine.CellarName = w.Drawer.Cellar.Name;
-                    Wine.Year = w.Year;
-                    Wine.Color = w.Color;
-                    Wine.AppelationName = w.Appelation.Name;
-                    Wine.DrawerIndex = w.Drawer.Index;
+                    var Wine = new WineViewModel().Convertor(w);
                     winess.Add(Wine);
                 }
             }
@@ -92,24 +78,14 @@ namespace Wine_cellar.Repositories
         public async Task<int> CreateWineAsync(CreateWineViewModel WineView, int userId)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines)
-                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerIndex && d.Cellar.Name == WineView.CellarName && d.Cellar.UserId == userId);
+                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerId && d.Cellar.UserId == userId);
 
             if (Drawer == null) return 1;
 
             //Verifie si le tiroir est plein
             if (Drawer.IsFull() == true) return 2;
 
-            if (!wineContext.Appelations.Any(a => a.AppelationId == WineView.AppelationId)) return 3;
-
-            var wine = new Wine()
-            {
-                Name = WineView.Name,
-                Year = WineView.Year,
-                DrawerId = Drawer.DrawerId,
-                PictureName = WineView.Picture?.FileName ?? "",
-                AppelationId = WineView.AppelationId,
-                Color = WineView.Color,
-            };
+            var wine = new Wine().ConvertorCreate(WineView);
 
             //Vérifie les couleurs du vin et de l'appelation
             if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;
@@ -189,7 +165,7 @@ namespace Wine_cellar.Repositories
 
         public async Task<List<Wine>> GetWineByColorAsync(WineColor color, int userId)
         {
-            var WinesColor = await wineContext.Wines.Include(w=>w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
+            var WinesColor = await wineContext.Wines.Include(w => w.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar)
                 .Where(w => w.Color == color && w.Drawer.Cellar.UserId == userId).ToListAsync();
 
             if (WinesColor.Count == 0) return null;
@@ -208,10 +184,10 @@ namespace Wine_cellar.Repositories
             if (updateWine.Color != (await wineContext.Appelations.FindAsync(updateWine.AppelationId)).Color) return 0;
 
             return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).
-                ExecuteUpdateAsync(updates=>updates
-                .SetProperty(w=>w.Color,updateWine.Color)
-                .SetProperty(w=>w.Name,updateWine.Name)
-                .SetProperty(w=>w.AppelationId,updateWine.AppelationId));
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(w => w.Color, updateWine.Color)
+                .SetProperty(w => w.Name, updateWine.Name)
+                .SetProperty(w => w.AppelationId, updateWine.AppelationId));
         }
     }
 }

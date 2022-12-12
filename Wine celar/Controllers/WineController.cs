@@ -48,16 +48,8 @@ namespace Wine_cellar.Controllers
 
             if (wine == null) return NotFound($"Le vin {id} est introuvable");
 
-            var WineView = new WineViewModel()
-            {
-                WineId = wine.WineId,
-                WineName = wine.Name,
-                CellarName = wine.Drawer.Cellar.Name,
-                Year = wine.Year,
-                Color = wine.Color,
-                AppelationName = wine.Appelation.Name,
-                DrawerIndex = wine.Drawer.Index
-            };
+            var WineView = new WineViewModel().Convertor(wine);
+
 
             return Ok(WineView);
         }
@@ -93,15 +85,7 @@ namespace Wine_cellar.Controllers
             var WinesView = new List<WineViewModel>();
             foreach (var w in wine)
             {
-                var WineView = new WineViewModel();
-                WineView.WineId = w.WineId;
-                WineView.WineName = w.Name;
-                WineView.CellarName = w.Drawer.Cellar.Name;
-                WineView.Year = w.Year;
-                WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.Name;
-                WineView.DrawerIndex = w.Drawer.Index;
-                WinesView.Add(WineView);
+                var WineView = new WineViewModel().Convertor(w);
             }
 
             return Ok(WinesView);
@@ -122,14 +106,7 @@ namespace Wine_cellar.Controllers
 
             foreach (var w in wines)
             {
-                var WineView = new WineViewModel();
-                WineView.WineId = w.WineId;
-                WineView.WineName = w.Name;
-                WineView.CellarName = w.Drawer.Cellar.Name;
-                WineView.Year = w.Year;
-                WineView.Color = w.Color;
-                WineView.AppelationName = w.Appelation.Name;
-                WineView.DrawerIndex = w.Drawer.Index;
+                var WineView = new WineViewModel().Convertor(w);
                 WinesView.Add(WineView);
             }
             return Ok(WinesView);

@@ -60,12 +60,8 @@ namespace Wine_cellar.Controllers
 
             if (verif != null) return BadRequest("Ce nom est déjà pris");
 
-            Cellar cellar = new()
-            {
-                Name = cellarViewModel.Name,
-                NbDrawerMax = cellarViewModel.NbDrawerMax,
-                UserId = userId
-            };
+            var cellar = Cellar.ConvertorCreate(cellarViewModel);
+            cellar.UserId= userId;
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
 
             return Ok(cellarCreated);

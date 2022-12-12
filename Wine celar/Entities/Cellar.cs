@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Wine_cellar.Contexts;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Entities
 {
@@ -12,6 +13,15 @@ namespace Wine_cellar.Entities
         public User User { get; set; }
         //public int temperature { get; set; }
         public List<Drawer> Drawers { get; set; }
+
+        public static Cellar ConvertorCreate(CreateCellarViewModel viewModel)
+        {
+            return new Cellar()
+            {
+                Name = viewModel.Name,
+                NbDrawerMax = viewModel.NbDrawerMax
+            };
+        }
 
         public bool IsFull()
         {

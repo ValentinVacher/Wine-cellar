@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Wine_cellar.Entities;
+using Wine_cellar.ViewModel;
 
 namespace Wine_cellar.Entities
 {
@@ -18,11 +19,22 @@ namespace Wine_cellar.Entities
         public int DrawerId { get; set; }
         public string? PictureName { get; set; }
         public WineColor Color { get; set; }
-        
+
         public int AppelationId { get; set; }
         public Appelation Appelation { get; set; }
 
 
-
+        public Wine ConvertorCreate(CreateWineViewModel wineViewModel)
+        {
+            return new Wine()
+            {
+                Name = wineViewModel.Name,
+                Year = wineViewModel.Year,
+                PictureName = wineViewModel.Picture?.FileName ?? "",
+                Color = wineViewModel.Color,
+                AppelationId = wineViewModel.AppelationId,
+                DrawerId = wineViewModel.DrawerId,
+            };
+        }
     }
 }
