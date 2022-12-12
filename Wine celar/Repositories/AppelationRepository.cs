@@ -6,6 +6,7 @@ using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Wine_cellar.Tools;
 using Wine_cellar.ViewModel;
 
 namespace Wine_celar.Repositories
@@ -26,9 +27,17 @@ namespace Wine_celar.Repositories
         {
             return await wineContext.Appelations.ToListAsync();
         }
-        public async Task<Appelation> GetAppelationAsync(int id, int userid)
+        public async Task<GetAppelationViewModel> GetAppelationAsync(int id, int userid)
         {
-            return await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+            var appel= await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).ThenInclude(w=>w.Drawer).ThenInclude(d=>d.Cellar).
+                AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+            var wines = new List<GetWineViewModel>();
+            foreach (var wine in appel.Wines)
+            {
+                var winemodel = Convertor.GetViewWine(wine);
+                wines.Add(winemodel);
+            }
+            return Convertor.GetAppelation(appel, wines);
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
