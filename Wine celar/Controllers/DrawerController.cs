@@ -41,7 +41,7 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            Drawer drawer = await drawerRepository.GetDrawerByIdAsync(id, userId);
+            var drawer = await drawerRepository.GetDrawerByIdAsync(id, userId);
 
             if (drawer == null) return NotFound(ErrorCode.DrawerNotFound);
 

@@ -49,7 +49,7 @@ namespace Wine_cellar.Controllers
 
             if (wine == null) return NotFound(ErrorCode.WineNotFound);
 
-            var WineView = Convertor.ViewWine(wine);
+            var WineView = Convertor.GetViewWine(wine);
 
             return Ok(WineView);
         }
@@ -82,10 +82,10 @@ namespace Wine_cellar.Controllers
 
             if (wine == null) return NotFound(ErrorCode.WineNotFound);
 
-            var WinesView = new List<WineViewModel>();
+            var WinesView = new List<GetWineViewModel>();
             foreach (var w in wine)
             {
-                var WineView = Convertor.ViewWine(w);
+                var WineView = Convertor.GetViewWine(w);
             }
 
             return Ok(WinesView);
@@ -102,11 +102,11 @@ namespace Wine_cellar.Controllers
 
             if (wines == null) return NotFound(ErrorCode.WineNotFound);
 
-            var WinesView = new List<WineViewModel>();
+            var WinesView = new List<GetWineViewModel>();
 
             foreach (var w in wines)
             {
-                var WineView = Convertor.ViewWine(w);
+                var WineView = Convertor.GetViewWine(w);
                 WinesView.Add(WineView);
             }
 

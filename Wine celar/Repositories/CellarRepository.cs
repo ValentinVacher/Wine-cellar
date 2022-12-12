@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text.Json.Nodes;
+using Wine_cellar.Tools;
 
 namespace Wine_cellar.Repositories
 {
@@ -27,17 +28,42 @@ namespace Wine_cellar.Repositories
         }
 
         //Recupere une liste de toute les caves
-        public async Task<List<Cellar>> GetAllsAsync(int userId)
+        public async Task<List<GetCellarViewModel>> GetAllsAsync(int userId)
         {
-            return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
-                Where(c => c.UserId == userId).ToListAsync();
+            var cellars = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
+                .Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
+            var cellarsView = new List<GetCellarViewModel>();
+            
+            foreach (Cellar celar in cellars)
+            {
+                var drawersView = new List<GetDrawerViewModel>();
+
+                foreach (var drawer in celar.Drawers)
+                {
+                    var winesView = new List<GetWineViewModel>();
+
+                    foreach (var wine in drawer.Wines)
+                    {
+                        var wineView = Convertor.GetViewWine(wine);
+                        winesView.Add(wineView);
+                    }
+
+                    var drawerView = Convertor.GetViewDrawer(drawer, winesView);
+                    drawersView.Add(drawerView);
+                }
+
+                var cellarView = Convertor.GetViewCellar(celar, drawersView);
+                cellarsView.Add(cellarView);
+            }
+
+            return cellarsView;
         }
 
         //Permet de recuperer une cave avec tout ses elements
         public async Task<Cellar> GetCellarById(int id, int userId)
         {
-            return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
-                FirstOrDefaultAsync(c => c.CellarId == id && c.UserId == userId);
+            return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).AsNoTracking()
+                .FirstOrDefaultAsync(c => c.CellarId == id && c.UserId == userId);
         }
 
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
@@ -79,6 +105,7 @@ namespace Wine_cellar.Repositories
         public async Task<string> ImportJsonAsync(string form)
         {
             var deserializ = System.Text.Json.JsonSerializer.Deserialize<List<Cellar>>(form);
+
             foreach (var item in deserializ)
             {
                 item.CellarId = 0;
@@ -94,6 +121,7 @@ namespace Wine_cellar.Repositories
                     }                  
                 }      
             }
+
             wineContext.Cellars.AddRange(deserializ);
             await wineContext.SaveChangesAsync();
             return form;

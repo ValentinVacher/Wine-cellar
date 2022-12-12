@@ -18,8 +18,6 @@ namespace Wine_cellar.Tools
                 BrandOther = viewModel.BrandOther,
                 Temperature = viewModel.Temperature
             };
-
-
         }
 
         public static Drawer CreateDrawer(CreateDrawerViewModel viewModel)
@@ -53,9 +51,9 @@ namespace Wine_cellar.Tools
                 DrawerId = wineViewModel.DrawerId,
             };
         }
-        public static WineViewModel ViewWine(Wine wine)
+        public static GetWineViewModel GetViewWine(Wine wine)
         {
-            return new WineViewModel()
+            return new GetWineViewModel()
             {
                 WineId = wine.WineId,
                 WineName = wine.Name,
@@ -64,6 +62,31 @@ namespace Wine_cellar.Tools
                 Color = wine.Color,
                 AppelationName = wine.Appelation.Name,
                 DrawerIndex = wine.Drawer.Index
+            };
+        }
+        public static GetDrawerViewModel GetViewDrawer(Drawer drawer, List<GetWineViewModel> wines)
+        {
+            return new GetDrawerViewModel()
+            {
+                DrawerId = drawer.DrawerId,
+                NbBottleMax = drawer.NbBottleMax,
+                CellarName = drawer.Cellar.Name,
+                Wines = wines
+            };
+        }
+        public static GetCellarViewModel GetViewCellar(Cellar cellar, List<GetDrawerViewModel> drawers) 
+        {
+            return new GetCellarViewModel()
+            {
+                CellarId = cellar.CellarId,
+                Name = cellar.Name,
+                NbDrawerMax = cellar.NbDrawerMax,
+                UserId = cellar.UserId,
+                CellarType = cellar.CellarType,
+                Brand = cellar.Brand,
+                BrandOther = cellar.BrandOther,
+                Temperature = cellar.Temperature,
+                Drawers = drawers
             };
         }
     }

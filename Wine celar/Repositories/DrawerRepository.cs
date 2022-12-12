@@ -23,17 +23,43 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de recuperer tout les tiroirs avec leur bouteilles
-        public async Task<List<Drawer>> GetAllsAsync(int userId)
+        public async Task<List<GetDrawerViewModel>> GetAllsAsync(int userId)
         {
-            return await wineContext.Drawers.Include(d => d.Wines).
-                Where(c => c.Cellar.UserId == userId).OrderBy(d => d.Index).ToListAsync();
+            var drawers = await wineContext.Drawers.Include(d => d.Wines).ThenInclude(a => a.Appelation).Include(c => c.Cellar)
+                .Where(c => c.Cellar.UserId == userId).OrderBy(d => d.Index).ToListAsync();
+            var drawersView = new List<GetDrawerViewModel>();
+
+            foreach (var drawer in drawers)
+            {
+                var winesView = new List<GetWineViewModel>();
+
+                foreach (var wine in drawer.Wines)
+                {
+                    var Wine = Convertor.GetViewWine(wine);
+                    winesView.Add(Wine);
+                }
+
+                var drawerView = Convertor.GetViewDrawer(drawer, winesView);
+                drawersView.Add(drawerView);
+            }
+
+            return drawersView;
         }
 
         //Permet de récuperer un tiroir avec ses bouteilles
-        public async Task<Drawer> GetDrawerByIdAsync(int id, int userId)
+        public async Task<GetDrawerViewModel> GetDrawerByIdAsync(int id, int userId)
         {
-            return await wineContext.Drawers.Include(d => d.Wines).Include(d => d.Cellar).
+            var drawer = await wineContext.Drawers.Include(d => d.Wines).ThenInclude(a => a.Appelation).Include(d => d.Cellar).
                 FirstOrDefaultAsync(d => d.DrawerId == id && d.Cellar.UserId == userId);
+            var winesView = new List<GetWineViewModel>();
+
+            foreach (var wine in drawer.Wines)
+            {
+                var Wine = Convertor.GetViewWine(wine);
+                winesView.Add(Wine);
+            }
+
+            return Convertor.GetViewDrawer(drawer, winesView);
         }
 
         //Permet de créer un tiroir si la cave n'est pas pleine
@@ -61,7 +87,8 @@ namespace Wine_cellar.Repositories
         //Permet de modifier un tiroir
         public async Task<int> UpdateDrawerAsync(UpdateDrawerViewModel drawer, int userId)
         {
-            Drawer drawerToUp = await GetDrawerByIdAsync(drawer.DrawerId, userId);
+            var drawerToUp = await wineContext.Drawers.Include(d => d.Cellar).
+                FirstOrDefaultAsync(d => d.DrawerId == drawer.DrawerId && d.Cellar.UserId == userId); ;
 
             if (drawerToUp.Cellar.NbDrawerMax < drawer.Index) return 1;
 
