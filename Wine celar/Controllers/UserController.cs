@@ -81,18 +81,16 @@ namespace Wine_cellar.Controllers
         {
             if (!CGU) return BadRequest(ErrorCode.CGUError);
 
-            Regex regexPsw = new(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
-            if(!regexPsw.Match(userView.Password).Success) return BadRequest(ErrorCode.InvalidPassword);
+            CellarRegex regex= new();
 
-            Regex regexMail = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-            if (!regexMail.Match(userView.Email).Success) return BadRequest(ErrorCode.InvalidEmail);
+            if(!regex.Password.Match(userView.Password).Success) return BadRequest(ErrorCode.InvalidPassword);
+            if (!regex.Email.Match(userView.Email).Success) return BadRequest(ErrorCode.InvalidEmail);
 
             if(userView.IsAdmin)
             {
                 var identity = User?.Identity as ClaimsIdentity;
 
                 if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
-
                 if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
             }
 
