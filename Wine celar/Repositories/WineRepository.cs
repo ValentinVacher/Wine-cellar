@@ -97,7 +97,7 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier un vin 
-        //public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, int userId)
+        //public async Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, Drawer userId)
         //{
         //    var WineUpdate = await GetWineByIdAsync(wine.wineId, userId);
         //    if (WineUpdate == null) return null;
@@ -108,7 +108,7 @@ namespace Wine_cellar.Repositories
         //}
 
         //Permet de supprimer un vin 
-        //public async Task<bool> DeleteWineAsync(int wineId, int userId)
+        //public async Task<bool> DeleteWineAsync(Drawer wineId, Drawer userId)
         //{
         //    var WineDelete = await GetWineByIdAsync(wineId, userId);
 
