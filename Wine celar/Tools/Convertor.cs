@@ -29,6 +29,7 @@ namespace Wine_cellar.Tools
                 CellarId = viewModel.CellarId,
             };
         }
+
         public static Appelation CreateAppelation(CreateAppelationViewModel viewModel)
         {
             return new Appelation()
@@ -39,6 +40,7 @@ namespace Wine_cellar.Tools
                 Color = viewModel.Color,
             };
         }
+
         public static Wine CreateWine(CreateWineViewModel wineViewModel)
         {
             return new Wine()
@@ -51,6 +53,7 @@ namespace Wine_cellar.Tools
                 DrawerId = wineViewModel.DrawerId,
             };
         }
+
         public static GetWineViewModel GetViewWine(Wine wine)
         {
             return new GetWineViewModel()
@@ -65,6 +68,7 @@ namespace Wine_cellar.Tools
                 PictureName = wine.PictureName,
             };
         }
+
         public static GetDrawerViewModel GetViewDrawer(Drawer drawer, List<GetWineViewModel> wines)
         {
             return new GetDrawerViewModel()
@@ -75,6 +79,7 @@ namespace Wine_cellar.Tools
                 Wines = wines
             };
         }
+
         public static GetCellarViewModel GetViewCellar(Cellar cellar, List<GetDrawerViewModel> drawers) 
         {
             return new GetCellarViewModel()
