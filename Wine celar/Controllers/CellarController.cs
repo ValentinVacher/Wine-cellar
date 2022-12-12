@@ -100,6 +100,7 @@ namespace Wine_cellar.Controllers
 
             return NotFound(ErrorCode.CellarNotFound);
         }
+        //Importe un fichier Json de cave 
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string Jfile)
         {
@@ -109,17 +110,12 @@ namespace Wine_cellar.Controllers
                 StreamReader reader = new StreamReader(stream);
                 var file = reader.ReadToEnd();
                 
-                //var deserial = JsonConvert.DeserializeObject<string>(file);
-
                 await cellarRepository.ImportJsonAsync(file);
-                //Cellar? cellarJson =
-                //await JsonSerializer.DeserializeAsync<Cellar>(Jfile );
-
                 stream.Close();
             }
             return Ok();
         }
-
+        //Recupere un fichier Json contenant tout les elements d'une cave
         [HttpGet]
         public async Task<IActionResult> ExportJson()
         {
