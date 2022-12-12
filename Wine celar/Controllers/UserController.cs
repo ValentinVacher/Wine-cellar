@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
 using System.Security.Principal;
+using Wine_celar.Entities;
 
 namespace Wine_cellar.Controllers
 {

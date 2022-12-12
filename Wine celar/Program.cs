@@ -39,8 +39,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WineContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("WineCellarDbCS"));
-    o.LogTo(Console.WriteLine);
-    o.EnableSensitiveDataLogging(true);
+    
 });
 builder.Services.AddScoped<IWineRepository, WineRepository>();
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();

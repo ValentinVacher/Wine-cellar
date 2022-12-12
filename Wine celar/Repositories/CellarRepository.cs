@@ -144,14 +144,14 @@ namespace Wine_cellar.Repositories
             return form;
         }
         //Recupere un fichier Json avec les données presentes
-        public async Task<List<Cellar>> ExportJsonAsync()
+        public async Task<List<Cellar>> ExportJsonAsync(string name)
         {
             var result = await wineContext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
                 .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).ToListAsync();
 
-            string fileName = "UserCellars.json";
+            string fileName = $"{name}.json";
             using FileStream createStream = File.Create("Json\\" + fileName);
             await System.Text.Json.JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
             await createStream.DisposeAsync();

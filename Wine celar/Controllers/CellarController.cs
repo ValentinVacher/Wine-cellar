@@ -117,13 +117,13 @@ namespace Wine_cellar.Controllers
         }
         //Recupere un fichier Json contenant tout les elements d'une cave
         [HttpGet]
-        public async Task<IActionResult> ExportJson()
+        public async Task<IActionResult> ExportJson(string name)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-            await cellarRepository.ExportJsonAsync();
+            await cellarRepository.ExportJsonAsync(name);
 
             return Ok();
         }
