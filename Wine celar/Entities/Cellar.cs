@@ -14,14 +14,7 @@ namespace Wine_cellar.Entities
         //public int temperature { get; set; }
         public List<Drawer> Drawers { get; set; }
 
-        public static Cellar ConvertorCreate(CreateCellarViewModel viewModel)
-        {
-            return new Cellar()
-            {
-                Name = viewModel.Name,
-                NbDrawerMax = viewModel.NbDrawerMax
-            };
-        }
+       
 
         public bool IsFull()
         {

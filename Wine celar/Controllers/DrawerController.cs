@@ -92,7 +92,7 @@ namespace Wine_cellar.Controllers
             var success = await drawerRepository.DeleteDrawerAsync(drawerId, userId);
 
             if (success != 0) return Ok($"Le tiroir {drawerId} a été supprimé");
-            
+
             return NotFound($"Le tiroir est introuvable");
         }
 

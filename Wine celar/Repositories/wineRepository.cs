@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Claims;
 using Wine_celar.ViewModel;
 using Microsoft.Identity.Client;
+using Wine_cellar.Tools;
 
 namespace Wine_cellar.Repositories
 {
@@ -31,7 +32,7 @@ namespace Wine_cellar.Repositories
             var WinesView = new List<WineViewModel>();
             foreach (var w in Wines)
             {
-                var Wine = new WineViewModel().Convertor(w);
+                var Wine = Convertor.ViewWine(w);
                 WinesView.Add(Wine);
             }
             return WinesView.ToList();
@@ -51,7 +52,7 @@ namespace Wine_cellar.Repositories
                 var min = w.Year + w.Appelation.KeepMin;
                 if (ToDay >= min && ToDay <= max)
                 {
-                    var Wine = new WineViewModel().Convertor(w);
+                    var Wine = Convertor.ViewWine(w);
                     winess.Add(Wine);
                 }
             }
@@ -85,7 +86,7 @@ namespace Wine_cellar.Repositories
             //Verifie si le tiroir est plein
             if (Drawer.IsFull() == true) return 2;
 
-            var wine = new Wine().ConvertorCreate(WineView);
+            var wine = Convertor.CreateWine(WineView);
 
             //Vérifie les couleurs du vin et de l'appelation
             if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;

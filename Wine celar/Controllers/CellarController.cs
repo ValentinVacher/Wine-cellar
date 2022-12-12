@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Wine_celar.ViewModel;
 using Wine_cellar.Repositories;
 using System.Text.Json;
+using Wine_cellar.Tools;
 
 namespace Wine_cellar.Controllers
 {
@@ -60,7 +61,7 @@ namespace Wine_cellar.Controllers
 
             if (verif != null) return BadRequest("Ce nom est déjà pris");
 
-            var cellar = Cellar.ConvertorCreate(cellarViewModel);
+            var cellar = Convertor.CreateCellar(cellarViewModel);
             cellar.UserId= userId;
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
 

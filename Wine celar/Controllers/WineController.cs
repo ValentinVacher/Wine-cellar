@@ -8,6 +8,7 @@ using Wine_cellar.Contexts;
 using System.Security.Claims;
 using Wine_celar.ViewModel;
 using System.Text.Json;
+using Wine_cellar.Tools;
 
 namespace Wine_cellar.Controllers
 {
@@ -48,7 +49,7 @@ namespace Wine_cellar.Controllers
 
             if (wine == null) return NotFound($"Le vin {id} est introuvable");
 
-            var WineView = new WineViewModel().Convertor(wine);
+            var WineView = Convertor.ViewWine(wine);
 
 
             return Ok(WineView);
@@ -85,7 +86,7 @@ namespace Wine_cellar.Controllers
             var WinesView = new List<WineViewModel>();
             foreach (var w in wine)
             {
-                var WineView = new WineViewModel().Convertor(w);
+                var WineView = Convertor.ViewWine(w);
             }
 
             return Ok(WinesView);
@@ -106,7 +107,7 @@ namespace Wine_cellar.Controllers
 
             foreach (var w in wines)
             {
-                var WineView = new WineViewModel().Convertor(w);
+                var WineView = Convertor.ViewWine(w);
                 WinesView.Add(WineView);
             }
             return Ok(WinesView);
