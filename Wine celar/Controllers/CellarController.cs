@@ -68,26 +68,17 @@ namespace Wine_cellar.Controllers
             return Ok(cellarCreated);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateCellar([FromForm]UpdateCellarViewModel UpCellar, int id)
-        //{
-        //    var identity = User?.Identity as ClaimsIdentity;
+        [HttpPut]
+        public async Task<IActionResult> UpdateCellar([FromForm] UpdateCellarViewModel UpCellar)
+        {
+            var identity = User?.Identity as ClaimsIdentity;
 
-        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
 
-        //    int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-        //    if (cellar == null) return NotFound("Cave introuvable");
-
-        //    var cellarUpdate = new Cellar()
-        //    {
-        //        CellarId = cellar.CellarId,
-        //        Name = UpCellar.Name,
-        //        UserId= UpCellar.UserId    
-        //    };
-
-        //    return Ok(await cellarRepository.UpdateCellarAsync(cellarUpdate));
-        //}
+            return Ok(await cellarRepository.UpdateCellarAsync(UpCellar, userId));
+        }
 
         [HttpDelete("{cellarId}")]
         public async Task<IActionResult> DeleteCellar(int cellarId)

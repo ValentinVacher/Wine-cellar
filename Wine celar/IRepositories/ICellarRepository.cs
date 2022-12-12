@@ -14,7 +14,7 @@ namespace Wine_cellar.IRepositories
         //Permet de supprimer une cave
         Task<int> DeleteCellarAsync(int cellarId, int userId);
         //Permet de mettre a jour/modifier une cave
-        Task<Cellar> UpdateCellarAsync(Cellar cellar);
+        Task<int> UpdateCellarAsync(UpdateCellarViewModel UpCellar, int userId);
         //Permet d'ajouter une cave
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
         Task<string> ImportJsonAsync(string form);

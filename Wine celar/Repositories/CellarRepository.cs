@@ -28,17 +28,6 @@ namespace Wine_cellar.Repositories
         //Recupere une liste de toute les caves
         public async Task<List<Cellar>> GetAllsAsync(int userId)
         {
-            var result = await wineContext.Cellars
-                .Include(c => c.Drawers
-                .OrderBy(d => d.Index))
-                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).
-                Where(c => c.UserId == userId).ToListAsync();
-
-            string fileName = "UserCellar.json";
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
-            await createStream.DisposeAsync();
-
             return await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).
                 Where(c => c.UserId == userId).ToListAsync();
         }
@@ -74,14 +63,12 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de modifier une cave
-        public async Task<Cellar> UpdateCellarAsync(Cellar cellar)
+        public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
         {
-            var CellarUpdate = await wineContext.Cellars.FindAsync(cellar.CellarId);
-            if (CellarUpdate == null) return null;
-            CellarUpdate.Name = cellar.Name;
-            CellarUpdate.UserId = cellar.UserId;
-            await wineContext.SaveChangesAsync();
-            return CellarUpdate;
+            return await wineContext.Cellars.Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(c => c.UserId, updateCellar.UserId)
+                .SetProperty(c => c.Name, updateCellar.Name));
         }
 
         public async Task<string> ImportJsonAsync(string form)
@@ -91,8 +78,22 @@ namespace Wine_cellar.Repositories
             wineContext.Cellars.Add(deserializ);
             await wineContext.SaveChangesAsync();
             return form;
+            
 
+        }
+        public async Task<Cellar> ExportJsonAsync()
+        {
+            var result = await wineContext.Cellars
+                .Include(c => c.Drawers
+                .OrderBy(d => d.Index))
+                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).
+                Where(c => c.UserId == userId).ToListAsync();
 
+            string fileName = "UserCellar.json";
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, result, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = ReferenceHandler.IgnoreCycles });
+            await createStream.DisposeAsync();
+            return result;
         }
 
 
