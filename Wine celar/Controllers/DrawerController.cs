@@ -19,6 +19,12 @@ namespace Wine_cellar.Controllers
             this.drawerRepository = drawerRepository;
         }
 
+
+        /// <summary>
+        /// Permet de récupérer touts les tiroirs de l'utilisateur
+        /// </summary>
+        /// <response code = "200">Tiroirs et contenu : </response>
+        /// <returns>Retourne touts les tiroirs et leur contenu</returns>
         [HttpGet]
         public async Task<ActionResult<List<Drawer>>> GetAllDrawers()
         {
@@ -31,6 +37,14 @@ namespace Wine_cellar.Controllers
             return Ok(await drawerRepository.GetAllDrawersAsync(userId));
         }
 
+
+        /// <summary>
+        /// Permet de voir un tiroir par recherche d'id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code ="200">Tiroir et contenu : </response>
+        /// <response code = "404">Tiroir introuvable</response>
+        /// <returns>Retourne le tiroirs correspondant à l'id saisi</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Drawer>> GetDrawerById(int id)
         {
@@ -46,6 +60,13 @@ namespace Wine_cellar.Controllers
             return Ok(drawer);
         }
 
+
+        /// <summary>
+        /// Permet de créer un tiroir
+        /// </summary>
+        /// <param name="createDrawer"></param>
+        /// <response code = "200">Tiroir créer : </response>
+        /// <returns>Retourne le tiroir créer</returns>
         [HttpPost]
         public async Task<ActionResult<Drawer>> PostDrawer([FromForm] CreateDrawerViewModel createDrawer)
         {
@@ -64,6 +85,14 @@ namespace Wine_cellar.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Permet de modifier les informations d'un tiroir 
+        /// </summary>
+        /// <param name="updatedrawer"></param>
+        /// <response code = "200">Tiroir modifié : </response> 
+        /// <response code = "404">Tiroir introuvable</response>
+        /// <returns>Retourne le tiroir modifier</returns>
         [HttpPut]
         public async Task<ActionResult<Drawer>> UpdateDrawer([FromForm] UpdateDrawerViewModel updatedrawer)
         {
@@ -79,6 +108,14 @@ namespace Wine_cellar.Controllers
             return Ok(updatedrawer);
         }
 
+
+        /// <summary>
+        /// Permet de supprimer un tiroir
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code = "200">Tiroir supprimé</response>
+        /// <response code = "404">Tiroir introuvable</response>
+        /// <returns>Retourne l'id du tiroir supprimer </returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Drawer>> DeleteDrawer(int id)
         {

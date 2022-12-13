@@ -24,7 +24,13 @@ namespace Wine_cellar.Controllers
             this.cellarRepository = cellarRepository;
             this.environment = environment;
         }
-
+        /// <summary>
+        /// Retourne toutes les caves et leur elements
+        /// </summary>
+        /// 
+        /// <response code = "200">Vos caves : </response>
+        /// <response code = "404">Cave non trouvé</response>
+        /// <returns>Retourne toutes les caves de l'utilisateur</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllCellars()
         {
@@ -37,6 +43,13 @@ namespace Wine_cellar.Controllers
             return Ok(await cellarRepository.GetAllCellarsAsync(userId));
         }
 
+        /// <summary>
+        /// Permet de voir une cave par son id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code = "200">Votre cave : </response>
+        /// <response code = "404">La cave choisi n'existe pas</response>
+        /// <returns>Retourne la cave avec l'id saisi</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCellarById(int id)
         {
@@ -65,8 +78,15 @@ namespace Wine_cellar.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Permet d'ajouter une cave
+        /// </summary>
+        /// <param name="NbBottle">Nombre bouteilles par tiroir</param>
+        /// <response code = "200">La cave a bien été créer</response>
+        /// <returns>retourne la cave créer</returns>
         [HttpPost]
-        public async Task<IActionResult> AddCellar([FromForm] CreateCellarViewModel cellarViewModel, int Nbr)
+        public async Task<IActionResult> AddCellar([FromForm] CreateCellarViewModel cellarViewModel, int NbBottle)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -79,12 +99,16 @@ namespace Wine_cellar.Controllers
 
             var cellar = Convertor.CreateCellar(cellarViewModel);
             cellar.UserId = userId;
-            var cellarCreated = await cellarRepository.AddCellarAsync(cellar, Nbr);
+            var cellarCreated = await cellarRepository.AddCellarAsync(cellar, NbBottle);
 
             return Ok(cellarCreated);
         }
 
-        //Importe un fichier Json de cave 
+        /// <summary>
+        /// Permet de récuperer un fichier Json pour l'ajouter à la base
+        /// </summary>
+        /// <param name="jFille"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string jFille)
         {
@@ -102,6 +126,12 @@ namespace Wine_cellar.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Permet de modifier les infos d'une cave
+        /// </summary>
+        /// <param name="upCellar"></param>
+        /// <response code = "200">Cave modifié</response>
+        /// <returns>Retourne la cave modifié</returns>
         [HttpPut]
         public async Task<IActionResult> UpdateCellar([FromForm] UpdateCellarViewModel upCellar)
         {
@@ -117,19 +147,29 @@ namespace Wine_cellar.Controllers
             return NotFound(ErrorCode.CellarNotFound);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCellar(int id)
+        /// <summary>
+        /// Permet de supprimer une cave en saisissant son id
+        /// </summary>
+        /// <param name="cellarId"></param>
+        ///  <response code = "200">Cave supprimé</response>
+        ///  <response code ="404">Cave introuvable</response>
+        /// <returns>Retourne la cave supprimer</returns>
+        [HttpDelete("{cellarId}")]
+        public async Task<IActionResult> DeleteCellar(int Id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var success = await cellarRepository.DeleteCellarAsync(id, userId);
+            var success = await cellarRepository.DeleteCellarAsync(Id, userId);
 
-            if (success != 0) return Ok(id);
+            if (success != 0) return Ok(Id);
 
             return NotFound(ErrorCode.CellarNotFound);
-        }    
+        }
+        
+       
+        
     }
 }

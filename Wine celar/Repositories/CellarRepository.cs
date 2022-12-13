@@ -113,6 +113,27 @@ namespace Wine_cellar.Repositories
             return cellar;
         }
 
+        //Permet de supprimer une cave et ses tiroirs
+        public async Task<int> DeleteCellarAsync(int cellarId, int userId)
+        {
+            await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Drawers.AsNoTracking().Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
+
+            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
+        }
+
+        //Permet de modifier une cave
+        public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
+        {
+            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
+                ExecuteUpdateAsync(updates => updates
+                .SetProperty(c => c.UserId, updateCellar.UserId)
+                .SetProperty(c => c.Name, updateCellar.Name)
+                .SetProperty(c => c.Temperature, updateCellar.Temperature)
+                .SetProperty(c => c.CellarType, updateCellar.CellarType)
+                .SetProperty(c => c.Brand, updateCellar.Brand)
+                .SetProperty(c => c.BrandOther, updateCellar.BrandOther));
+        }
         //Importe un fichier Json
         public async Task<string> ImportJsonAsync(string form)
         {
@@ -139,26 +160,6 @@ namespace Wine_cellar.Repositories
             return form;
         }
 
-        //Permet de modifier une cave
-        public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
-        {
-            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
-                ExecuteUpdateAsync(updates => updates
-                .SetProperty(c => c.UserId, updateCellar.UserId)
-                .SetProperty(c => c.Name, updateCellar.Name)
-                .SetProperty(c => c.Temperature, updateCellar.Temperature)
-                .SetProperty(c => c.CellarType, updateCellar.CellarType)
-                .SetProperty(c => c.Brand, updateCellar.Brand)
-                .SetProperty(c => c.BrandOther, updateCellar.BrandOther));
-        }
-
-        //Permet de supprimer une cave et ses tiroirs
-        public async Task<int> DeleteCellarAsync(int cellarId, int userId)
-        {
-            await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
-            await wineContext.Drawers.AsNoTracking().Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
-
-            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
-        }
+        
     }
 }
