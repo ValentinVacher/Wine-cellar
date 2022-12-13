@@ -106,7 +106,10 @@ namespace Wine_cellar.Repositories
             return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
         }
 
-        //Permet de modifier une cave
+        /// <summary>
+        /// Permet de modifier les infos d'une cave
+        /// </summary>
+        /// <returns>Retourne la cave modifié</returns>
         public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
         {
             return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).

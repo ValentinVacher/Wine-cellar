@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.Swagger;
 using System.ComponentModel;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
@@ -35,7 +37,10 @@ ReferenceHandler.IgnoreCycles);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.IncludeXmlComments("bin\\Debug\\netcoreapp2.0\\SwaggerDemo.xml", true);
+});
+
 builder.Services.AddDbContext<WineContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("WineCellarDbCS"));
