@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Wine_celar.Repositories;
-using Wine_celar.ViewModel;
+using Wine_cellar.Repositories;
+using Wine_cellar.ViewModel;
 using Wine_cellar.Entities;
 using Wine_cellar.Repositories;
 
