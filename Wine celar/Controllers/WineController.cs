@@ -115,7 +115,7 @@ namespace Wine_cellar.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateWineAsync([FromForm]
-        CreateWineViewModel WineViewModel)
+        CreateWineViewModel wineViewModel)
         {
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -123,7 +123,7 @@ namespace Wine_cellar.Controllers
             if (idCurrentUser == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineCreated = await wineRepository.CreateWineAsync(WineViewModel, userId);
+            var wineCreated = await wineRepository.CreateWineAsync(wineViewModel, userId);
 
             switch (wineCreated)
             {
@@ -133,19 +133,19 @@ namespace Wine_cellar.Controllers
                 default: break;
             }
 
-            if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
-                && WineViewModel.Picture.FileName.Length > 0)
+            if (!string.IsNullOrEmpty(wineViewModel.Picture?.FileName)
+                && wineViewModel.Picture.FileName.Length > 0)
             {
-                var path = Path.Combine(environment.WebRootPath, "img/", WineViewModel.Picture.FileName);
+                var path = Path.Combine(environment.WebRootPath, "img/", wineViewModel.Picture.FileName);
 
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 {
-                    await WineViewModel.Picture.CopyToAsync(stream);
+                    await wineViewModel.Picture.CopyToAsync(stream);
                     stream.Close();
                 }
             }
 
-            return Ok(WineViewModel);
+            return Ok(wineViewModel);
         }
 
         [HttpPost("{id}")]

@@ -86,9 +86,9 @@ namespace Wine_cellar.Controllers
 
         //Importe un fichier Json de cave 
         [HttpPost]
-        public async Task<IActionResult> ImportJson([FromForm] string Jfile)
+        public async Task<IActionResult> ImportJson([FromForm] string jFille)
         {
-            var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
+            var path = Path.Combine(environment.ContentRootPath, "Json\\", jFille + ".json");
 
             using (FileStream stream = new FileStream(path, FileMode.Open))
             {
@@ -117,17 +117,17 @@ namespace Wine_cellar.Controllers
             return NotFound(ErrorCode.CellarNotFound);
         }
 
-        [HttpDelete("{cellarId}")]
-        public async Task<IActionResult> DeleteCellar(int cellarId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCellar(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var success = await cellarRepository.DeleteCellarAsync(cellarId, userId);
+            var success = await cellarRepository.DeleteCellarAsync(id, userId);
 
-            if (success != 0) return Ok(cellarId);
+            if (success != 0) return Ok(id);
 
             return NotFound(ErrorCode.CellarNotFound);
         }    

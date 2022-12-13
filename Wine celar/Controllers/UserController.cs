@@ -120,18 +120,18 @@ namespace Wine_cellar.Controllers
             return Ok(userUpdate);
         }
 
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
-            if (int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value) == userId) return BadRequest(ErrorCode.DeleteUserError);
+            if (int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value) == id) return BadRequest(ErrorCode.DeleteUserError);
 
-            var success = await UserRepository.DeleteUserAsync(userId);
+            var success = await UserRepository.DeleteUserAsync(id);
 
-            if (success != 0) return Ok(userId);
+            if (success != 0) return Ok(id);
             
             return BadRequest(ErrorCode.UserNotFound);
         }
