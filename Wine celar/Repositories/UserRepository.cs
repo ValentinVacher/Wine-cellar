@@ -12,19 +12,25 @@ namespace Wine_celar.Repositories
     {
         //Declaration du context et logger
         readonly WineContext wineContext;
-        ILogger<UserRepository> logger;
 
         //Constructeur
-        public UserRepository(WineContext wineContext, ILogger<UserRepository> logger)
+        public UserRepository(WineContext wineContext)
         {
             this.wineContext = wineContext;
-            this.logger = logger;
         }
 
         //Permet de recuperer tout les utilisateurs
         public async Task<List<User>> GetAllUserAsync()
         {
             return await wineContext.Users.ToListAsync(); ;
+        }
+
+        //Permet de se connecter
+        public async Task<User?> LoginAsync(string login, string pwd)
+        {
+            var userConnected = await wineContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == login && u.Password == pwd);
+
+            return userConnected;
         }
 
         //Permet de créer un user
@@ -56,14 +62,6 @@ namespace Wine_celar.Repositories
             await wineContext.Cellars.AsNoTracking().Where(c => c.UserId == userId).ExecuteDeleteAsync();
 
             return await wineContext.Users.Where(u => u.UserId == userId).ExecuteDeleteAsync();
-        }
-
-        //Permet de se connecter
-        public async Task<User?> LoginUser(string login, string pwd)
-        {
-            var userConnected = await wineContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == login && u.Password == pwd);
-
-            return userConnected;
         }
     }
 }

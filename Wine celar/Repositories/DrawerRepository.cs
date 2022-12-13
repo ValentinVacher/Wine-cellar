@@ -13,17 +13,15 @@ namespace Wine_cellar.Repositories
     {
         //Creation du context et du logger
         WineContext wineContext;
-        ILogger<DrawerRepository> logger;
 
         //Constructeur
-        public DrawerRepository(WineContext winecontext, ILogger<DrawerRepository> logger)
+        public DrawerRepository(WineContext winecontext)
         {
             this.wineContext = winecontext;
-            this.logger = logger;
         }
 
         //Permet de recuperer tout les tiroirs avec leur bouteilles
-        public async Task<List<GetDrawerViewModel>> GetAllsAsync(int userId)
+        public async Task<List<GetDrawerViewModel>> GetAllDrawersAsync(int userId)
         {
             var drawers = await wineContext.Drawers.Include(d => d.Wines).ThenInclude(a => a.Appelation).Include(c => c.Cellar)
                 .AsNoTracking().Where(c => c.Cellar.UserId == userId).OrderBy(d => d.Index).ToListAsync();

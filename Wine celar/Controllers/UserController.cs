@@ -20,29 +20,26 @@ namespace Wine_cellar.Controllers
     public class UserController : ControllerBase
     {
         readonly IUserRepository UserRepository;
-        readonly IWebHostEnvironment environment;
-        public UserController(IUserRepository Repository, IWebHostEnvironment environment)
+        public UserController(IUserRepository Repository)
         {
             this.UserRepository = Repository;
-            this.environment = environment;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUserAsync()
+        public async Task<IActionResult> GetAllUsers()
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
-
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
             return Ok(await UserRepository.GetAllUserAsync());
         }
 
         [HttpGet("{login}/{pwd}")]
-        public async Task<IActionResult> LoginAsync(string login, string pwd)
+        public async Task<IActionResult> Login(string login, string pwd)
         {
-            var userConnected = await UserRepository.LoginUser(login, pwd);
+            var userConnected = await UserRepository.LoginAsync(login, pwd);
 
             if (userConnected == null) return BadRequest(ErrorCode.LoginError);
 
@@ -53,14 +50,8 @@ namespace Wine_cellar.Controllers
             claims.Add(new(ClaimTypes.GivenName, userConnected.FirstName));
             claims.Add(new(ClaimTypes.NameIdentifier, userConnected.UserId.ToString()));
 
-            if (userConnected.IsAdmin)
-            {
-                claims.Add(new(ClaimTypes.Role, "admin"));
-            }
-            else
-            {
-                claims.Add(new(ClaimTypes.Role, ""));
-            }
+            if (userConnected.IsAdmin) claims.Add(new(ClaimTypes.Role, "admin"));
+            else claims.Add(new(ClaimTypes.Role, ""));
 
             ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

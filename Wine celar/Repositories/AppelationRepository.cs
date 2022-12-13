@@ -13,22 +13,30 @@ namespace Wine_celar.Repositories
     public class AppelationRepository : IAppelationRepository
     {
         WineContext wineContext;
-        ILogger<AppelationRepository> logger;
 
         //Constructeur
-        public AppelationRepository(WineContext winecontext, ILogger<AppelationRepository> logger)
+        public AppelationRepository(WineContext winecontext)
         {
             this.wineContext = winecontext;
-            this.logger = logger;
         }
 
         public async Task<List<Appelation>> GetAllAppelationsAsync()
         {
             return await wineContext.Appelations.AsNoTracking().ToListAsync();
         }
-        public async Task<Appelation> GetAppelationAsync(int id, int userid)
+
+        public async Task<Appelation> GetAppelationByIdAsync(int id, int userid)
         {
-            return await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+            return await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid))
+                .AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+        }
+
+        public async Task<List<Appelation>> GetAppelationsByColorAsync(WineColor color)
+        {
+            var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
+
+            if (AppelationsColor.Count() == 0) return null;
+            return AppelationsColor;
         }
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
@@ -36,6 +44,7 @@ namespace Wine_celar.Repositories
 
             wineContext.Appelations.Add(appelation);
             await wineContext.SaveChangesAsync();
+
             return appelation;
         }
 
@@ -52,13 +61,6 @@ namespace Wine_celar.Repositories
         public async Task<int> DeleteAppelationAsync(int appelationId)
         {
             return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == appelationId).ExecuteDeleteAsync();
-        }
-
-        public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
-        {
-            var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
-            if (AppelationsColor.Count() == 0) return null;
-            return AppelationsColor;
         }
     }
 }

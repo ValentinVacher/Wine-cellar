@@ -18,30 +18,27 @@ namespace Wine_celar.Controllers
     public class AppelationController : ControllerBase
     {
         readonly IAppelationRepository AppelationRepository;
-        readonly IWebHostEnvironment environment;
-        public AppelationController(IAppelationRepository Repository, IWebHostEnvironment environment)
+        public AppelationController(IAppelationRepository Repository)
         {
             this.AppelationRepository = Repository;
-            this.environment = environment;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAppelation()
+        public async Task<IActionResult> GetAllAppelations()
         {
             return Ok(await AppelationRepository.GetAllAppelationsAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAppelation(int id)
+        public async Task<IActionResult> GetAppelationById(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var appel = await AppelationRepository.GetAppelationAsync(id, userId);
+            var appel = await AppelationRepository.GetAppelationByIdAsync(id, userId);
 
             if (appel == null) return NotFound(ErrorCode.AppelationNotFound);
 
@@ -51,7 +48,7 @@ namespace Wine_celar.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Appelation>>> GetAppelationsByColor(WineColor color)
         {
-            var appelations = await AppelationRepository.GetAppelationsByColoAsync(color);
+            var appelations = await AppelationRepository.GetAppelationsByColorAsync(color);
 
             if (appelations == null) return NotFound(ErrorCode.AppelationNotFound);
 
@@ -59,7 +56,7 @@ namespace Wine_celar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
+        public async Task<IActionResult> AddAppelation([FromForm] CreateAppelationViewModel appelViewModel)
         {
             var identity = User?.Identity as ClaimsIdentity;
 

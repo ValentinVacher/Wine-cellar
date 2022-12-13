@@ -44,7 +44,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var wine = await wineRepository.GetWineByIdAsync(id, userId);
 
             if (wine == null) return NotFound(ErrorCode.WineNotFound);
@@ -55,15 +54,14 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetApogee()
+        public async Task<IActionResult> GetWinesByApogee()
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) BadRequest(ErrorCode.UnLogError);
                 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var wines = await wineRepository.GetApogeeAsync(userId);
+            var wines = await wineRepository.GetWinesByApogeeAsync(userId);
 
             if (wines == null) NotFound(ErrorCode.WineNotFound);
 
@@ -71,34 +69,36 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet("{word}")]
-        public async Task<IActionResult> GetWineByWord(string word)
+        public async Task<IActionResult> GetWinesByWord(string word)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wine = await wineRepository.GetWineByWordAsync(word, userId);
+            var wine = await wineRepository.GetWinesByWordAsync(word, userId);
 
             if (wine == null) return NotFound(ErrorCode.WineNotFound);
 
             var WinesView = new List<GetWineViewModel>();
+
             foreach (var w in wine)
-            {
+            { 
                 var WineView = Convertor.GetViewWine(w);
             }
-
+            
             return Ok(WinesView);
         }
+
         [HttpGet]
-        public async Task<ActionResult<List<Wine>>> GetWineByColor(WineColor color)
+        public async Task<ActionResult<List<Wine>>> GetWinesByColor(WineColor color)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wines = await wineRepository.GetWineByColorAsync(color, userId);
+            var wines = await wineRepository.GetWinesByColorAsync(color, userId);
 
             if (wines == null) return NotFound(ErrorCode.WineNotFound);
 
@@ -136,8 +136,8 @@ namespace Wine_cellar.Controllers
             if (!string.IsNullOrEmpty(WineViewModel.Picture?.FileName)
                 && WineViewModel.Picture.FileName.Length > 0)
             {
-                var path = Path.Combine(environment.WebRootPath, "img/",
-                    WineViewModel.Picture.FileName);
+                var path = Path.Combine(environment.WebRootPath, "img/", WineViewModel.Picture.FileName);
+
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 {
                     await WineViewModel.Picture.CopyToAsync(stream);
@@ -149,7 +149,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task<ActionResult<Wine>> Duplicate(int id, int NbrDuplicate)
+        public async Task<ActionResult<Wine>> DuplicateWine(int id, int NbrDuplicate)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -177,14 +177,14 @@ namespace Wine_cellar.Controllers
         //}
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Wine>> Move(int id, int drawerId)
+        public async Task<ActionResult<Wine>> MoveWine(int id, int drawerId)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineMove = await wineRepository.MoveAsync(id, drawerId, userId);
+            var wineMove = await wineRepository.MoveWineAsync(id, drawerId, userId);
 
             switch (wineMove)
             {
@@ -207,7 +207,6 @@ namespace Wine_cellar.Controllers
             if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound(ErrorCode.WineNotFound);
 
             return Ok(wineView);
-
         }
 
         [HttpDelete("{id}")]

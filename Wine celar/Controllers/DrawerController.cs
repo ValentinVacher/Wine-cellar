@@ -17,11 +17,10 @@ namespace Wine_cellar.Controllers
         public DrawerController(IDrawerRepository drawerRepository)
         {
             this.drawerRepository = drawerRepository;
-
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Drawer>>> GetDrawers()
+        public async Task<ActionResult<List<Drawer>>> GetAllDrawers()
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -29,7 +28,7 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return Ok(await drawerRepository.GetAllsAsync(userId));
+            return Ok(await drawerRepository.GetAllDrawersAsync(userId));
         }
 
         [HttpGet("{id}")]
@@ -40,7 +39,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var drawer = await drawerRepository.GetDrawerByIdAsync(id, userId);
 
             if (drawer == null) return NotFound(ErrorCode.DrawerNotFound);
@@ -56,7 +54,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var DrawerCreated = await drawerRepository.AddDrawerAsync(createDrawer, userId);
 
             switch (DrawerCreated)
@@ -90,7 +87,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var success = await drawerRepository.DeleteDrawerAsync(id, userId);
 
             if (success != 0) return Ok(id);
