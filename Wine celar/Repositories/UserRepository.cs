@@ -19,13 +19,21 @@ namespace Wine_celar.Repositories
             this.wineContext = wineContext;
         }
 
-        //Permet de recuperer tout les utilisateurs
+        /// <summary>
+        /// Permet de récuperer tout les utilisateurs
+        /// </summary>
+        /// <returns>Retourne une liste des utilisateurs existant</returns>
         public async Task<List<User>> GetAllUserAsync()
         {
             return await wineContext.Users.ToListAsync(); ;
         }
 
-        //Permet de se connecter
+        /// <summary>
+        /// Permet de se connecter
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="pwd"></param>
+        /// <returns>Retourne le nom de la personne connecté</returns>
         public async Task<User?> LoginAsync(string login, string pwd)
         {
             var userConnected = await wineContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == login && u.Password == pwd);
@@ -33,7 +41,11 @@ namespace Wine_celar.Repositories
             return userConnected;
         }
 
-        //Permet de créer un user
+        /// <summary>
+        /// Permet de Créer un utilisateur
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Retourne l'utilisateur créer</returns>
         public async Task<User> CreateUserAsync(User user)
         {
             if(wineContext.Users.AsNoTracking().Any(e => e.Email == user.Email)) return null;
@@ -43,7 +55,11 @@ namespace Wine_celar.Repositories
             return user;
         }
 
-        //Permet de mettre à jour un user
+        /// <summary>
+        /// Permet de modifier les informations d'un utilisateur 
+        /// </summary>
+        /// <param name="userView"></param>
+        /// <returns>Retourne l'utilisateur avec ses données modifier</returns>
         public async Task<int> UpdateUserAsync(UpdateUserViewModel userView)
         {
             return await wineContext.Users.AsNoTracking().Where(u => u.UserId == userView.UserId)
@@ -54,7 +70,11 @@ namespace Wine_celar.Repositories
                 .SetProperty(u => u.Password, userView.Password));
         }
 
-        //Permet de supprimer un user
+        /// <summary>
+        /// Permet de supprimer un utilisateur
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Retourne l'utilisateur supprimé</returns>
         public async Task<int> DeleteUserAsync(int userId)
         {
             await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
