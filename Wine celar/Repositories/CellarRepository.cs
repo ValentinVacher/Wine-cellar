@@ -100,14 +100,14 @@ namespace Wine_cellar.Repositories
         }
 
         //Permet de rajouter une cave et lui donner un nombre de tiroirs
-        public async Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer)
+        public async Task<Cellar> AddCellarAsync(Cellar cellar, int nbrButtleDrawer)
         {
             //Ajoute la cave
             wineContext.Cellars.Add(cellar);
             await wineContext.SaveChangesAsync();
             //Ajoute les tiroirs
             for (int i = 1; i <= cellar.NbDrawerMax; i++)
-                wineContext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = NbrButtleDrawer });
+                wineContext.Drawers.Add(new Drawer { CellarId = cellar.CellarId, Index = i, NbBottleMax = nbrButtleDrawer });
 
             await wineContext.SaveChangesAsync();
             return cellar;

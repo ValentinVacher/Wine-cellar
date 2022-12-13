@@ -73,9 +73,9 @@ namespace Wine_celar.Repositories
                 .SetProperty(a => a.Color, appelation.Color));
         }
 
-        public async Task<int> DeleteAppelationAsync(int appelationId)
+        public async Task<int> DeleteAppelationAsync(int id)
         {
-            return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == appelationId).ExecuteDeleteAsync();
+            return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == id).ExecuteDeleteAsync();
         }
     }
 }
