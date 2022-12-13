@@ -105,7 +105,7 @@ namespace Wine_cellar.Repositories
         /// Permet d'ajouter une cave
         /// </summary>
         /// <param name="cellar"></param>
-        /// <param name="nbrButtleDrawer"></param>
+        /// <param name="nbrButtleDrawer">Nombre de bouteille par tiroir</param>
         /// <returns>Retourne la cave ajouter</returns>
         public async Task<Cellar> AddCellarAsync(Cellar cellar, int nbrButtleDrawer)
         {
