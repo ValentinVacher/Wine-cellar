@@ -36,7 +36,7 @@ namespace Wine_celar.Controllers
         }
 
         /// <summary>
-        /// Permet de voir une appellation choisi par id
+        /// Permet de voir une appellation choisi par id ainsi que les vins associés
         /// </summary>
         /// <response code ="200">Appelation : </response>
         /// <response code = "404">L'appellation n'existe pas</response>

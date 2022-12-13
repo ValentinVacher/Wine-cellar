@@ -65,7 +65,12 @@ namespace Wine_cellar.Controllers
             return Ok(cellar);
         }
 
-        //Recupere un fichier Json contenant tout les elements d'une cave
+        /// <summary>
+        /// permet de récuperer un fichier Json avec toutes les  caves de l'utilisateur
+        /// </summary>
+        /// <param name="name">Nom du fichier à créer</param>
+        /// <response code = "200">Fichier créer</response>
+        /// <returns>Retourne  OK</returns>
         [HttpGet]
         public async Task<IActionResult> ExportJson(string name)
         {
@@ -107,8 +112,8 @@ namespace Wine_cellar.Controllers
         /// <summary>
         /// Permet de récuperer un fichier Json pour l'ajouter à la base
         /// </summary>
-        /// <param name="jFille"></param>
-        /// <returns></returns>
+        /// <param name="jFille">Nom du fichier à récuperer</param>
+        /// <returns>Retourne  OK</returns>
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string jFille)
         {
