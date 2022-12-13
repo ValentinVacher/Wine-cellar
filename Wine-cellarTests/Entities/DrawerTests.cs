@@ -35,8 +35,14 @@ namespace Wine_cellar.Entities.Tests
         {
             Drawer drawer = new Drawer()
             {
-                Index
-            = 0
+                DrawerId = 1,
+                Index = 0,
+                NbBottleMax = 2,
+                CellarId = 1,
+                Cellar = new Cellar() { },
+                Wines = new List<Wine> { new Wine() }
+
+
             };
 
             bool result = drawer.IsFull();
