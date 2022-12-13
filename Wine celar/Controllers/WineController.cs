@@ -85,6 +85,7 @@ namespace Wine_cellar.Controllers
             foreach (var w in wine)
             { 
                 var WineView = Convertor.GetViewWine(w);
+                WinesView.Add(WineView);
             }
             
             return Ok(WinesView);
