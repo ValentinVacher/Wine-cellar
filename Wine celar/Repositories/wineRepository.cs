@@ -50,6 +50,7 @@ namespace Wine_cellar.Repositories
                 var ToDay = DateTime.Now.Year;
                 var max = w.Year + w.Appelation.KeepMax;
                 var min = w.Year + w.Appelation.KeepMin;
+
                 if (ToDay >= min && ToDay <= max)
                 {
                     var Wine = Convertor.GetViewWine(w);
