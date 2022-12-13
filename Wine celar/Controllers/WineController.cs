@@ -24,6 +24,10 @@ namespace Wine_cellar.Controllers
             this.environment = environment;
         }
 
+        /// <summary>
+        /// Permet de voir tout les vins
+        /// </summary>
+        /// <returns>Retourne une liste de tout les vins</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllWines()
         {
@@ -36,6 +40,12 @@ namespace Wine_cellar.Controllers
             return Ok(await wineRepository.GetAllWinesAsync(userId));
         }
 
+
+        /// <summary>
+        /// Permet de voir un vin par son id 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retourne le vin demander</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWineById(int id)
         {
@@ -53,6 +63,11 @@ namespace Wine_cellar.Controllers
             return Ok(WineView);
         }
 
+
+        /// <summary>
+        /// Permet de voir les vins à leur apogée
+        /// </summary>
+        /// <returns>Retourne une liste de vins à leur apogée</returns>
         [HttpGet]
         public async Task<IActionResult> GetWinesByApogee()
         {
@@ -68,6 +83,12 @@ namespace Wine_cellar.Controllers
             return Ok(wines);
         }
 
+
+        /// <summary>
+        /// Permet de faire une recherche par mot clé
+        /// </summary>
+        /// <param name="word">Mot clé</param>
+        /// <returns>Retourne une liste de vin composé du mot clé saisi</returns>
         [HttpGet("{word}")]
         public async Task<IActionResult> GetWinesByWord(string word)
         {
@@ -90,6 +111,12 @@ namespace Wine_cellar.Controllers
             return Ok(WinesView);
         }
 
+
+        /// <summary>
+        /// Permet de recuperer les vins correspondant à une couleur
+        /// </summary>
+        /// <param name="color">Couleur rechercher</param>
+        /// <returns>Retourne une liste de vins associé à la couleur choisi</returns>
         [HttpGet]
         public async Task<ActionResult<List<Wine>>> GetWinesByColor(WineColor color)
         {
@@ -112,7 +139,11 @@ namespace Wine_cellar.Controllers
 
             return Ok(WinesView);
         }
-
+        /// <summary>
+        /// Permet de créer un vin
+        /// </summary>
+        /// <param name="wineViewModel"></param>
+        /// <returns>Retourne le vin créer</returns>
         [HttpPost]
         public async Task<IActionResult> CreateWineAsync([FromForm]
         CreateWineViewModel wineViewModel)
@@ -148,6 +179,13 @@ namespace Wine_cellar.Controllers
             return Ok(wineViewModel);
         }
 
+
+        /// <summary>
+        /// Permet de dupliquer un vin autant de fois qu'on le souhaite
+        /// </summary>
+        /// <param name="id">id du vin à dupliquer</param>
+        /// <param name="NbrDuplicate">nombre de copie voulu</param>
+        /// <returns>Retourne le nombre de vin dupliquer</returns>
         [HttpPost("{id}")]
         public async Task<ActionResult<Wine>> DuplicateWine(int id, int NbrDuplicate)
         {
@@ -161,20 +199,11 @@ namespace Wine_cellar.Controllers
             return Ok(NbrWineCreate);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
-        //{
-        //    var identity = User?.Identity as ClaimsIdentity;
-
-        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
-        //    Drawer userId = Drawer.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //    var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userId);
-
-        //    if (wineUpdate == null) return NotFound("Bouteille introuvable");
-
-        //    return Ok(wineUpdate);
-        //}
+      /// <summary>
+      /// Permet de modifier les infos d'un vin
+      /// </summary>
+      /// <param name="wineView"></param>
+      /// <returns>Retourne le vin modifier</returns>
         [HttpPut]
         public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
@@ -189,6 +218,13 @@ namespace Wine_cellar.Controllers
             return Ok(wineView);
         }
 
+
+        /// <summary>
+        /// Permet de déplacer un vin dans un autre tiroir
+        /// </summary>
+        /// <param name="id">Id du vin à déplacer</param>
+        /// <param name="drawerId">Id du tiroir ou sera deplacer le vin</param>
+        /// <returns>Retourne l'id du vin déplacer</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<Wine>> MoveWine(int id, int drawerId)
         {
@@ -208,6 +244,12 @@ namespace Wine_cellar.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Permet de supprimer un vin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retourne l'id du vin supprimer</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWine(int id)
         {
@@ -223,20 +265,5 @@ namespace Wine_cellar.Controllers
             return NotFound(ErrorCode.WineNotFound);
         }
 
-        //Controller méthode ef7 execute delete
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteWineEF(Drawer id)
-        //{
-
-        //    var identity = User?.Identity as ClaimsIdentity;
-
-        //    if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest("Vous devez être connecter");
-
-        //    Drawer userId = Drawer.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-        //    if (await wineRepository.DeleteWineAsync(id,userId) == 0) return NotFound("Vin introuvable");
-        //    return Ok($"le Vin {id} demandé a été supprimé");
-
-        //}
     }
 }
