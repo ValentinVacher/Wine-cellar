@@ -29,7 +29,6 @@ namespace Wine_cellar.Controllers
         /// </summary>
         /// 
         /// <response code = "200">Vos caves : </response>
-        /// <response code = "404">Cave non trouvé</response>
         /// <returns>Retourne toutes les caves de l'utilisateur</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllCellars()
