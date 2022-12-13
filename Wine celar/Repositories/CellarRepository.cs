@@ -120,11 +120,14 @@ namespace Wine_cellar.Repositories
             return cellar;
         }
 
-        //Importe un fichier Json
+        /// <summary>
+        /// Permet d'importer un fichier Json dans notre base de donnée
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns>Retourne</returns>
         public async Task<string> ImportJsonAsync(string form)
         {
             var deserializ = System.Text.Json.JsonSerializer.Deserialize<List<Cellar>>(form);
-
             foreach (var item in deserializ)
             {
                 item.CellarId = 0;
@@ -146,7 +149,12 @@ namespace Wine_cellar.Repositories
             return form;
         }
 
-        //Permet de modifier une cave
+        /// <summary>
+        /// Permet de modifier les infos d'une cave
+        /// </summary>
+        /// <param name="updateCellar"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne la cave modifier</returns>
         public async Task<int> UpdateCellarAsync(UpdateCellarViewModel updateCellar, int userId)
         {
             return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == updateCellar.CellarId && c.UserId == userId).
@@ -159,7 +167,12 @@ namespace Wine_cellar.Repositories
                 .SetProperty(c => c.BrandOther, updateCellar.BrandOther));
         }
 
-        //Permet de supprimer une cave et ses tiroirs
+        /// <summary>
+        /// Permet de supprimer  une cave par son id
+        /// </summary>
+        /// <param name="cellarId"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne la cave supprimer</returns>
         public async Task<int> DeleteCellarAsync(int cellarId, int userId)
         {
             await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
