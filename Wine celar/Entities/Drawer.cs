@@ -15,7 +15,7 @@ namespace Wine_cellar.Entities
         public bool IsFull()
         {
             if (Wines.Count() >= NbBottleMax) return true;
-            else return false; 
+            return false; 
         }
     }
 }

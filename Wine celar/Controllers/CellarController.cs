@@ -32,7 +32,7 @@ namespace Wine_cellar.Controllers
         /// <response code = "404">Cave non trouvé</response>
         /// <returns>Retourne toutes les caves de l'utilisateur</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAlls()
+        public async Task<IActionResult> GetAllCellars()
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -40,7 +40,7 @@ namespace Wine_cellar.Controllers
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return Ok(await cellarRepository.GetAllsAsync(userId));
+            return Ok(await cellarRepository.GetAllCellarsAsync(userId));
         }
 
         /// <summary>
@@ -58,10 +58,24 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var cellar = await cellarRepository.GetCellarById(id, userId);
+            var cellar = await cellarRepository.GetCellarByIdAsync(id, userId);
 
             if (cellar == null) return NotFound(ErrorCode.CellarNotFound);
+
             return Ok(cellar);
+        }
+
+        //Recupere un fichier Json contenant tout les elements d'une cave
+        [HttpGet]
+        public async Task<IActionResult> ExportJson(string name)
+        {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+
+            await cellarRepository.ExportJsonAsync(name);
+
+            return Ok();
         }
 
 
@@ -79,7 +93,7 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var verif = (await cellarRepository.GetAllsAsync(userId)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
+            var verif = (await cellarRepository.GetAllCellarsAsync(userId)).FirstOrDefault(x => x.Name == cellarViewModel.Name);
 
             if (verif != null) return BadRequest(ErrorCode.CellarAlreadyExists);
 
@@ -88,6 +102,24 @@ namespace Wine_cellar.Controllers
             var cellarCreated = await cellarRepository.AddCellarAsync(cellar, NbBottle);
 
             return Ok(cellarCreated);
+        }
+
+        //Importe un fichier Json de cave 
+        [HttpPost]
+        public async Task<IActionResult> ImportJson([FromForm] string jFille)
+        {
+            var path = Path.Combine(environment.ContentRootPath, "Json\\", jFille + ".json");
+
+            using (FileStream stream = new FileStream(path, FileMode.Open))
+            {
+                StreamReader reader = new StreamReader(stream);
+                var file = reader.ReadToEnd();
+
+                await cellarRepository.ImportJsonAsync(file);
+                stream.Close();
+            }
+
+            return Ok();
         }
 
         /// <summary>
@@ -104,7 +136,6 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             var update = await cellarRepository.UpdateCellarAsync(upCellar, userId);
 
             if (update != 0) return Ok(upCellar);
@@ -127,19 +158,13 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var success = await cellarRepository.DeleteCellarAsync(cellarId, userId);
+            var success = await cellarRepository.DeleteCellarAsync(id, userId);
 
-            if (success != 0) return Ok(cellarId);
+            if (success != 0) return Ok(id);
 
             return NotFound(ErrorCode.CellarNotFound);
         }
-        
-        /// <summary>
-        /// Permet de récuperer un fichier Json pour l'ajouter à la base
-        /// </summary>
-        /// <param name="Jfile"> Nom du fichier </param>
-        /// <response code = "200">Fichier ajouter à la base de donnée</response>
-        /// <returns>Retourne Ok</returns>
+        //Importe un fichier Json de cave 
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string Jfile)
         {
@@ -154,12 +179,7 @@ namespace Wine_cellar.Controllers
             }
             return Ok();
         }
-        /// <summary>
-        /// Permet d'exporter un fichier Json avec toutes nos caves
-        /// </summary>
-        /// <param name="name">Nom du fichier créer</param>
-        /// <response code = "200">Fichier Json créer</response>
-        /// <returns>Retourne OK</returns>
+        //Recupere un fichier Json contenant tout les elements d'une cave
         [HttpGet]
         public async Task<IActionResult> ExportJson(string name)
         {

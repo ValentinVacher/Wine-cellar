@@ -18,11 +18,9 @@ namespace Wine_celar.Controllers
     public class AppelationController : ControllerBase
     {
         readonly IAppelationRepository AppelationRepository;
-        readonly IWebHostEnvironment environment;
-        public AppelationController(IAppelationRepository Repository, IWebHostEnvironment environment)
+        public AppelationController(IAppelationRepository Repository)
         {
             this.AppelationRepository = Repository;
-            this.environment = environment;
         }
 
 
@@ -32,7 +30,7 @@ namespace Wine_celar.Controllers
         /// <response code = "200">Les appellations : </response>
         /// <returns>Retourne une liste de toutes les appellations</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllAppelation()
+        public async Task<IActionResult> GetAllAppelations()
         {
             return Ok(await AppelationRepository.GetAllAppelationsAsync());
         }
@@ -45,9 +43,14 @@ namespace Wine_celar.Controllers
         /// <param name="id"></param>
         /// <returns>Retourne l'appelation choisi</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAppelation(int id)
+        public async Task<IActionResult> GetAppelationById(int id)
         {
-            var appel = await AppelationRepository.GetAppelationAsync(id);
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var appel = await AppelationRepository.GetAppelationByIdAsync(id, userId);
 
             if (appel == null) return NotFound(ErrorCode.AppelationNotFound);
 
@@ -64,7 +67,7 @@ namespace Wine_celar.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Appelation>>> GetAppelationsByColor(WineColor color)
         {
-            var appelations = await AppelationRepository.GetAppelationsByColoAsync(color);
+            var appelations = await AppelationRepository.GetAppelationsByColorAsync(color);
 
             if (appelations == null) return NotFound(ErrorCode.AppelationNotFound);
 
@@ -78,7 +81,7 @@ namespace Wine_celar.Controllers
         /// <response code ="200">Appellation créer : </response>
         /// <returns>Retourne l'appellation créer</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateAppelation([FromForm] CreateAppelationViewModel appelViewModel)
+        public async Task<IActionResult> AddAppelation([FromForm] CreateAppelationViewModel appelViewModel)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
@@ -122,18 +125,18 @@ namespace Wine_celar.Controllers
         /// <param name="appelationId">Id de l'appellation à supprimer</param>
         /// <returns>Retourne l'id de l'appellation supprimer</returns>
         [HttpDelete]
-        public async Task<IActionResult> DeleteAppelation(int appelationId)
+        public async Task<IActionResult> DeleteAppelation(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
-            var success = await AppelationRepository.DeleteAppelationAsync(appelationId);
+            var success = await AppelationRepository.DeleteAppelationAsync(id);
 
             if (success == 0) NotFound(ErrorCode.AppelationNotFound);
 
-            return Ok(appelationId);
+            return Ok(id);
         }
     }
 }

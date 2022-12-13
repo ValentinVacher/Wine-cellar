@@ -9,16 +9,16 @@ namespace Wine_cellar.IRepositories
     public interface ICellarRepository
     {
         //Permet de recuperer toute les caves
-        Task<List<GetCellarViewModel>> GetAllsAsync(int userId);
+        Task<List<GetCellarViewModel>> GetAllCellarsAsync(int userId);
         //Permet ded recuperer toutes les caves avec tout ses elements
-        Task<GetCellarViewModel> GetCellarById(int id, int userId);
-        //Permet de supprimer une cave
-        Task<int> DeleteCellarAsync(int cellarId, int userId);
-        //Permet de mettre a jour/modifier une cave
-        Task<int> UpdateCellarAsync(UpdateCellarViewModel UpCellar, int userId);
+        Task<GetCellarViewModel> GetCellarByIdAsync(int id, int userId);
+        Task<List<Cellar>> ExportJsonAsync(string name);
         //Permet d'ajouter une cave
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
         Task<string> ImportJsonAsync(string form);
-        Task<List<Cellar>> ExportJsonAsync(string name);
+        //Permet de mettre a jour/modifier une cave
+        Task<int> UpdateCellarAsync(UpdateCellarViewModel UpCellar, int userId);
+        //Permet de supprimer une cave
+        Task<int> DeleteCellarAsync(int cellarId, int userId);
     }
 }

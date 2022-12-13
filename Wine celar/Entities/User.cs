@@ -17,17 +17,10 @@ namespace Wine_cellar.Entities
         public bool IsOlder()
         {
             var age = DateTime.Now - DateOfBirth;
-
             var age2 = age.Days / 365.25;
 
-            if (age2 >= 18)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-
-        
+            if (age2 >= 18) return true;    
+            return false;
+        }     
     }
 }
