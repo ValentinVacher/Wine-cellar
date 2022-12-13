@@ -14,38 +14,41 @@ using Wine_cellar.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Définitiion du CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
                       builder =>
                       {
                           builder.WithOrigins("*");
-                          //builder.WithOrigins("https://localhost:XXX", "http://localhost:XXX")
-                          //.AllowAnyHeader()
-                          //.AllowAnyMethod();
+                          
                       });
 });
 
+//Ajout de l'authentification
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
-// Add services to the container.
 
+//Permet d'ignorer les cycles
 builder.Services.AddControllers().AddJsonOptions(options => 
 options.JsonSerializerOptions.ReferenceHandler =
 ReferenceHandler.IgnoreCycles); 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+//Donne accées au fichier de commentaires
 builder.Services.AddSwaggerGen(options => {
     options.IncludeXmlComments("bin\\Debug\\netcoreapp2.0\\SwaggerDemo.xml", true);
 });
 
+//Défini la connexion en base de donnée
 builder.Services.AddDbContext<WineContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("WineCellarDbCS"));
     
 });
+
 builder.Services.AddScoped<IWineRepository, WineRepository>();
 builder.Services.AddScoped<ICellarRepository, CellarRepository>();
 builder.Services.AddScoped<IDrawerRepository, DrawerRepository>();

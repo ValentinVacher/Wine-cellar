@@ -26,11 +26,12 @@ namespace Wine_cellar.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Definition des caves par défaut
             var c1 = new Cellar { CellarId = 1, Name = "Cellar 1", NbDrawerMax = 5, UserId = 2,Temperature=15,CellarType=CellarType.Service,Brand=CellarBrand.Liebherr,BrandOther=null };
             var c2 = new Cellar { CellarId = 2, Name = "Cellar 2", NbDrawerMax = 10, UserId = 2, Temperature = 14, CellarType = CellarType.Vieillissement, Brand = CellarBrand.Autre, BrandOther = "ChineseBrand" };
             var c3 = new Cellar { CellarId = 3, Name = "Cellar 3", NbDrawerMax = 20, UserId = 3, Temperature = 13, CellarType = CellarType.Professionnelle, Brand = CellarBrand.Vinosphere, BrandOther = null };
 
-
+            //Definition des tiroirs par défaut
             var d1 = new Drawer { DrawerId = 1, Index = 1, CellarId = 1, NbBottleMax = 5 };
             var d2 = new Drawer { DrawerId = 2, Index = 2, CellarId = 1, NbBottleMax = 5 };
             var d3 = new Drawer { DrawerId = 3, Index = 3, CellarId = 1, NbBottleMax = 5 };
@@ -38,6 +39,7 @@ namespace Wine_cellar.Contexts
             var d5 = new Drawer { DrawerId = 5, Index = 2, CellarId = 2, NbBottleMax = 5 };
             var d6 = new Drawer { DrawerId = 6, Index = 3, CellarId = 2, NbBottleMax = 5 };
 
+            //Definition des vins par défaut
             var v1 = new Wine { WineId = 1, Name = "20-1", Year = 1960, DrawerId = 1, PictureName = "", Color = WineColor.Rouge, AppelationId = 1 };
             var v2 = new Wine { WineId = 2, Name = "20-2", Year = 1970, DrawerId = 1, PictureName = "img/vin1.png", Color = WineColor.Rouge, AppelationId = 2 };
             var v3 = new Wine { WineId = 3, Name = "20-3", Year = 1980, DrawerId = 2, PictureName = "", Color = WineColor.Rouge, AppelationId = 3 };
@@ -51,12 +53,12 @@ namespace Wine_cellar.Contexts
             var v11 = new Wine { WineId = 11, Name = "20-11", Year = 1960, DrawerId = 5, PictureName = "", Color = WineColor.Rosé, AppelationId = 26 };
             var v12 = new Wine { WineId = 12, Name = "20-12", Year = 1960, DrawerId = 5, PictureName = "", Color = WineColor.Rosé, AppelationId = 27 };
 
-
+            //Définition des utilisateurs par défaut
             var u1 = new User { UserId = 1, FirstName = "Admin", LastName = "Admin", Email = "admin@admin.com", Password = "admin", IsAdmin = true };
             var u2 = new User { UserId = 2, FirstName = "G2", LastName = "G2", Email = "test2@test.com", Password = "test2" };
             var u3 = new User { UserId = 3, FirstName = "G3", LastName = "G3", Email = "test3@test.com", Password = "test3" };
 
-
+            //Définition des appellations par défaut
             var a1 = new Appelation { AppelationId = 1, Name = "Bordeaux", KeepMin = 5, KeepMax = 10, Color = WineColor.Rouge };
             var a2 = new Appelation { AppelationId = 2, Name = "Loire", KeepMin = 4, KeepMax = 6, Color = WineColor.Rouge };
             var a3 = new Appelation { AppelationId = 3, Name = "Bordeaux, Grands crus", KeepMin = 10, KeepMax = 20, Color = WineColor.Rouge };
@@ -85,7 +87,7 @@ namespace Wine_cellar.Contexts
             var a26 = new Appelation { AppelationId = 26, Name = "Provence", KeepMin = 3, KeepMax = 3, Color = WineColor.Rosé };
             var a27 = new Appelation { AppelationId = 27, Name = "Rhône", KeepMin = 2, KeepMax = 2, Color = WineColor.Rosé };
 
-
+            //Ajout des données par défaut à la base de donnée
             modelBuilder.Entity<Cellar>().HasData(new List<Cellar> { c1, c2, c3 });
             modelBuilder.Entity<Drawer>().HasData(new List<Drawer> { d1, d2, d3, d4, d5, d6 });
             modelBuilder.Entity<Wine>().HasData(new List<Wine> { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 });
