@@ -107,20 +107,20 @@ namespace Wine_cellar.Repositories
         /// <summary>
         /// Permet de créer un vin
         /// </summary>
-        /// <param name="WineView"></param>
+        /// <param name="wineView"></param>
         /// <param name="userId"></param>
         /// <returns>Retourne le vin créer</returns>
-        public async Task<int> CreateWineAsync(CreateWineViewModel WineView, int userId)
+        public async Task<int> CreateWineAsync(CreateWineViewModel wineView, int userId)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines).AsNoTracking()
-                .FirstOrDefaultAsync(d => d.Index == WineView.DrawerId && d.Cellar.UserId == userId);
+                .FirstOrDefaultAsync(d => d.Index == wineView.DrawerId && d.Cellar.UserId == userId);
 
             if (Drawer == null) return 1;
 
             //Verifie si le tiroir est plein
             if (Drawer.IsFull() == true) return 2;
 
-            var wine = Convertor.CreateWine(WineView);
+            var wine = Convertor.CreateWine(wineView);
 
             //Vérifie les couleurs du vin et de l'appelation
             if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;
