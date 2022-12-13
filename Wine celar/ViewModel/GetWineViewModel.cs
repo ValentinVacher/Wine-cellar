@@ -6,7 +6,7 @@ namespace Wine_cellar.ViewModel
     public class GetWineViewModel
     {
         public int WineId { get; set; }
-        public string WineName { get; set; }
+        public string Name { get; set; }
         public int Year { get; set; }
         public WineColor Color { get; set; }
         public string AppelationName { get; set; }

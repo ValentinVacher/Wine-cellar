@@ -74,7 +74,7 @@ namespace Wine_cellar.Repositories
             //Verification cave pleine
             if (Cellar.IsFull()) return 2;
 
-            foreach (Drawer e in Cellar.Drawers) if (e.Index >= createDrawer.index) e.Index++;
+            foreach (Drawer e in Cellar.Drawers) if (e.Index >= createDrawer.Index) e.Index++;
 
             var drawer = Convertor.CreateDrawer(createDrawer);
 
