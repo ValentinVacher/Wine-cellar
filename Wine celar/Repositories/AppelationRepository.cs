@@ -30,6 +30,12 @@ namespace Wine_celar.Repositories
             return await wineContext.Appelations.AsNoTracking().ToListAsync();
         }
 
+        /// <summary>
+        /// Permet de récuperer une appellation par son Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userid"></param>
+        /// <returns>Retourne l'appellation correspondante à l'id saisi</returns>
         public async Task<GetAppelationViewModel> GetAppelationByIdAsync(int id, int userid)
         {
             var appel= await wineContext.Appelations
@@ -49,6 +55,11 @@ namespace Wine_celar.Repositories
             return Convertor.GetAppelation(appel, wines);
         }
 
+        /// <summary>
+        /// Permet de récuperer les appellations ayant une couleur correspondante à la couelur saisi
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns>Retourne une liste d'appellation ayant la couleur saisi</returns>
         public async Task<List<Appelation>> GetAppelationsByColorAsync(WineColor color)
         {
             var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
@@ -57,6 +68,12 @@ namespace Wine_celar.Repositories
             return AppelationsColor;
         }
 
+
+        /// <summary>
+        /// Permet de créer une nouvelle appellation
+        /// </summary>
+        /// <param name="appelation"></param>
+        /// <returns>Retourne l'appellation créer</returns>
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
             if (await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == appelation.AppelationId) == null) return null;
@@ -67,6 +84,12 @@ namespace Wine_celar.Repositories
             return appelation;
         }
 
+
+        /// <summary>
+        /// Permet de modifier les infos d'une appellation
+        /// </summary>
+        /// <param name="appelation"></param>
+        /// <returns>Retourne l'appellation créer</returns>
         public async Task<int> UpdateAppelationAsync(UpdateAppelationViewModel appelation)
         {
             return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == appelation.AppelationId).
@@ -77,6 +100,12 @@ namespace Wine_celar.Repositories
                 .SetProperty(a => a.Color, appelation.Color));
         }
 
+
+        /// <summary>
+        /// Permet de supprimer une appellation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retourne l'appellation supprimer</returns>
         public async Task<int> DeleteAppelationAsync(int id)
         {
             return await wineContext.Appelations.AsNoTracking().Where(a => a.AppelationId == id).ExecuteDeleteAsync();

@@ -16,7 +16,7 @@ namespace Wine_cellar.Repositories
 
     public class CellarRepository : ICellarRepository
     {
-        //Creation du context et du logger
+        //Creation du context 
         WineContext wineContext;
 
         //Constructeur
@@ -25,31 +25,30 @@ namespace Wine_cellar.Repositories
             this.wineContext = winecontext;
         }
 
-        //Recupere une liste de toute les caves
+        /// <summary>
+        /// Permet de récuperer toutes les caves de l'utilisateur
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Retorune une liste contenant toutes les caves de l'utilisateur</returns>
         public async Task<List<GetCellarViewModel>> GetAllCellarsAsync(int userId)
         {
             var cellars = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
                 .AsNoTracking().Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
-            var cellarsView = new List<GetCellarViewModel>();
-            
+            var cellarsView = new List<GetCellarViewModel>();   
             foreach (Cellar celar in cellars)
             {
                 var drawersView = new List<GetDrawerViewModel>();
-
                 foreach (var drawer in celar.Drawers)
                 {
                     var winesView = new List<GetWineViewModel>();
-
                     foreach (var wine in drawer.Wines)
                     {
                         var wineView = Convertor.GetViewWine(wine);
                         winesView.Add(wineView);
                     }
-
                     var drawerView = Convertor.GetViewDrawer(drawer, winesView);
                     drawersView.Add(drawerView);
                 }
-
                 var cellarView = Convertor.GetViewCellar(celar, drawersView);
                 cellarsView.Add(cellarView);
             }
