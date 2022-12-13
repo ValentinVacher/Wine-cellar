@@ -151,16 +151,16 @@ namespace Wine_cellar.Controllers
         ///  <response code ="404">Cave introuvable</response>
         /// <returns>Retourne la cave supprimer</returns>
         [HttpDelete("{cellarId}")]
-        public async Task<IActionResult> DeleteCellar(int cellarId)
+        public async Task<IActionResult> DeleteCellar(int Id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var success = await cellarRepository.DeleteCellarAsync(id, userId);
+            var success = await cellarRepository.DeleteCellarAsync(Id, userId);
 
-            if (success != 0) return Ok(id);
+            if (success != 0) return Ok(Id);
 
             return NotFound(ErrorCode.CellarNotFound);
         }
