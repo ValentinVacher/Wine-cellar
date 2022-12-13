@@ -25,7 +25,7 @@ namespace Wine_cellar.Tools
             return new GetWineViewModel()
             {
                 WineId = wine.WineId,
-                WineName = wine.Name,
+                Name = wine.Name,
                 CellarName = wine.Drawer.Cellar.Name,
                 Year = wine.Year,
                 Color = wine.Color,
@@ -80,7 +80,7 @@ namespace Wine_cellar.Tools
         {
             return new Drawer()
             {
-                Index = viewModel.index,
+                Index = viewModel.Index,
                 NbBottleMax = viewModel.NbBottleMax,
                 CellarId = viewModel.CellarId,
             };
