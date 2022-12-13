@@ -12,9 +12,13 @@ namespace Wine_cellar.Entities
         //public string Color { get; set; }
         //public string Appelation { get; set; }
         public string Name { get; set; }
+        /// <summary>
+        /// Correspond au millésime 
+        /// </summary>
         public int Year { get; set; }
-        //public Drawer KeepMin { get; set; }
-        //public Drawer KeepMax { get; set;}
+        /// <summary>
+        /// Tiroir dans lequelle est stocker la bouteille
+        /// </summary>
         public Drawer Drawer { get; set; }
         public int DrawerId { get; set; }
         public string? PictureName { get; set; }
