@@ -21,6 +21,10 @@ namespace Wine_celar.Repositories
             this.wineContext = winecontext;
         }
 
+        /// <summary>
+        /// Permet de récuperer toutes les appellations
+        /// </summary>
+        /// <returns>Retourne une liste contenant toutes les appellations existante</returns>
         public async Task<List<Appelation>> GetAllAppelationsAsync()
         {
             return await wineContext.Appelations.AsNoTracking().ToListAsync();

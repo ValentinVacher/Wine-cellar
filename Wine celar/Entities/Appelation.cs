@@ -24,6 +24,9 @@ namespace Wine_cellar.Entities
         /// </summary>
         public int KeepMax { get; set; }
         public WineColor Color { get; set; }
+        /// <summary>
+        /// Liste des vins correspondant à une appelations
+        /// </summary>
         public List<Wine> Wines { get; set; }
     }
 }

@@ -208,13 +208,10 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
         {
             var identity = User?.Identity as ClaimsIdentity;
-
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound(ErrorCode.WineNotFound);
-
             return Ok(wineView);
         }
 
@@ -261,9 +258,7 @@ namespace Wine_cellar.Controllers
             var success = await wineRepository.DeleteWineAsync(id, userId);
 
             if (success != 0) return Ok(id);
-
             return NotFound(ErrorCode.WineNotFound);
         }
-
     }
 }

@@ -3,6 +3,8 @@
 namespace Wine_celar.Entities
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
+
+    
     public enum CellarBrand
     {
         Artevino,
