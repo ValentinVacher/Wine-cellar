@@ -30,17 +30,20 @@ namespace Wine_celar.Repositories
             var appel= await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).ThenInclude(w=>w.Drawer).ThenInclude(d=>d.Cellar).
                 AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
             var wines = new List<GetWineViewModel>();
+
             foreach (var wine in appel.Wines)
             {
                 var winemodel = Convertor.GetViewWine(wine);
                 wines.Add(winemodel);
             }
+
             return Convertor.GetAppelation(appel, wines);
         }
 
-        public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
+        public async Task<List<Appelation>> GetAppelationsByColorAsync(WineColor color)
         {
             var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
+
             if (AppelationsColor.Count() == 0) return null;
             return AppelationsColor;
         }

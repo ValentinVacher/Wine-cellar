@@ -7,7 +7,7 @@ namespace Wine_cellar.IRepositories
     public interface IAppelationRepository
     {
         Task<List<Appelation>> GetAllAppelationsAsync();
-        Task<Appelation> GetAppelationByIdAsync(int id, int userid);
+        Task<GetAppelationViewModel> GetAppelationByIdAsync(int id, int userid);
         Task<List<Appelation>> GetAppelationsByColorAsync(WineColor color);
         Task<Appelation> CreateAppelationAsync(Appelation appelation);
         Task<int> UpdateAppelationAsync(UpdateAppelationViewModel appelation);
