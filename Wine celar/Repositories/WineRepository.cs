@@ -90,7 +90,7 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne une liste de vin composés du mot clé</returns>
         public async Task<List<Wine>> GetWinesByWordAsync(string word, int userId)
         {
-            return await wineContext.Wines.Include(a => a.Appelation).AsNoTracking()
+            return await wineContext.Wines.Include(a => a.Appelation).Include(d => d.Drawer).ThenInclude(c => c.Cellar).AsNoTracking()
                 .Where(w => (w.Appelation.Name.Contains(word) || w.Name.Contains(word))
                 && w.Drawer.Cellar.UserId == userId).OrderBy(w => w.Color).ToListAsync();
         }
