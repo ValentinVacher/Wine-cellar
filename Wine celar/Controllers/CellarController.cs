@@ -164,33 +164,8 @@ namespace Wine_cellar.Controllers
 
             return NotFound(ErrorCode.CellarNotFound);
         }
-        //Importe un fichier Json de cave 
-        [HttpPost]
-        public async Task<IActionResult> ImportJson([FromForm] string Jfile)
-        {
-            var path = Path.Combine(environment.ContentRootPath, "Json\\", Jfile + ".json");
-            using (FileStream stream = new FileStream(path, FileMode.Open))
-            {
-                StreamReader reader = new StreamReader(stream);
-                var file = reader.ReadToEnd();
-                
-                await cellarRepository.ImportJsonAsync(file);
-                stream.Close();
-            }
-            return Ok();
-        }
-        //Recupere un fichier Json contenant tout les elements d'une cave
-        [HttpGet]
-        public async Task<IActionResult> ExportJson(string name)
-        {
-            var identity = User?.Identity as ClaimsIdentity;
-
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
-
-            await cellarRepository.ExportJsonAsync(name);
-
-            return Ok();
-        }
+        
+       
         
     }
 }
