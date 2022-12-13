@@ -34,7 +34,8 @@ namespace Wine_cellar.Repositories
         {
             var cellars = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
                 .AsNoTracking().Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
-            var cellarsView = new List<GetCellarViewModel>();   
+            var cellarsView = new List<GetCellarViewModel>(); 
+            
             foreach (Cellar celar in cellars)
             {
                 var drawersView = new List<GetDrawerViewModel>();
@@ -52,6 +53,7 @@ namespace Wine_cellar.Repositories
                 var cellarView = Convertor.GetViewCellar(celar, drawersView);
                 cellarsView.Add(cellarView);
             }
+
             return cellarsView;
         }
 
