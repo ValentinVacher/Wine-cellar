@@ -7,6 +7,18 @@ namespace Wine_cellar.Tools
 {
     public class Convertor
     {
+        public static GetAppelationViewModel GetAppelation(Appelation appelation,List<GetWineViewModel> getWineViewModel) 
+        {
+            return new GetAppelationViewModel()
+            {
+                AppelationId= appelation.AppelationId,
+                Color= appelation.Color,
+                KeepMax= appelation.KeepMax,
+                KeepMin= appelation.KeepMin,
+                Name= appelation.Name,
+                Wines=getWineViewModel
+            };
+        }
         public static Cellar CreateCellar(CreateCellarViewModel viewModel)
         {
             return new Cellar()

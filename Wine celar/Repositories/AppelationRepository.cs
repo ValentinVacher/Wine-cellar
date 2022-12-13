@@ -6,6 +6,7 @@ using Wine_cellar.Contexts;
 using Wine_cellar.Entities;
 using Wine_cellar.IRepositories;
 using Wine_cellar.Repositories;
+using Wine_cellar.Tools;
 using Wine_cellar.ViewModel;
 
 namespace Wine_celar.Repositories
@@ -24,20 +25,26 @@ namespace Wine_celar.Repositories
         {
             return await wineContext.Appelations.AsNoTracking().ToListAsync();
         }
-
-        public async Task<Appelation> GetAppelationByIdAsync(int id, int userid)
+        public async Task<GetAppelationViewModel> GetAppelationByIdAsync(int id, int userid)
         {
-            return await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid))
-                .AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+            var appel= await wineContext.Appelations.Include(c => c.Wines.Where(w=>w.Drawer.Cellar.UserId==userid)).ThenInclude(w=>w.Drawer).ThenInclude(d=>d.Cellar).
+                AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == id);
+            var wines = new List<GetWineViewModel>();
+            foreach (var wine in appel.Wines)
+            {
+                var winemodel = Convertor.GetViewWine(wine);
+                wines.Add(winemodel);
+            }
+            return Convertor.GetAppelation(appel, wines);
         }
 
-        public async Task<List<Appelation>> GetAppelationsByColorAsync(WineColor color)
+        public async Task<List<Appelation>> GetAppelationsByColoAsync(WineColor color)
         {
             var AppelationsColor = await wineContext.Appelations.AsNoTracking().Where(a => a.Color == color).ToListAsync();
-
             if (AppelationsColor.Count() == 0) return null;
             return AppelationsColor;
         }
+
         public async Task<Appelation> CreateAppelationAsync(Appelation appelation)
         {
             if (await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == appelation.AppelationId) == null) return null;
