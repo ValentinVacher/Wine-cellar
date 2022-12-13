@@ -104,7 +104,11 @@ namespace Wine_cellar.Controllers
             return Ok(cellarCreated);
         }
 
-        //Importe un fichier Json de cave 
+        /// <summary>
+        /// Permet de récuperer un fichier Json pour l'ajouter à la base
+        /// </summary>
+        /// <param name="jFille"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> ImportJson([FromForm] string jFille)
         {
