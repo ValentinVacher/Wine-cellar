@@ -149,14 +149,13 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> CreateWineAsync([FromForm]
         CreateWineViewModel wineViewModel)
         {
+            //Verification de l'identifiant
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
-
             if (idCurrentUser == null) return BadRequest(ErrorCode.UnLogError);
-
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineCreated = await wineRepository.CreateWineAsync(wineViewModel, userId);
 
+            var wineCreated = await wineRepository.CreateWineAsync(wineViewModel, userId);
             switch (wineCreated)
             {
                 case 1: return NotFound(ErrorCode.WineNotFound);
@@ -164,19 +163,17 @@ namespace Wine_cellar.Controllers
                 case 3: return BadRequest(ErrorCode.AppelationError);
                 default: break;
             }
-
+            //Ajout de la photo
             if (!string.IsNullOrEmpty(wineViewModel.Picture?.FileName)
                 && wineViewModel.Picture.FileName.Length > 0)
             {
                 var path = Path.Combine(environment.WebRootPath, "img/", wineViewModel.Picture.FileName);
-
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 {
                     await wineViewModel.Picture.CopyToAsync(stream);
                     stream.Close();
                 }
             }
-
             return Ok(wineViewModel);
         }
 
