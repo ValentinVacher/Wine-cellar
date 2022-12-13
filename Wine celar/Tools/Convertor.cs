@@ -7,16 +7,16 @@ namespace Wine_cellar.Tools
 {
     public class Convertor
     {
-        public static GetAppelationViewModel GetAppelation(Appelation appelation,List<GetWineViewModel> getWineViewModel) 
+        public static GetAppelationViewModel GetAppelation(Appelation appelation, List<GetWineViewModel> getWineViewModel)
         {
             return new GetAppelationViewModel()
             {
-                AppelationId= appelation.AppelationId,
-                Color= appelation.Color,
-                KeepMax= appelation.KeepMax,
-                KeepMin= appelation.KeepMin,
-                Name= appelation.Name,
-                Wines=getWineViewModel
+                AppelationId = appelation.AppelationId,
+                Color = appelation.Color,
+                KeepMax = appelation.KeepMax,
+                KeepMin = appelation.KeepMin,
+                Name = appelation.Name,
+                Wines = getWineViewModel
             };
         }
         public static Cellar CreateCellar(CreateCellarViewModel viewModel)
@@ -86,13 +86,14 @@ namespace Wine_cellar.Tools
             return new GetDrawerViewModel()
             {
                 DrawerId = drawer.DrawerId,
+                Index = drawer.Index,
                 NbBottleMax = drawer.NbBottleMax,
                 CellarName = drawer.Cellar.Name,
                 Wines = wines
             };
         }
 
-        public static GetCellarViewModel GetViewCellar(Cellar cellar, List<GetDrawerViewModel> drawers) 
+        public static GetCellarViewModel GetViewCellar(Cellar cellar, List<GetDrawerViewModel> drawers)
         {
             return new GetCellarViewModel()
             {
