@@ -20,7 +20,11 @@ namespace Wine_cellar.Repositories
             this.wineContext = winecontext;
         }
 
-        //Permet de recuperer tout les tiroirs avec leur bouteilles
+        /// <summary>
+        /// Permet de voir tout les tiroirs d'un utilisateur
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Retourne une liste de tiroir et leur contenu</returns>
         public async Task<List<GetDrawerViewModel>> GetAllDrawersAsync(int userId)
         {
             var drawers = await wineContext.Drawers.Include(d => d.Wines).ThenInclude(a => a.Appelation).Include(c => c.Cellar)
@@ -44,7 +48,12 @@ namespace Wine_cellar.Repositories
             return drawersView;
         }
 
-        //Permet de récuperer un tiroir avec ses bouteilles
+        /// <summary>
+        /// Permet de recuperer un tiroir et son contenu
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne le tiroir correspondant et son contenu</returns>
         public async Task<GetDrawerViewModel> GetDrawerByIdAsync(int id, int userId)
         {
             var drawer = await wineContext.Drawers.Include(d => d.Wines).ThenInclude(a => a.Appelation).Include(d => d.Cellar)
@@ -63,7 +72,12 @@ namespace Wine_cellar.Repositories
             return Convertor.GetViewDrawer(drawer, winesView);
         }
 
-        //Permet de créer un tiroir si la cave n'est pas pleine
+        /// <summary>
+        /// Permet de rajouter un tiroir
+        /// </summary>
+        /// <param name="createDrawer"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne le tiroir créer</returns>
         public async Task<int> AddDrawerAsync(CreateDrawerViewModel createDrawer, int userId)
         {
             var Cellar = await wineContext.Cellars.Include(d => d.Drawers)
@@ -85,7 +99,12 @@ namespace Wine_cellar.Repositories
             return 1;
         }
 
-        //Permet de modifier un tiroir
+        /// <summary>
+        /// Permet de modifier les infos d'un tiroir
+        /// </summary>
+        /// <param name="drawer"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne le tiroir modifié</returns>
         public async Task<int> UpdateDrawerAsync(UpdateDrawerViewModel drawer, int userId)
         {
             var drawerToUp = await wineContext.Drawers.Include(d => d.Cellar)
@@ -104,7 +123,12 @@ namespace Wine_cellar.Repositories
                 .SetProperty(d => d.NbBottleMax, drawer.NbBottleMax));
         }
 
-        //Permet de supprimer un tiroir
+        /// <summary>
+        /// Permet de supprimer un tiroir
+        /// </summary>
+        /// <param name="drawerId"></param>
+        /// <param name="userId"></param>
+        /// <returns>Retourne le tiroir supprimé</returns>
         public async Task<int> DeleteDrawerAsync(int drawerId, int userId)
         {
             await wineContext.Wines.AsNoTracking().Where(w => w.DrawerId == drawerId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
