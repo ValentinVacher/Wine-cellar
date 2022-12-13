@@ -131,12 +131,9 @@ namespace Wine_celar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
+            if (await AppelationRepository.DeleteAppelationAsync(id) == 0) return NotFound(ErrorCode.AppelationNotFound);
 
-            int success = await AppelationRepository.DeleteAppelationAsync(id);
-
-            if (success == 0) NotFound(ErrorCode.AppelationNotFound);
-
-            return Ok(success);
+            return Ok(id);
         }
     }
 }
