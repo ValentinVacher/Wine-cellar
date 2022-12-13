@@ -175,6 +175,19 @@ namespace Wine_cellar.Controllers
 
         //    return Ok(wineUpdate);
         //}
+        [HttpPut]
+        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
+        {
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
+
+            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound(ErrorCode.WineNotFound);
+
+            return Ok(wineView);
+        }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Wine>> MoveWine(int id, int drawerId)
@@ -193,20 +206,6 @@ namespace Wine_cellar.Controllers
                 case 3: return BadRequest(ErrorCode.NoSpaceError);
                 default: return Ok(id);
             }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateWine([FromForm] UpdateWineViewModel wineView)
-        {
-            var identity = User?.Identity as ClaimsIdentity;
-
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
-
-            var UserIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            if (await wineRepository.UpdateWineAsync(wineView, UserIdentity) == 0) return NotFound(ErrorCode.WineNotFound);
-
-            return Ok(wineView);
         }
 
         [HttpDelete("{id}")]
