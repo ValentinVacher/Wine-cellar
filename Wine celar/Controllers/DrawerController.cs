@@ -32,7 +32,7 @@ namespace Wine_cellar.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Drawer>> GetDrawerByIndex(int id)
+        public async Task<ActionResult<Drawer>> GetDrawerById(int id)
         {
             var identity = User?.Identity as ClaimsIdentity;
 

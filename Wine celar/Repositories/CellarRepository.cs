@@ -62,6 +62,9 @@ namespace Wine_cellar.Repositories
         {
             var cellar = await wineContext.Cellars.Include(c => c.Drawers.OrderBy(d => d.Index)).ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation)
                 .AsNoTracking().FirstOrDefaultAsync(c => c.CellarId == id && c.UserId == userId);
+
+            if (cellar == null) return null;
+
             var drawersView = new List<GetDrawerViewModel>();
 
             foreach (Drawer drawer in cellar.Drawers)
