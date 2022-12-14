@@ -146,6 +146,9 @@ namespace Wine_cellar.Repositories
         {
             var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
+
+            if(WineDuplicate == null) return -1;
+
             var nbWine = 0;
             var nbWineInDrawer = WineDuplicate.Drawer.Wines.Count();
 
