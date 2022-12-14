@@ -113,7 +113,7 @@ namespace Wine_cellar.Repositories
         public async Task<int> AddWineAsync(CreateWineViewModel wineView, int userId)
         {
             var Drawer = await wineContext.Drawers.Include(d => d.Wines).AsNoTracking()
-                .FirstOrDefaultAsync(d => d.Index == wineView.DrawerId && d.Cellar.UserId == userId);
+                .FirstOrDefaultAsync(d => d.DrawerId == wineView.DrawerId && d.Cellar.UserId == userId);
 
             if (Drawer == null) return 1;
 
