@@ -12,7 +12,7 @@ namespace Wine_cellar.IRepositories
         Task<List<GetCellarViewModel>> GetAllCellarsAsync(int userId);
         //Permet ded recuperer toutes les caves avec tout ses elements
         Task<GetCellarViewModel> GetCellarByIdAsync(int id, int userId);
-        Task<List<Cellar>> ExportJsonAsync(string name);
+        Task<List<Cellar>> ExportJsonAsync(string name, int userId);
         //Permet d'ajouter une cave
         Task<Cellar> AddCellarAsync(Cellar cellar, int NbrButtleDrawer);
         Task<string> ImportJsonAsync(string form);
