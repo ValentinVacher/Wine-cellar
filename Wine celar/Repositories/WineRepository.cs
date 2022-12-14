@@ -164,12 +164,14 @@ namespace Wine_cellar.Repositories
             {
                 //Verifie si le tiroir est plein
                 if (nbWinInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
+
                 wineContext.Wines.Add(wine);
+                await wineContext.SaveChangesAsync();
 
                 nbWine++;
                 nbWinInDrawer++;
             }
-            await wineContext.SaveChangesAsync();
+       
             return nbWine;
         }  
         /// <summary>
