@@ -150,7 +150,6 @@ namespace Wine_cellar.Repositories
             if(WineDuplicate == null) return -1;
 
             var nbWine = 0;
-            var nbWineInDrawer = WineDuplicate.Drawer.Wines.Count();
 
             //Boucle pour le nombre de duplication 
             for (int i = 1; i <= nbrDuplicate; i++)
@@ -166,12 +165,11 @@ namespace Wine_cellar.Repositories
                 };
 
                 //Verifie si le tiroir est plein
-                if (nbWineInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
+                if (WineDuplicate.Drawer.IsFull()) break;
 
                 wineContext.Wines.Add(wine);
 
                 nbWine++;
-                nbWineInDrawer++;
             }
 
             await wineContext.SaveChangesAsync();
