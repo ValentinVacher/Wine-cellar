@@ -145,6 +145,11 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
             if (identity?.FindFirst(ClaimTypes.Role).Value != "admin") return BadRequest(ErrorCode.NotAdminError);
 
+            CellarRegex regex = new();
+
+            if (!regex.Password.Match(userView.Password).Success) return BadRequest(ErrorCode.InvalidPassword);
+            if (!regex.Email.Match(userView.Email).Success) return BadRequest(ErrorCode.InvalidEmail);
+
             var userUpdate = await UserRepository.UpdateUserAsync(userView);
 
             if (userUpdate == null) return NotFound(ErrorCode.UserNotFound);
