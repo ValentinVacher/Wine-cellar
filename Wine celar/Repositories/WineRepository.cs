@@ -186,8 +186,12 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne le vin modifier</returns>
         public async Task<int> UpdateWineAsync(UpdateWineViewModel updateWine, int UserId)
         {
+            var appelation = await wineContext.Appelations.AsNoTracking().FirstOrDefaultAsync(a => a.AppelationId == updateWine.AppelationId);
+
+            if (appelation == null) return -1;
+
             //Vérifie les couleurs du vin et de l'appelation
-            if (updateWine.Color != (await wineContext.Appelations.FindAsync(updateWine.AppelationId)).Color) return 0;
+            if (updateWine.Color != appelation.Color) return -2;
 
             return await wineContext.Wines.Where(w => w.WineId == updateWine.WineId && w.Drawer.Cellar.UserId == UserId).AsNoTracking()
                 .ExecuteUpdateAsync(updates => updates
@@ -222,8 +226,7 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne l'element supprimer</returns>
         public async Task<int> DeleteWineAsync(int wineId, int userId)
         {
-            return await wineContext.Wines.
-               Where(w => w.WineId == wineId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            return await wineContext.Wines.Where(w => w.WineId == wineId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
         }
     }
 }
