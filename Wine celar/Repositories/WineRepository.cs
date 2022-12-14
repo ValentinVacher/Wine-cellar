@@ -144,7 +144,7 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne le nombre d'elements créer</returns>
         public async Task<int> DuplicateAsync(int wineId, int nbrDuplicate, int userId)
         {
-            var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer).ThenInclude(w => w.Wines).AsNoTracking()
+            var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer).ThenInclude(w => w.Wines)
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
 
             if(WineDuplicate == null) return-1;
