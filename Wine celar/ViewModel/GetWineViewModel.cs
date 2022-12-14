@@ -12,6 +12,7 @@ namespace Wine_cellar.ViewModel
         public string AppelationName { get; set; }
         public string CellarName { get; set; }
         public int DrawerIndex { get; set; }
+        public int DrawerId { get; set; }
         public string PictureName { get; set; }
     }
 }

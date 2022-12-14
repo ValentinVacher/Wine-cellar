@@ -17,7 +17,7 @@ namespace Wine_cellar.IRepositories
         Task<List<GetWineViewModel>> GetWinesByApogeeAsync(int userId);
         Task<List<Wine>> GetWinesByColorAsync(WineColor color, int UserId);
         //Permet de rajouter un vin 
-        Task<int> CreateWineAsync(CreateWineViewModel wine, int userId);
+        Task<int> AddWineAsync(CreateWineViewModel wine, int userId);
         Task<int> DuplicateAsync(int WineId, int NbrDuplicate, int UserId);
         //Permet de mettre à jour un vin
         //Task<Wine> UpdateWineAsync(UpdateWineViewModel wine, Drawer userId);

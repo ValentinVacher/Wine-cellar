@@ -63,7 +63,6 @@ namespace Wine_cellar.Controllers
             return Ok(WineView);
         }
 
-
         /// <summary>
         /// Permet de voir les vins à leur apogée
         /// </summary>
@@ -146,7 +145,7 @@ namespace Wine_cellar.Controllers
         /// <param name="wineViewModel"></param>
         /// <returns>Retourne le vin créer</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateWineAsync([FromForm]
+        public async Task<IActionResult> AddWineAsync([FromForm]
         CreateWineViewModel wineViewModel)
         {
             //Verification de l'identifiant
@@ -155,7 +154,7 @@ namespace Wine_cellar.Controllers
             if (idCurrentUser == null) return BadRequest(ErrorCode.UnLogError);
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var wineCreated = await wineRepository.CreateWineAsync(wineViewModel, userId);
+            var wineCreated = await wineRepository.AddWineAsync(wineViewModel, userId);
             switch (wineCreated)
             {
                 case 1: return NotFound(ErrorCode.WineNotFound);

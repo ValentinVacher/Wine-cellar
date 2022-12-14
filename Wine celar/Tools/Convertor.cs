@@ -31,6 +31,7 @@ namespace Wine_cellar.Tools
                 Color = wine.Color,
                 AppelationName = wine.Appelation.Name,
                 DrawerIndex = wine.Drawer.Index,
+                DrawerId = wine.DrawerId,
                 PictureName = wine.PictureName
             };
         }
