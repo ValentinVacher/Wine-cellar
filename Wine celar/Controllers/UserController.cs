@@ -154,7 +154,7 @@ namespace Wine_cellar.Controllers
 
             if (userUpdate == null) return NotFound(ErrorCode.UserNotFound);
             
-            return Ok(userUpdate);
+            return Ok(userView);
         }
 
 
