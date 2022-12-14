@@ -73,7 +73,7 @@ namespace Wine_cellar.Controllers
         {
             var identity = User?.Identity as ClaimsIdentity;
 
-            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) BadRequest(ErrorCode.UnLogError);
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null)  return BadRequest(ErrorCode.UnLogError);
                 
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var wines = await wineRepository.GetWinesByApogeeAsync(userId);
