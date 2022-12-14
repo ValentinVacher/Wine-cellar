@@ -89,12 +89,12 @@ namespace Wine_cellar.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns>Retourne les données sauvegarder</returns>
-        public async Task<List<Cellar>> ExportJsonAsync(string name)
+        public async Task<List<Cellar>> ExportJsonAsync(string name, int userId)
         {
             var result = await wineContext.Cellars
                 .Include(c => c.Drawers
                 .OrderBy(d => d.Index))
-                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).AsNoTracking().ToListAsync();
+                .ThenInclude(d => d.Wines).ThenInclude(a => a.Appelation).AsNoTracking().Where(c =>  c.UserId == userId).ToListAsync();
 
             string fileName = $"{name}.json";
             using FileStream createStream = File.Create("Json\\" + fileName);
@@ -177,10 +177,10 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne la cave supprimer</returns>
         public async Task<int> DeleteCellarAsync(int cellarId, int userId)
         {
-            await wineContext.Wines.AsNoTracking().Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
-            await wineContext.Drawers.AsNoTracking().Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Wines.Where(w => w.Drawer.CellarId == cellarId && w.Drawer.Cellar.UserId == userId).ExecuteDeleteAsync();
+            await wineContext.Drawers.Where(d => d.CellarId == cellarId && d.Cellar.UserId == userId).ExecuteDeleteAsync();
 
-            return await wineContext.Cellars.AsNoTracking().Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
+            return await wineContext.Cellars.Where(c => c.CellarId == cellarId && c.UserId == userId).ExecuteDeleteAsync();
         }
     }
 }

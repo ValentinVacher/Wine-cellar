@@ -77,7 +77,8 @@ namespace Wine_cellar.Controllers
 
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
-            await cellarRepository.ExportJsonAsync(name);
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            await cellarRepository.ExportJsonAsync(name, userId);
 
             return Ok();
         }
@@ -117,6 +118,9 @@ namespace Wine_cellar.Controllers
         public async Task<IActionResult> ImportJson([FromForm] string jFille)
         {
             var path = Path.Combine(environment.ContentRootPath, "Json\\", jFille + ".json");
+            var identity = User?.Identity as ClaimsIdentity;
+
+            if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             using (FileStream stream = new FileStream(path, FileMode.Open))
             {
