@@ -205,13 +205,13 @@ namespace Wine_cellar.Repositories
         /// <returns>Retourne le vin dans son nouvelle emplacement</returns>
         public async Task<int> MoveWineAsync(int wineId, int drawerId, int userId)
         {
-            var drawer = await wineContext.Drawers.FirstOrDefaultAsync(d => d.DrawerId == drawerId);
+            var drawer = await wineContext.Drawers.Include(w => w.Wines).FirstOrDefaultAsync(d => d.DrawerId == drawerId);
 
             if (drawer == null) return -1;
             if (drawer.IsFull()) return -2;
 
             return await wineContext.Wines.Where(w => w.WineId == wineId && w.Drawer.Cellar.UserId == userId).AsNoTracking()
-                    .ExecuteUpdateAsync(updates => updates.SetProperty(w => w.DrawerId, drawerId));
+                .ExecuteUpdateAsync(updates => updates.SetProperty(w => w.DrawerId, drawerId));
         }
 
         /// <summary>
