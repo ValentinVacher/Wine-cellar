@@ -40,7 +40,6 @@ namespace Wine_cellar.Controllers
             return Ok(await wineRepository.GetAllWinesAsync(userId));
         }
 
-
         /// <summary>
         /// Permet de voir un vin par son id 
         /// </summary>
@@ -82,7 +81,6 @@ namespace Wine_cellar.Controllers
             return Ok(wines);
         }
 
-
         /// <summary>
         /// Permet de faire une recherche par mot clé
         /// </summary>
@@ -111,7 +109,6 @@ namespace Wine_cellar.Controllers
             return Ok(WinesView);
         }
 
-
         /// <summary>
         /// Permet de recuperer les vins correspondant à une couleur
         /// </summary>
@@ -139,6 +136,7 @@ namespace Wine_cellar.Controllers
 
             return Ok(WinesView);
         }
+
         /// <summary>
         /// Permet de créer un vin
         /// </summary>
@@ -179,7 +177,6 @@ namespace Wine_cellar.Controllers
             }
             return Ok(wineViewModel);
         }
-
 
         /// <summary>
         /// Permet de dupliquer un vin autant de fois qu'on le souhaite
@@ -225,7 +222,6 @@ namespace Wine_cellar.Controllers
             }
         }
 
-
         /// <summary>
         /// Permet de déplacer un vin dans un autre tiroir
         /// </summary>
@@ -250,7 +246,6 @@ namespace Wine_cellar.Controllers
                 default: return Ok(id);
             }
         }
-
 
         /// <summary>
         /// Permet de supprimer un vin
