@@ -161,6 +161,7 @@ namespace Wine_cellar.Controllers
                 case 1: return NotFound(ErrorCode.WineNotFound);
                 case 2: return BadRequest(ErrorCode.NoSpaceError);
                 case 3: return BadRequest(ErrorCode.AppelationError);
+                case 4: return NotFound(ErrorCode.AppelationNotFound);
                 default: break;
             }
             //Ajout de la photo

@@ -121,9 +121,12 @@ namespace Wine_cellar.Repositories
             if (Drawer.IsFull() == true) return 2;
 
             var wine = Convertor.CreateWine(wineView);
+            var appelation = await wineContext.Appelations.FindAsync(wine.AppelationId);
+
+            if (appelation == null) return 4;
 
             //Vérifie les couleurs du vin et de l'appelation
-            if (wine.Color != (await wineContext.Appelations.FindAsync(wine.AppelationId)).Color) return 3;
+            if (wine.Color != appelation.Color) return 3;
 
             //Ajoute le vin 
             wineContext.Wines.Add(wine);
