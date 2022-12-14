@@ -237,9 +237,9 @@ namespace Wine_cellar.Controllers
 
             switch (wineMove)
             {
-                case 1: return NotFound(ErrorCode.WineNotFound);
-                case 2: return NotFound(ErrorCode.DrawerNotFound);
-                case 3: return BadRequest(ErrorCode.NoSpaceError);
+                case 0: return NotFound(ErrorCode.WineNotFound);
+                case -1: return NotFound(ErrorCode.DrawerNotFound);
+                case -2: return BadRequest(ErrorCode.NoSpaceError);
                 default: return Ok(id);
             }
         }
