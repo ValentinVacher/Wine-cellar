@@ -149,29 +149,30 @@ namespace Wine_cellar.Repositories
             var nbWine = 0;
             var nbWinInDrawer = WineDuplicate.Drawer.Wines.Count();
 
-            var wine = new Wine
-            {
-                Color = WineDuplicate.Color,
-                AppelationId = WineDuplicate.AppelationId,
-                Name = WineDuplicate.Name,
-                Year = WineDuplicate.Year,
-                DrawerId = WineDuplicate.DrawerId,
-                PictureName = WineDuplicate.PictureName
-            };
-
             //Boucle pour le nombre de duplication 
             for (int i = 1; i <= nbrDuplicate; i++)
             {
+                var wine = new Wine
+                {
+                    Color = WineDuplicate.Color,
+                    AppelationId = WineDuplicate.AppelationId,
+                    Name = WineDuplicate.Name,
+                    Year = WineDuplicate.Year,
+                    DrawerId = WineDuplicate.DrawerId,
+                    PictureName = WineDuplicate.PictureName
+                };
+
                 //Verifie si le tiroir est plein
                 if (nbWinInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
 
                 wineContext.Wines.Add(wine);
-                await wineContext.SaveChangesAsync();
 
                 nbWine++;
                 nbWinInDrawer++;
             }
-       
+
+            await wineContext.SaveChangesAsync();
+
             return nbWine;
         }  
         /// <summary>
