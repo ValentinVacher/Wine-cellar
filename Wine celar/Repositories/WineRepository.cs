@@ -147,7 +147,7 @@ namespace Wine_cellar.Repositories
             var WineDuplicate = await wineContext.Wines.Include(d => d.Drawer).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.WineId == wineId && p.Drawer.Cellar.UserId == userId);
             var nbWine = 0;
-            var nbWinInDrawer = WineDuplicate.Drawer.Wines.Count();
+            var nbWineInDrawer = WineDuplicate.Drawer.Wines.Count();
 
             //Boucle pour le nombre de duplication 
             for (int i = 1; i <= nbrDuplicate; i++)
@@ -163,12 +163,12 @@ namespace Wine_cellar.Repositories
                 };
 
                 //Verifie si le tiroir est plein
-                if (nbWinInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
+                if (nbWineInDrawer == WineDuplicate.Drawer.NbBottleMax) break;
 
                 wineContext.Wines.Add(wine);
 
                 nbWine++;
-                nbWinInDrawer++;
+                nbWineInDrawer++;
             }
 
             await wineContext.SaveChangesAsync();
