@@ -151,18 +151,21 @@ namespace Wine_cellar.Controllers
             //Verification de l'identifiant
             var identity = User?.Identity as ClaimsIdentity;
             var idCurrentUser = identity?.FindFirst(ClaimTypes.NameIdentifier);
-            if (idCurrentUser == null) return BadRequest(ErrorCode.UnLogError);
-            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
+            if (idCurrentUser == null) return BadRequest(ErrorCode.UnLogError);
+
+            int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             var wineCreated = await wineRepository.AddWineAsync(wineViewModel, userId);
+
             switch (wineCreated)
             {
-                case 1: return NotFound(ErrorCode.WineNotFound);
+                case 1: return NotFound(ErrorCode.DrawerNotFound);
                 case 2: return BadRequest(ErrorCode.NoSpaceError);
                 case 3: return BadRequest(ErrorCode.AppelationError);
                 case 4: return NotFound(ErrorCode.AppelationNotFound);
                 default: break;
             }
+
             //Ajout de la photo
             if (!string.IsNullOrEmpty(wineViewModel.Picture?.FileName)
                 && wineViewModel.Picture.FileName.Length > 0)
