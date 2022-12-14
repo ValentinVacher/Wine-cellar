@@ -214,11 +214,15 @@ namespace Wine_cellar.Controllers
             if (identity?.FindFirst(ClaimTypes.NameIdentifier) == null) return BadRequest(ErrorCode.UnLogError);
 
             var userIdentity = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var wineUpdate
+            var wineUpdate = await wineRepository.UpdateWineAsync(wineView, userIdentity);
 
-            switch
-            if (await wineRepository.UpdateWineAsync(wineView, userIdentity) == 0) return NotFound(ErrorCode.WineNotFound);
-            return Ok(wineView);
+            switch(wineUpdate)
+            {
+                case -1: return NotFound(ErrorCode.AppelationNotFound);
+                case -2: return BadRequest(ErrorCode.AppelationError);
+                case 0: return NotFound(ErrorCode.WineNotFound);
+                default: return Ok(wineView);
+            }
         }
 
 
