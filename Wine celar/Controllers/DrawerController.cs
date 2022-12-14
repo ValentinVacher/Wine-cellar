@@ -68,7 +68,7 @@ namespace Wine_cellar.Controllers
         /// <response code = "200">Tiroir créer : </response>
         /// <returns>Retourne le tiroir créer</returns>
         [HttpPost]
-        public async Task<ActionResult<Drawer>> PostDrawer([FromForm] CreateDrawerViewModel createDrawer)
+        public async Task<ActionResult<Drawer>> AddDrawer([FromForm] CreateDrawerViewModel createDrawer)
         {
             var identity = User?.Identity as ClaimsIdentity;
 
