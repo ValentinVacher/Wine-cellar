@@ -197,7 +197,7 @@ namespace Wine_cellar.Controllers
             int userId = int.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
             int nbrWineCreate = await wineRepository.DuplicateAsync(id, NbrDuplicate, userId);
 
-            if(NbrDuplicate == -1) return NotFound(ErrorCode.WineNotFound);
+            if(nbrWineCreate == -1) return NotFound(ErrorCode.WineNotFound);
 
             return Ok(nbrWineCreate);
         }
